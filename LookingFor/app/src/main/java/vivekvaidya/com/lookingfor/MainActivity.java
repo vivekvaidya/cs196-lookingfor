@@ -1,6 +1,7 @@
 package vivekvaidya.com.lookingfor;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +9,30 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import org.w3c.dom.Text;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private FirebaseAuth myAuth;
+    private EditText password;
+    private EditText username;
+    private EditText contents;
+    private Button login;
+    private Button register;
+    private Button signOut;
+    private Button upload;
+    private Button download;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +40,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        password = (EditText) findViewById(R.id.password);
+        username = (EditText) findViewById(R.id.username);
+        contents = (EditText) findViewById(R.id.contents);
+        login = (Button) findViewById(R.id.Login);
+        register = (Button) findViewById(R.id.register);
+        signOut = (Button) findViewById(R.id.signOut);
+        upload = (Button) findViewById(R.id.uploadText);
+        download = (Button) findViewById(R.id.downloadText);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -26,6 +57,82 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        login.setOnClickListener(this);
+        register.setOnClickListener(this);
+        signOut.setOnClickListener(this);
+        upload.setOnClickListener(this);
+        download.setOnClickListener(this);
+
+        myAuth = FirebaseAuth.getInstance();
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) .
+        FirebaseUser currentUser = myAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
+
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            contents.setText(getString(R.string.emailFirebase,
+                    user.getEmail(), user.isEmailVerified(), user.getUid()));
+            login.setVisibility(View.GONE);
+            register.setVisibility(View.GONE);
+            signOut.setVisibility(View.VISIBLE);
+
+        } else {
+            contents.setText(R.string.signedOut);
+            login.setVisibility(View.VISIBLE);
+            register.setVisibility(View.VISIBLE);
+            signOut.setVisibility(View.GONE);
+        }
+    }
+
+    private void createAccount(String email, String password) {
+        myAuth.createUserWithEmailAndPassword(email,password).
+                addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    FirebaseUser user = myAuth.getCurrentUser();
+                    updateUI(user);
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                    updateUI(null);
+                }
+            }
+        });
+    }
+
+    private void signIn(String email, String password) {
+        myAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    FirebaseUser user = myAuth.getCurrentUser();
+                    updateUI(user);
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                    updateUI(null);
+                }
+            }
+        });
+    }
+
+    private void signOut() {
+        myAuth.signOut();
+        Toast.makeText(MainActivity.this, "signed out",Toast.LENGTH_SHORT).show();
+        updateUI(null);
     }
 
     @Override
@@ -48,5 +155,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.register) {
+            createAccount(username.getText().toString(), password.getText().toString());
+            Toast.makeText(MainActivity.this, "You Pressed a button.",
+                    Toast.LENGTH_SHORT).show();
+        } else if (i == R.id.Login) {
+            signIn(username.getText().toString(), password.getText().toString());
+        } else if (i == R.id.signOut) {
+            signOut();
+        } else if (i == R.id.uploadText) {
+  //TODO:          upload(contents.getText().toString());
+        } else if (i == R.id.downloadText) {
+   //TODO:         download(username.getText().toString());
+        }
     }
 }
