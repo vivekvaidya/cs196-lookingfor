@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,12 +18,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
 
 import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth myAuth;
+    private FirebaseDatabase mDatabase;
     private EditText password;
     private EditText username;
     private EditText contents;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button signOut;
     private Button upload;
     private Button download;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         download.setOnClickListener(this);
 
         myAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
+
 
     }
 
@@ -91,6 +96,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //create a user object
+    public class User {
+
+        public String username;
+
+        public String password;
+
+        public User() {
+            // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        }
+
+        public User(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
+
+    }
+
     private void createAccount(String email, String password) {
         myAuth.createUserWithEmailAndPassword(email,password).
                 addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -110,13 +133,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void signIn(String email, String password) {
+    private void writeNewUser(String name, String email) {
+        User user = new User(name, email);
+        mDatabase.getReference().child("users").child(myAuth.getUid().toString()).setValue(contents.getText().toString());
+    }
+
+    private void signIn(String email, final String password) {
         myAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+
+
+       //             DatabaseReference mChildDatabase = mDatabase.getReference().child("users").push();
+         //           mChildDatabase.child("emailUser").setValue(username);
+           //         mChildDatabase.child("passWordUser").setValue(password);
+
+
                     // Sign in success, update UI with the signed-in user's information
+
+
                     FirebaseUser user = myAuth.getCurrentUser();
                     updateUI(user);
                 } else {
@@ -129,11 +166,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+
+
     private void signOut() {
         myAuth.signOut();
         Toast.makeText(MainActivity.this, "signed out",Toast.LENGTH_SHORT).show();
         updateUI(null);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -157,21 +197,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.register) {
             createAccount(username.getText().toString(), password.getText().toString());
-            Toast.makeText(MainActivity.this, "You Pressed a button.",
-                    Toast.LENGTH_SHORT).show();
         } else if (i == R.id.Login) {
             signIn(username.getText().toString(), password.getText().toString());
         } else if (i == R.id.signOut) {
             signOut();
         } else if (i == R.id.uploadText) {
-  //TODO:          upload(contents.getText().toString());
+            //TODO:          upload(contents.getText().toString());
+            writeNewUser(username.getText().toString(), password.getText().toString());
         } else if (i == R.id.downloadText) {
    //TODO:         download(username.getText().toString());
         }
     }
-}
+};
