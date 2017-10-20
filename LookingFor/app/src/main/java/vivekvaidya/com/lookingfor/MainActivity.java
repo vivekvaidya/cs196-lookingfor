@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth myAuth;
@@ -134,8 +136,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void writeNewUser(String name, String email) {
-        User user = new User(name, email);
-        mDatabase.getReference().child("users").child(myAuth.getUid().toString()).setValue(contents.getText().toString());
+        //TODO: set up names,email and password or make it something else Eric is working on it now
+        HashMap<String, String> dataMap = new HashMap<String, String>();
+        dataMap.put("Name", "helo");
+        dataMap.put("Email", "email");
+        dataMap.put("Password", "password");
+
+        DatabaseReference users = mDatabase.getReference().child("Users").child("names");
+        users.setValue(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if(task.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, "Registered Successfully!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Error...", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
+        //User user = new User(name, email);
+        //mDatabase.getReference().child("users").child(myAuth.getUid().toString()).setValue(contents.getText().toString());
     }
 
     private void signIn(String email, final String password) {
@@ -210,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (i == R.id.uploadText) {
             //TODO:          upload(contents.getText().toString());
             writeNewUser(username.getText().toString(), password.getText().toString());
+
         } else if (i == R.id.downloadText) {
    //TODO:         download(username.getText().toString());
         }
