@@ -1,20 +1,25 @@
 {
   "project_info": {
+
     "project_number": "371329928854",
     "firebase_url": "https://looking-for-cs196.firebaseio.com",
     "project_id": "looking-for-cs196",
     "storage_bucket": "looking-for-cs196.appspot.com"
+
   },
   "client": [
     {
       "client_info": {
+
         "mobilesdk_app_id": "1:371329928854:android:cb0b52bfb0b104e3",
+
         "android_client_info": {
           "package_name": "vivekvaidya.com.lookingfor"
         }
       },
       "oauth_client": [
         {
+
           "client_id": "371329928854-g40ujh9b31q77l4dc33m5pggb53i8jah.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -24,12 +29,14 @@
         },
         {
           "client_id": "371329928854-trp5sl7kf8ma8bepqc6k16h97e1flo5v.apps.googleusercontent.com",
-          "client_type": 3
+      "client_type": 3
         }
       ],
       "api_key": [
         {
+
           "current_key": "AIzaSyBHyMzcnSa7ibNp3P8vPH3TLZ-tgRZktgo"
+
         }
       ],
       "services": {
@@ -40,7 +47,9 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
+
               "client_id": "371329928854-trp5sl7kf8ma8bepqc6k16h97e1flo5v.apps.googleusercontent.com",
+
               "client_type": 3
             }
           ]
