@@ -28,6 +28,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 import java.util.HashMap;
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String phoneAuthID;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
     private PhoneAuthProvider.ForceResendingToken resendToken;
+    private FirebaseDatabase mDatabase;
 
 
     @Override
@@ -231,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         updateUI(null);
     }
   
-    private void phoneAuth(){
+    private void phoneAuth() {
         String phoneNumber = username.getText().toString();
         verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
@@ -243,13 +246,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
-                if (e instanceof FirebaseAuthInvalidCredentialsException){
+                if (e instanceof FirebaseAuthInvalidCredentialsException) {
                     contents.setText("invalid phone number");
-                } else if (e instanceof FirebaseTooManyRequestsException){
+                } else if (e instanceof FirebaseTooManyRequestsException) {
                     contents.setText("aaa");
                 }
             }
-            public void onCodeSent(String verificationID, PhoneAuthProvider.ForceResendingToken token){
+
+            public void onCodeSent(String verificationID, PhoneAuthProvider.ForceResendingToken token) {
                 phoneAuthID = verificationID;
                 resendToken = token;
                 contents.setText("code sent!");
@@ -263,30 +267,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 verificationCallbacks
         );
     }
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) .
-        FirebaseUser currentUser = myAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            contents.setText(getString(R.string.emailFirebase,
-                    user.getEmail(), user.isEmailVerified(), user.getUid()));
-            login.setVisibility(View.GONE);
-            register.setVisibility(View.GONE);
-            signOut.setVisibility(View.VISIBLE);
-
-        } else {
-            contents.setText(R.string.signedOut);
-            login.setVisibility(View.VISIBLE);
-            register.setVisibility(View.VISIBLE);
-            signOut.setVisibility(View.GONE);
-        }
-    }
-
 
 
     @Override
@@ -309,37 +289,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return super.onOptionsItemSelected(item);
-    }
-    private void phoneAuth(View view){
-        String phoneNumber = username.getText().toString();
-        verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            @Override
-            public void onVerificationCompleted(PhoneAuthCredential credential) {
-                contents.setText("you have signed in!");
-                SignInWithPhoneAuthCredential(credential);
-            }
-
-            @Override
-            public void onVerificationFailed(FirebaseException e) {
-                if (e instanceof FirebaseAuthInvalidCredentialsException){
-                    contents.setText("invalid phone number");
-                } else if (e instanceof FirebaseTooManyRequestsException){
-                    contents.setText("aaa");
-                }
-            }
-            public void onCodeSent(String verificationID, PhoneAuthProvider.ForceResendingToken token){
-                phoneAuthID = verificationID;
-                resendToken = token;
-                contents.setText("code sent!");
-            }
-        };
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber,
-                10,
-                TimeUnit.SECONDS,
-                this,
-                verificationCallbacks
-        );
     }
     private void SignInWithPhoneAuthCredential(PhoneAuthCredential credential){
         myAuth.signInWithCredential(credential).addOnCompleteListener(this,new OnCompleteListener<AuthResult>(){
