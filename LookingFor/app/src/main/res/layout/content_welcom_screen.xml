@@ -7,6 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="vivekvaidya.com.lookingfor.welcomScreen"
     tools:showIn="@layout/activity_welcom_screen">
+
     <Button
         android:id="@+id/createEventButton"
         android:layout_width="127dp"
@@ -54,4 +55,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

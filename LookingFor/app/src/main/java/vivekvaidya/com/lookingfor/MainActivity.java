@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // Sign in success, update UI with the signed-in user's information
                     FirebaseUser user = myAuth.getCurrentUser();
                     updateUI(user);
-                    Intent intent = new Intent(context,welcomScreen.class);
+                    Intent intent = new Intent(context,userSettingsScreen.class);
                     startActivity(intent);
                 } else {
                     // If sign in fails, display a message to the user.
@@ -204,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void signIn(String email, final String password) {
+        final Context context = this.getApplicationContext();
         myAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -221,6 +222,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     FirebaseUser user = myAuth.getCurrentUser();
                     updateUI(user);
+                    Intent intent = new Intent(context,welcomScreen.class);
+                    startActivity(intent);
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(MainActivity.this, "Authentication failed.",
@@ -240,12 +243,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
   
     private void phoneAuth() {
+        final Context context = this.getApplicationContext();
         String phoneNumber = username.getText().toString();
         verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
                 contents.setText("you have signed in!");
                 SignInWithPhoneAuthCredential(credential);
+                Intent intent = new Intent(context,welcomScreen.class);
+                startActivity(intent);
             }
 
 
