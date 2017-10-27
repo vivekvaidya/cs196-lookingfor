@@ -4,7 +4,10 @@ package vivekvaidya.com.lookingfor;
  * Created by Administrator on 2017/10/26.
  */
 
-public class User {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class User implements Serializable {
     final private String UID;
     private String emailAddress;
     private String phoneNumber;
@@ -12,15 +15,15 @@ public class User {
     private String userName;
     private String avatarLink;
     private boolean isLoggedIn = false;
+    public User(String UID, String phoneNumber){
+        this.UID = UID;
+        this.phoneNumber = phoneNumber;
+        this.isLoggedIn = true;
+    }
     public User(String UID, String emailAddress, String passWord){
         this.UID = UID;
         this.emailAddress = emailAddress;
         this.passWord = passWord;
-        this.isLoggedIn = true;
-    }
-    public User(String UID, String phoneNumber){
-        this.UID = UID;
-        this.phoneNumber = phoneNumber;
         this.isLoggedIn = true;
     }
     public String getUID(){
