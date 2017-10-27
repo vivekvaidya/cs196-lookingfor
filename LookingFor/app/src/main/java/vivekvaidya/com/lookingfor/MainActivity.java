@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void writeNewUser(String name, String email) {
         //TODO: set up names,email and password or make it something else Eric is working on it now
         HashMap<String, String> dataMap = new HashMap<String, String>();
-        dataMap.put("Name", "helo");
+        dataMap.put("Name", "hello");
         dataMap.put("Email", "email");
         dataMap.put("Password", "password");
 
