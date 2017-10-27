@@ -1,5 +1,7 @@
 package vivekvaidya.com.lookingfor;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.provider.ContactsContract;
@@ -155,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void createAccount(String email, String password) {
+        final Context context = this.getApplicationContext();
         myAuth.createUserWithEmailAndPassword(email,password).
                 addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -163,6 +166,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // Sign in success, update UI with the signed-in user's information
                     FirebaseUser user = myAuth.getCurrentUser();
                     updateUI(user);
+                    Intent intent = new Intent(context,welcomScreen.class);
+                    startActivity(intent);
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(MainActivity.this, "Authentication failed.",

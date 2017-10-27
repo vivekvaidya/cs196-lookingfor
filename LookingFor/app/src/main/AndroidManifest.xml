@@ -19,6 +19,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".welcomScreen"
+            android:label="@string/title_activity_welcom_screen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".createEventScreen"
+            android:label="@string/title_activity_create_event_screen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".userSettingsScreen"
+            android:label="@string/title_activity_user_settings_screen"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
