@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,
-                10,
+                60,
                 TimeUnit.SECONDS,
                 this,
                 verificationCallbacks
