@@ -1,5 +1,9 @@
 package vivekvaidya.com.lookingfor;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.Arrays;
 
 import static android.R.attr.data;
@@ -8,7 +12,7 @@ import static android.R.attr.data;
  * Created by Administrator on 2017/10/26.
  */
 
-public class Event {
+public class Event implements Parcelable {
     public static long numberOfEvents = 0;
     final private String hostID;
     final private long eventID;
@@ -110,4 +114,44 @@ public class Event {
             return false;
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(hostID);
+        dest.writeLong(eventID);
+        dest.writeString(title);
+        dest.writeString(eventType);
+        dest.writeString(location);
+        dest.writeString(dateTime);
+        dest.writeString(description);
+        dest.writeStringArray(attendeeID);
+    }
+
+    private Event(Parcel in) {
+        hostID = in.readString();
+        eventID = in.readLong();
+        title = in.readString();
+        eventType = in.readString();
+        location = in.readString();
+        dateTime = in.readString();
+        description = in.readString();
+        attendeeID = in.createStringArray();
+    }
+
+    public static final Parcelable.Creator<Event> CREATOR
+            = new Parcelable.Creator<Event>() {
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 }

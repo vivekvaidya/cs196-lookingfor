@@ -6,4 +6,10 @@
     <string name="title_activity_welcom_screen">welcomScreen</string>
     <string name="title_activity_create_event_screen">createEventScreen</string>
     <string name="title_activity_user_settings_screen">userSettingsScreen</string>
+    <string-array name="event_types">
+        <item>Party</item>
+        <item>Lecture</item>
+        <item>Sport</item>
+        <item>Hangout</item>
+    </string-array>
 </resources>
