@@ -3,6 +3,7 @@ package vivekvaidya.com.lookingfor;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import java.io.Serializable;
 
 import android.provider.ContactsContract;
 
@@ -138,50 +139,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    //create a user object
-    public class User {
-
-        public String username;
-
-        public String password;
-
-        public User() {
-            // Default constructor required for calls to DataSnapshot.getValue(User.class)
-        }
-
-        public User(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
-
-    }
-
-    private void createAccount(String email, String password) {
+    private void createAccount(final String email, final String password) {
         final Context context = this.getApplicationContext();
-        myAuth.createUserWithEmailAndPassword(email,password).
+        Task<AuthResult> object = myAuth.createUserWithEmailAndPassword(email, password).
                 addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    FirebaseUser user = myAuth.getCurrentUser();
-                    updateUI(user);
-                    Intent intent = new Intent(context,userSettingsScreen.class);
-                    startActivity(intent);
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(MainActivity.this, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
-                    updateUI(null);
-                }
-            }
-        });
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = myAuth.getCurrentUser();
+                            updateUI(user);
+                            User newUser = new User(user.getUid(), email, password);
+                            Intent intent = new Intent(context, userSettingsScreen.class);
+                            intent.putExtra("object",(Serializable)newUser);
+                            startActivity(intent);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                    }
+                });
     }
 
     private void writeNewUser(String name, String email) {
         //TODO: set up names,email and password or make it something else Eric is working on it now
         HashMap<String, String> dataMap = new HashMap<String, String>();
-        dataMap.put("Name", "helo");
+        dataMap.put("Name", "hello");
         dataMap.put("Email", "email");
         dataMap.put("Password", "password");
 
@@ -244,13 +229,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
   
     private void phoneAuth() {
         final Context context = this.getApplicationContext();
-        String phoneNumber = username.getText().toString();
+        final String phoneNumber = username.getText().toString();
         verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
                 contents.setText("you have signed in!");
                 SignInWithPhoneAuthCredential(credential);
+                User newUser = new User(myAuth.getUid(),phoneNumber);
                 Intent intent = new Intent(context,welcomScreen.class);
+                intent.putExtra("object",newUser);
                 startActivity(intent);
             }
 
