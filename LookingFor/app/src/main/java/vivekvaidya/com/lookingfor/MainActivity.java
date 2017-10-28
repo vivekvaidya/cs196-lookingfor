@@ -121,6 +121,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Check if user is signed in (non-null) .
         FirebaseUser currentUser = myAuth.getCurrentUser();
         updateUI(currentUser);
+        if (currentUser != null) {
+            Intent intent = new Intent(this.getApplicationContext(),welcomScreen.class);
+            startActivity(intent);
+        }
     }
 
     private void updateUI(FirebaseUser user) {
@@ -164,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void writeNewUser(String name, String email) {
-        //TODO: set up names,email and password or make it something else Eric is working on it now
+        //Dummy Code: set up names,email and password or make it something else
         HashMap<String, String> dataMap = new HashMap<String, String>();
         dataMap.put("Name", "hello");
         dataMap.put("Email", "email");
