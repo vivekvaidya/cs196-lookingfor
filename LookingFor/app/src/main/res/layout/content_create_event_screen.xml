@@ -7,16 +7,18 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="vivekvaidya.com.lookingfor.createEventScreen"
     tools:showIn="@layout/activity_create_event_screen">
+
     <Button
         android:id="@+id/addEventBT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Add Event"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.278"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -113,4 +115,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="77dp"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="21dp"
+        android:text="back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/dateDisplay"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionET" />
 </android.support.constraint.ConstraintLayout>

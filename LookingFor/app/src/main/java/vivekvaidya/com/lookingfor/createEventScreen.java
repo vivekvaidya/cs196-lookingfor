@@ -23,6 +23,7 @@ public class createEventScreen extends AppCompatActivity {
     private TextView timeDisplay;
     private EditText description;
     private Button confirmButton;
+    private Button backButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +32,7 @@ public class createEventScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         titleET = (EditText) findViewById(R.id.titleET);
+        backButton = (Button) findViewById(R.id.backButton);
         eventTypeSPN = (Spinner) findViewById(R.id.eventSelectionSpinner);
         dateDisplay = (TextView) findViewById(R.id.dateDisplay);
         timeDisplay = (TextView) findViewById(R.id.timeDisplay);
@@ -61,9 +63,14 @@ public class createEventScreen extends AppCompatActivity {
                 Intent data = new Intent();
                 data.putExtra("EventData", newEvent);
                 setResult(Activity.RESULT_OK,data);
+                finish();
             }
         });
-
+        backButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                finish();
+            }
+        });
     }
 
 }
