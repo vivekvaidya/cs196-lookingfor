@@ -39,7 +39,7 @@ public class welcomScreen extends AppCompatActivity{
     private FirebaseAuth myAuth;
     private final int USER_SETTINGS_RESULT = 23;
     private final int EVENT_CREATE_RESULT = 7;
-
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +48,12 @@ public class welcomScreen extends AppCompatActivity{
         createEvent = (Button) findViewById(R.id.createEventButton);
         accountSettings = (Button) findViewById(R.id.accountSettingsButton);
         welcomText = (TextView) findViewById(R.id.welcomeText);
-        showWelcomeText();
+
         final Context context = this.getApplicationContext();
         myAuth = FirebaseAuth.getInstance();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        showWelcomeText();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +74,7 @@ public class welcomScreen extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context,userSettingsScreen.class);
-                startActivityForResult(intent,USER_SETTINGS_RESULT);
+                startActivity(intent);
             }
         });
         createEvent.setOnClickListener(new View.OnClickListener() {
@@ -85,25 +86,44 @@ public class welcomScreen extends AppCompatActivity{
         });
 
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == USER_SETTINGS_RESULT) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
-
-                // Do something with the contact here (bigger example below)
-
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        // Check which request we're responding to
+//        if (requestCode == USER_SETTINGS_RESULT) {
+//            // Make sure the request was successful
+//            if (resultCode == RESULT_OK) {
+//                // The user picked a contact.
+//                // The Intent's data Uri identifies which contact was selected.
+//
+//                // Do something with the contact here (bigger example below)
+//
+//            }
+//        }
+//    }
     private void signOut(){
         myAuth.signOut();
         finish();
     }
 
     public void showWelcomeText() {
+        String uid = myAuth.getUid();
+        DatabaseReference id = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("nickname");
+        id.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String name = dataSnapshot.getValue(String.class);
+                if (name == null) {
+                    welcomText.setText("Hello! But we can't find your nickname.");
+                }
+                else {
+                    welcomText.setText("Hello," + name.toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                welcomText.setText("Hello! But something's wrong.");
+            }
+        });
     }
 }
