@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             updateUI(user);
                             User newUser = new User(user.getUid(), email, password);
                             Intent intent = new Intent(context, userSettingsScreen.class);
-                            intent.putExtra("object",(Serializable)newUser);
+                            intent.putExtra("nameString",myAuth.getUid());
                             startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 SignInWithPhoneAuthCredential(credential);
                 User newUser = new User(myAuth.getUid(),phoneNumber);
                 Intent intent = new Intent(context,welcomScreen.class);
-                intent.putExtra("object",newUser);
+                intent.putExtra("nameString",myAuth.getUid());
                 startActivity(intent);
             }
 
