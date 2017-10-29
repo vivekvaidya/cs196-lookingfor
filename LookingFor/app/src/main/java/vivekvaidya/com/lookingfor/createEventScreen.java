@@ -78,22 +78,7 @@ public class createEventScreen extends AppCompatActivity {
         eventCountReference = eventsReference.child("eventCount");
 
         /**Listen for Event Counts*/
-        eventCountReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                try {
-                    Event.numberOfEvents = dataSnapshot.getValue(Integer.class);
-                    Toast.makeText(createEventScreen.this, "Total number of events now:" + Event.numberOfEvents, Toast.LENGTH_LONG).show();
-                } catch (NullPointerException e) {
-                    Toast.makeText(createEventScreen.this, "Number of events not integer!", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(createEventScreen.this, "Read integer canceled.", Toast.LENGTH_LONG).show();
-            }
-        });
+        eventCountReference.addValueEventListener(valueEventListener);
 
         /**Try sending Event with Button*/
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +110,23 @@ public class createEventScreen extends AppCompatActivity {
         });
 
     }
+    /**Listener that listens for number of events*/
+    private ValueEventListener valueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            try {
+                Event.numberOfEvents = dataSnapshot.getValue(Integer.class);
+                Toast.makeText(createEventScreen.this, "Total number of events now:" + Event.numberOfEvents, Toast.LENGTH_LONG).show();
+            } catch (NullPointerException e) {
+                Toast.makeText(createEventScreen.this, "Number of events not integer!", Toast.LENGTH_LONG).show();
+            }
+        }
 
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Toast.makeText(createEventScreen.this, "Read integer canceled.", Toast.LENGTH_LONG).show();
+        }
+    };
 //    private void pushNewEvent(Event newEvent) {
 //        HashMap<String, Object> dataMap = new HashMap<>();
 //        dataMap.put("title", newEvent.getTitle());
@@ -158,6 +159,8 @@ public class createEventScreen extends AppCompatActivity {
 //                data.putExtra(EVENT_DATA, newEvent);
 //                setResult(Activity.RESULT_OK,data);
             finish();
+            eventCountReference.removeEventListener(valueEventListener);
+
 
         } else {
             Toast.makeText(createEventScreen.this, "Error...", Toast.LENGTH_LONG).show();
