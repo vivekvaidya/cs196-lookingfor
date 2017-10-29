@@ -2,9 +2,19 @@ package vivekvaidya.com.lookingfor;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import static android.R.attr.data;
 
@@ -13,6 +23,7 @@ import static android.R.attr.data;
  */
 
 public class Event implements Parcelable {
+    /**Event Data*/
     public static long numberOfEvents = 0;
     final private String hostID;
     final private long eventID;
@@ -22,6 +33,8 @@ public class Event implements Parcelable {
     private String dateTime;
     private String description;
     private String[] attendeeID;
+
+    /**Full Constructor*/
     public Event(String hostID, String title, String eventType, String location, String dateTime, String description){
         this.hostID = hostID;
         this.title = title;
@@ -33,6 +46,7 @@ public class Event implements Parcelable {
         this.attendeeID = new String[1];
         this.attendeeID[0] = hostID;
     }
+    /**Getter and Setters*/
     public String getHostID(){
         return this.hostID;
     }
@@ -72,6 +86,8 @@ public class Event implements Parcelable {
     public String[] getAttendeeID(){
         return this.attendeeID;
     }
+
+    /**Someone tries to join.*/
     public boolean joinEvent(String UID){
         if (Arrays.asList(this.attendeeID).contains(UID)){
             return false;
@@ -85,6 +101,7 @@ public class Event implements Parcelable {
             return true;
         }
     }
+    /**Someone tries to leave*/
     public boolean leaveEvent(String UID){
         boolean inEvent = false;
         int IDLocation = 0;
@@ -114,12 +131,14 @@ public class Event implements Parcelable {
         }
     }
 
+    //TODO:What is this function?
     @Override
     public int describeContents() {
         return 0;
     }
 
 
+    /**Interface "Parcelable" required function*/
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(hostID);
@@ -131,7 +150,7 @@ public class Event implements Parcelable {
         dest.writeString(description);
         dest.writeStringArray(attendeeID);
     }
-
+    /**Interface "Parcelable" required function*/
     private Event(Parcel in) {
         hostID = in.readString();
         eventID = in.readLong();
@@ -142,7 +161,7 @@ public class Event implements Parcelable {
         description = in.readString();
         attendeeID = in.createStringArray();
     }
-
+    /**Interface "Parcelable" required function*/
     public static final Parcelable.Creator<Event> CREATOR
             = new Parcelable.Creator<Event>() {
         public Event createFromParcel(Parcel in) {
@@ -153,4 +172,20 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+    /**Push event to Firebase.*/
+    public void pushToFirebase(OnCompleteListener<Void> onCompleteListener){
+        HashMap<String, Object> dataMap = new HashMap<>();
+        dataMap.put("title", getTitle());
+        dataMap.put("eventType", getEventType());
+        dataMap.put("location", getLocation());
+        dataMap.put("dateTime", getDateTime());
+        dataMap.put("description", getDescription());
+        dataMap.put("hostID", getHostID());
+        List attendeeID = new ArrayList<>(Arrays.asList(getAttendeeID()));
+        dataMap.put("attendeeID", attendeeID);
+
+        DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("events")
+                .child("storage").child(String.valueOf(Event.numberOfEvents));
+        newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
+    }
 }
