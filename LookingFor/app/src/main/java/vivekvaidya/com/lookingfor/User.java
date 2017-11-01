@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class User implements Serializable {
+    /**Basic Data*/
     final private String UID;
     private String emailAddress;
     private String phoneNumber;
@@ -15,17 +16,20 @@ public class User implements Serializable {
     private String userName;
     private String avatarLink;
     private boolean isLoggedIn = false;
+    /**Constructors*/
     public User(String UID, String phoneNumber){
         this.UID = UID;
         this.phoneNumber = phoneNumber;
         this.isLoggedIn = true;
     }
-    public User(String UID, String emailAddress, String passWord){
+    public User(String UID, String emailAddress, String avatarAddress){
         this.UID = UID;
         this.emailAddress = emailAddress;
-        this.passWord = passWord;
         this.isLoggedIn = true;
+        this.avatarLink = avatarAddress;
+
     }
+    /**Getter and Setters*/
     public String getUID(){
         return this.UID;
     }
@@ -75,4 +79,5 @@ public class User implements Serializable {
     public void swapLogin(){
         this.isLoggedIn = !this.isLoggedIn;
     }
+
 }
