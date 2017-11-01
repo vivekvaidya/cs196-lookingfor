@@ -108,6 +108,7 @@ public class User implements Serializable {
 
     /**Push User configuration to Database*/
     public void pushToFirebase(final OnCompleteListener<Void> onCompleteListener) {
+        /**Put entries*/
         final HashMap<String, Object> dataMap = new HashMap<>();
         dataMap.put("email", getEmailAddress());
         dataMap.put("phone", getPhoneNumber());
@@ -121,6 +122,7 @@ public class User implements Serializable {
         String[] hosting = {};
         List hostingEvents = new ArrayList<>(Arrays.asList(hosting));
         dataMap.put("hostingEvents",hostingEvents);
+
         /**Push avatar to storage*/
         StorageReference avatarStorageReference = FirebaseStorage.getInstance().getReference().child("userAvatar/"+ getUID() + ".png");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -143,9 +145,6 @@ public class User implements Serializable {
                 newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
             }
         });
-
-    }
-    public void pushComplete() {
 
     }
 }

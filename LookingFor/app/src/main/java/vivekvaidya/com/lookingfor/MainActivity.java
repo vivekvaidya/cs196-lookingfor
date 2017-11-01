@@ -153,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = myAuth.getCurrentUser();
                             updateUI(user);
-                            User newUser = new User(user.getUid(), email, password);
                             Intent intent = new Intent(context, userSettingsScreen.class);
                             intent.putExtra("nameString",myAuth.getUid());
                             startActivity(intent);
