@@ -4,10 +4,21 @@ package vivekvaidya.com.lookingfor;
  * Created by Administrator on 2017/10/26.
  */
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
+
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,20 +32,28 @@ public class User implements Serializable {
     private String emailAddress;
     private String phoneNumber;
     private String userName;
-    private String avatarLink;
+    private String something;
+    private Bitmap avatar;
     private boolean isLoggedIn = false;
     /**Constructors*/
-    public User(String UID, String phoneNumber){
-        this.UID = UID;
-        this.phoneNumber = phoneNumber;
-        this.isLoggedIn = true;
-    }
-    public User(String UID, String emailAddress, String avatarAddress){
+//    public User(String UID, String phoneNumber){
+//        this.UID = UID;
+//        this.phoneNumber = phoneNumber;
+//        this.isLoggedIn = true;
+//        this.avatar = BitmapFactory.decodeResource(Resources.getSystem(),android.R.drawable.ic_menu_zoom);
+//    }
+    public User(String UID, String emailAddress){
         this.UID = UID;
         this.emailAddress = emailAddress;
         this.isLoggedIn = true;
-        this.avatarLink = avatarAddress;
+        this.avatar = BitmapFactory.decodeResource(Resources.getSystem(),android.R.drawable.ic_menu_zoom);
 
+    }
+    public User(String UID, String emailAddress, Bitmap avatarBitmap){
+        this.UID = UID;
+        this.emailAddress = emailAddress;
+        this.isLoggedIn = true;
+        this.avatar = avatarBitmap;
     }
     /**Getter and Setters*/
     public String getUID(){
@@ -64,12 +83,20 @@ public class User implements Serializable {
             this.userName = userName;
         }
     }
-    public String getAvatarLink(){
-        return this.avatarLink;
+    public String getSomething(){
+        return this.something;
     }
-    public void setAvatarLink(String avatarLink){
+    public void setSomething(String something){
         if (this.isLoggedIn){
-            this.avatarLink = avatarLink;
+            this.something = something;
+        }
+    }
+    public Bitmap getAvatar(){
+        return this.avatar;
+    }
+    public void setAvatar(Bitmap avatar){
+        if (this.isLoggedIn){
+            this.avatar = avatar;
         }
     }
     public boolean getLoginStatus(){
@@ -79,11 +106,10 @@ public class User implements Serializable {
         this.isLoggedIn = !this.isLoggedIn;
     }
 
-    /***/
-    public void pushToFirebase(OnCompleteListener<Void> onCompleteListener){
-        HashMap<String, Object> dataMap = new HashMap<>();
+    /**Push User configuration to Database*/
+    public void pushToFirebase(final OnCompleteListener<Void> onCompleteListener) {
+        final HashMap<String, Object> dataMap = new HashMap<>();
         dataMap.put("email", getEmailAddress());
-        dataMap.put("avatarLink", getAvatarLink());
         dataMap.put("phone", getPhoneNumber());
         dataMap.put("username", getUserName());
         String[] events = {"0","2"};
@@ -95,11 +121,31 @@ public class User implements Serializable {
         String[] hosting = {};
         List hostingEvents = new ArrayList<>(Arrays.asList(hosting));
         dataMap.put("hostingEvents",hostingEvents);
+        /**Push avatar to storage*/
+        StorageReference avatarStorageReference = FirebaseStorage.getInstance().getReference().child("userAvatar/"+ getUID() + ".png");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        avatar.compress(Bitmap.CompressFormat.PNG,100, outputStream);
+        avatarStorageReference.putBytes(outputStream.toByteArray()).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                dataMap.put("AvatarSet", true);
+                DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
+                        .child(getUID());
+                newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
 
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                dataMap.put("AvatarSet", false);
+                DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
+                        .child(getUID());
+                newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
+            }
+        });
 
-        DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
-                .child(getUID());
-        newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
     }
+    public void pushComplete() {
 
+    }
 }
