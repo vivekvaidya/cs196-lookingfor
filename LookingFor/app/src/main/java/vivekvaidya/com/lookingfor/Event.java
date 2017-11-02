@@ -30,7 +30,6 @@ public class Event implements Parcelable {
         this.dateTime = dateTime;
         this.description = description;
         this.eventID = Event.numberOfEvents;
-        Event.numberOfEvents++;
         this.attendeeID = new String[1];
         this.attendeeID[0] = hostID;
     }
