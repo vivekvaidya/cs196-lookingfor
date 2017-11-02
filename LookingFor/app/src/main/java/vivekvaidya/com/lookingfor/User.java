@@ -7,6 +7,8 @@ package vivekvaidya.com.lookingfor;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,16 +27,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-@SuppressWarnings("serial")
-public class User implements Serializable {
+/**For Parcelable, you may want to find the Android Parcelable code generator from:
+ * Preferences -> Plugins
+ */
+public class User implements Parcelable {
+
     /**Basic Data*/
     final private String UID;
     private String emailAddress;
     private String phoneNumber;
     private String userName;
+    private String[] attendingEvents;
+    private String[] friends;
+    private String[] hostingEvents;
     private String something;
     private Bitmap avatar;
     private boolean isLoggedIn = false;
+
     /**Constructors*/
 //    public User(String UID, String phoneNumber){
 //        this.UID = UID;
@@ -147,4 +156,50 @@ public class User implements Serializable {
         });
 
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /**Parcelable functions*/
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.UID);
+        dest.writeString(this.emailAddress);
+        dest.writeString(this.phoneNumber);
+        dest.writeString(this.userName);
+        dest.writeStringArray(this.attendingEvents);
+        dest.writeStringArray(this.friends);
+        dest.writeStringArray(this.hostingEvents);
+        dest.writeString(this.something);
+        dest.writeParcelable(this.avatar, flags);
+        dest.writeByte(this.isLoggedIn ? (byte) 1 : (byte) 0);
+    }
+
+    protected User(Parcel in) {
+        this.UID = in.readString();
+        this.emailAddress = in.readString();
+        this.phoneNumber = in.readString();
+        this.userName = in.readString();
+        this.attendingEvents = in.createStringArray();
+        this.friends = in.createStringArray();
+        this.hostingEvents = in.createStringArray();
+        this.something = in.readString();
+        this.avatar = in.readParcelable(Bitmap.class.getClassLoader());
+        this.isLoggedIn = in.readByte() != 0;
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+    /**End of Parcelable functions*/
 }
