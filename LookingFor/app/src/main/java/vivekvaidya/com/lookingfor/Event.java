@@ -172,6 +172,7 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
     /**Push event to Firebase.*/
     public void pushToFirebase(OnCompleteListener<Void> onCompleteListener){
         HashMap<String, Object> dataMap = new HashMap<>();
