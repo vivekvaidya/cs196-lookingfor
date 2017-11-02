@@ -32,6 +32,7 @@ import java.net.URI;
 
 public class userSettingsScreen extends AppCompatActivity implements View.OnClickListener{
     /**Declare UI variables*/
+    public Button backButton;
     public EditText profileNameET;
     public EditText profilePhoneET;
     public EditText profileEmailET;
@@ -39,7 +40,6 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
     public ImageView avatarView;
     public Button confirmButton;
     private static int PICK_IMAGE_REQUEST = 33;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /**Initialize Screen*/
@@ -54,6 +54,12 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
         confirmButton = (Button) findViewById(R.id.profileConfirmBT);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        backButton = (Button) findViewById(R.id.back);
+        backButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                finish();
+            }
+        });
 
         /**Set button Behavior*/
         confirmButton.setOnClickListener(this);

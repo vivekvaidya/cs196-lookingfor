@@ -40,7 +40,11 @@ public class createEventScreen extends AppCompatActivity {
     private TextView timeDisplay;
     private EditText description;
     private Button confirmButton;
+
+    private Button backButton;
+
     /**Database Constants*/
+
     private DatabaseReference eventsReference;
     private DatabaseReference eventCountReference;
     @Override
@@ -51,6 +55,7 @@ public class createEventScreen extends AppCompatActivity {
 
         /**Initialize Common UIs*/
         titleET = (EditText) findViewById(R.id.titleET);
+        backButton = (Button) findViewById(R.id.backButton);
         eventTypeSPN = (Spinner) findViewById(R.id.eventSelectionSpinner);
         dateDisplay = (TextView) findViewById(R.id.dateDisplay);
         timeDisplay = (TextView) findViewById(R.id.timeDisplay);
@@ -108,7 +113,12 @@ public class createEventScreen extends AppCompatActivity {
                 });
             }
         });
-
+        backButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Toast.makeText(createEventScreen.this, "Create event canceled.", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
     }
     /**Listener that listens for number of events*/
     private ValueEventListener valueEventListener = new ValueEventListener() {
