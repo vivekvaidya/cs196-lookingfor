@@ -3,19 +3,12 @@ package vivekvaidya.com.lookingfor;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,31 +16,34 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 public class welcomScreen extends AppCompatActivity{
     private Button signOut;
     private Button createEvent;
     private Button accountSettings;
     private TextView welcomText;
+
+    //Added event page
+    public Button allEvents;
+
+
     private FirebaseAuth myAuth;
     private final int USER_SETTINGS_RESULT = 23;
     private final int EVENT_CREATE_RESULT = 7;
     private Toolbar toolbar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcom_screen);
+
+        connectToDisplayEventPage();
+
         signOut = (Button) findViewById(R.id.signOut);
         createEvent = (Button) findViewById(R.id.createEventButton);
         accountSettings = (Button) findViewById(R.id.accountSettingsButton);
         welcomText = (TextView) findViewById(R.id.welcomeText);
+
 
         final Context context = this.getApplicationContext();
         myAuth = FirebaseAuth.getInstance();
@@ -123,6 +119,18 @@ public class welcomScreen extends AppCompatActivity{
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 welcomText.setText("Hello! But something's wrong.");
+            }
+        });
+    }
+
+//    Added method to all events button in order to connect to displayEvents page
+    public void connectToDisplayEventPage() {
+        allEvents = (Button) findViewById(R.id.allEventButton);
+        allEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent connect = new Intent(welcomScreen.this, DisplayEvents.class);
+                startActivity(connect);
             }
         });
     }

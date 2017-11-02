@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="185dp">
+
+    <ImageView
+        android:id="@+id/eventPicture"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/baseball" />
+
+    <TextView
+        android:id="@+id/eventName"
+        android:layout_width="150dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/eventPicture"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="15dp"
+        android:text="Event Name:"
+        />
+
+    <TextView
+        android:id="@+id/eventParticipants"
+        android:layout_width="150dp"
+        android:layout_height="20dp"
+        android:text="Participants:"
+        android:layout_alignStart="@+id/eventName"
+        android:layout_below="@+id/eventName"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:id="@+id/eventDate"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_alignStart="@+id/eventParticipants"
+        android:layout_below="@+id/eventParticipants"
+        android:layout_marginTop="12dp"
+        android:text="Date:" />
+
+    <TextView
+        android:id="@+id/eventTime"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_alignBaseline="@+id/eventDate"
+        android:layout_alignBottom="@+id/eventDate"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/eventParticipants"
+        android:text="Time:" />
+
+    <TextView
+        android:id="@+id/eventLocation"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_alignStart="@+id/eventDate"
+        android:layout_below="@+id/eventDate"
+        android:layout_marginTop="12dp"
+        android:text="Location:" />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#000000"
+        android:layout_below="@+id/eventLocation"
+        />
+
+</RelativeLayout>
