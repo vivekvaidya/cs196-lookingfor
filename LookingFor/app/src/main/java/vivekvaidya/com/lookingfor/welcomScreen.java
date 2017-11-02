@@ -32,28 +32,35 @@ import java.util.HashMap;
 import java.util.List;
 
 public class welcomScreen extends AppCompatActivity{
+    /**UI variables*/
     private Button signOut;
     private Button createEvent;
     private Button accountSettings;
     private TextView welcomText;
     private FirebaseAuth myAuth;
-    private final int USER_SETTINGS_RESULT = 23;
-    private final int EVENT_CREATE_RESULT = 7;
     private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        /**Initialize Screen*/
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcom_screen);
+
+        /**Initialize UIs*/
         signOut = (Button) findViewById(R.id.signOut);
         createEvent = (Button) findViewById(R.id.createEventButton);
         accountSettings = (Button) findViewById(R.id.accountSettingsButton);
         welcomText = (TextView) findViewById(R.id.welcomeText);
-
-        final Context context = this.getApplicationContext();
-        myAuth = FirebaseAuth.getInstance();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        /**Firebase Constant*/
+        myAuth = FirebaseAuth.getInstance();
+
         setSupportActionBar(toolbar);
+        /**Show Welcome Text*/
         showWelcomeText();
+
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -64,12 +71,16 @@ public class welcomScreen extends AppCompatActivity{
 //            }
 //        });
 
+        /**Set behavior to SignOut Button.*/
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signOut();
             }
         });
+
+        /**Go to other screens*/
+        final Context context = this.getApplicationContext();
         accountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,14 +111,15 @@ public class welcomScreen extends AppCompatActivity{
 //            }
 //        }
 //    }
+    /**Sign Out*/
     private void signOut(){
         myAuth.signOut();
         finish();
     }
-
+    /**Show welcome text by username*/
     public void showWelcomeText() {
         String uid = myAuth.getUid();
-        DatabaseReference id = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("nickname");
+        DatabaseReference id = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("username");
         id.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
