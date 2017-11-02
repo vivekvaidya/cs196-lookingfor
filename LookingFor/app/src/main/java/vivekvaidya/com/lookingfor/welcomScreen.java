@@ -39,6 +39,7 @@ public class welcomScreen extends AppCompatActivity{
     private TextView welcomText;
     private FirebaseAuth myAuth;
     private Toolbar toolbar;
+    private Button allEventButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class welcomScreen extends AppCompatActivity{
         /**Initialize UIs*/
         signOut = (Button) findViewById(R.id.signOut);
         createEvent = (Button) findViewById(R.id.createEventButton);
+        allEventButton = (Button) findViewById(R.id.allEventButton);
         accountSettings = (Button) findViewById(R.id.accountSettingsButton);
         welcomText = (TextView) findViewById(R.id.welcomeText);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -92,6 +94,13 @@ public class welcomScreen extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context,createEventScreen.class);
+                startActivity(intent);
+            }
+        });
+        allEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,EventBrowser.class);
                 startActivity(intent);
             }
         });

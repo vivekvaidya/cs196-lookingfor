@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -24,9 +25,8 @@ import static android.R.attr.data;
 
 public class Event implements Parcelable {
     /**Event Data*/
-    public static long numberOfEvents = 0;
-    final private String hostID;
-    final private long eventID;
+    private String hostID;
+    private String eventID;
     private String title;
     private String eventType;
     private String location;
@@ -34,23 +34,37 @@ public class Event implements Parcelable {
     private String description;
     private String[] attendeeID;
 
+    public Event() {
+    }
     /**Full Constructor*/
-    public Event(String hostID, String title, String eventType, String location, String dateTime, String description){
+    public Event(String hostID, String eventID, String title, String eventType, String location, String dateTime, String description){
         this.hostID = hostID;
+        this.eventID = eventID;
         this.title = title;
         this.eventType = eventType;
         this.location = location;
         this.dateTime = dateTime;
         this.description = description;
-        this.eventID = Event.numberOfEvents;
+        this.attendeeID = new String[1];
+        this.attendeeID[0] = hostID;
+    }
+    public Event(String hostID, String title, String eventType, String location, String dateTime, String description){
+        this.hostID = hostID;
+        this.title = title;
+        this.eventID = null;
+        this.eventType = eventType;
+        this.location = location;
+        this.dateTime = dateTime;
+        this.description = description;
         this.attendeeID = new String[1];
         this.attendeeID[0] = hostID;
     }
     /**Getter and Setters*/
+    public void setHostID(String hostID) {this.hostID = hostID;}
     public String getHostID(){
         return this.hostID;
     }
-    public long getEventID(){
+    public String getEventID(){
         return this.eventID;
     }
     public String getTitle(){
@@ -142,7 +156,7 @@ public class Event implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(hostID);
-        dest.writeLong(eventID);
+        dest.writeString(eventID);
         dest.writeString(title);
         dest.writeString(eventType);
         dest.writeString(location);
@@ -153,7 +167,7 @@ public class Event implements Parcelable {
     /**Interface "Parcelable" required function*/
     private Event(Parcel in) {
         hostID = in.readString();
-        eventID = in.readLong();
+        eventID = in.readString();
         title = in.readString();
         eventType = in.readString();
         location = in.readString();
@@ -186,7 +200,7 @@ public class Event implements Parcelable {
         dataMap.put("attendeeID", attendeeID);
 
         DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("events")
-                .child("storage").child(String.valueOf(Event.numberOfEvents));
+                .child("storage").push();
         newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
     }
 }

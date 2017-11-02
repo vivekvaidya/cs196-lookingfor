@@ -82,9 +82,6 @@ public class createEventScreen extends AppCompatActivity {
         eventsReference = FirebaseDatabase.getInstance().getReference().child("events");
         eventCountReference = eventsReference.child("eventCount");
 
-        /**Listen for Event Counts*/
-        eventCountReference.addValueEventListener(valueEventListener);
-
         /**Try sending Event with Button*/
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,23 +117,6 @@ public class createEventScreen extends AppCompatActivity {
             }
         });
     }
-    /**Listener that listens for number of events*/
-    private ValueEventListener valueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            try {
-                Event.numberOfEvents = dataSnapshot.getValue(Integer.class);
-                Toast.makeText(createEventScreen.this, "Total number of events now:" + Event.numberOfEvents, Toast.LENGTH_LONG).show();
-            } catch (NullPointerException e) {
-                Toast.makeText(createEventScreen.this, "Number of events not integer!", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-            Toast.makeText(createEventScreen.this, "Read integer canceled.", Toast.LENGTH_LONG).show();
-        }
-    };
 //    private void pushNewEvent(Event newEvent) {
 //        HashMap<String, Object> dataMap = new HashMap<>();
 //        dataMap.put("title", newEvent.getTitle());
@@ -164,12 +144,10 @@ public class createEventScreen extends AppCompatActivity {
     public void onEventPushComplete(@NonNull Task<Void> task) {
         if(task.isSuccessful()) {
             Toast.makeText(createEventScreen.this, "Event registered!", Toast.LENGTH_LONG).show();
-            eventCountReference.setValue(Event.numberOfEvents + 1);
 //                Intent data = new Intent();
 //                data.putExtra(EVENT_DATA, newEvent);
 //                setResult(Activity.RESULT_OK,data);
             finish();
-            eventCountReference.removeEventListener(valueEventListener);
 
 
         } else {
