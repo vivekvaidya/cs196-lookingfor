@@ -31,7 +31,10 @@
             android:name=".userSettingsScreen"
             android:label="@string/title_activity_user_settings_screen"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".EventBrowser"></activity>
+        <activity
+            android:name=".EventBrowser"
+            android:label="@string/title_activity_event_browser"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
