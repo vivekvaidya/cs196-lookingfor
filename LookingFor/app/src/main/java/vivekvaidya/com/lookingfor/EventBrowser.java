@@ -37,8 +37,8 @@ public class EventBrowser extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
+        int behavior = intent.getIntExtra(RECEIVE_EVENT_BEHAVIOR,DISPLAY_ALL);
 
-        int behavior = intent.getIntExtra(RECEIVE_EVENT_BEHAVIOR,GET_EVENTS);
         downloadEvents(behavior);
 
 
@@ -65,8 +65,10 @@ public class EventBrowser extends AppCompatActivity {
                         returnIntent.putParcelableArrayListExtra(EVENTS_RETURNED, events);
                         setResult(RESULT_OK, returnIntent);
                         finish();
+                        break;
                     case DISPLAY_ALL:
                         displayEvents(events);
+                        break;
                     default:
                         break;
                 }

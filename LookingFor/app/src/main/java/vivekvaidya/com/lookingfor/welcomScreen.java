@@ -101,6 +101,7 @@ public class welcomScreen extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,EventBrowser.class);
+
                 startActivity(intent);
             }
         });
