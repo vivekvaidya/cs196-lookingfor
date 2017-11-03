@@ -1,5 +1,6 @@
 package vivekvaidya.com.lookingfor;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,8 +20,12 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 
 public class EventBrowser extends AppCompatActivity {
-    public ListView eventsListView;
 
+    public static final String RECEIVE_EVENT_BEHAVIOR = "receive";
+    public static final int DISPLAY_ALL = 0;
+    public static final int GET_EVENTS = 1;
+    public static final String EVENTS_RETURNED = "EventsReturned";
+    private ArrayList<Event> events;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /**Initialize Activity*/
@@ -30,21 +35,12 @@ public class EventBrowser extends AppCompatActivity {
         /**Initialize Basic UIs*/
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        eventsListView = (ListView) findViewById(R.id.eventListView);
 
-        /**Download events*/
-        DatabaseReference eventStorageReference = FirebaseDatabase.getInstance().getReference().child("events").child("storage");
-        eventStorageReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                receiveEvents(dataSnapshot);
-            }
+        Intent intent = getIntent();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                eventsNotRecieved(databaseError);
-            }
-        });
+        int behavior = intent.getIntExtra(RECEIVE_EVENT_BEHAVIOR,GET_EVENTS);
+        downloadEvents(behavior);
+
 
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -57,7 +53,33 @@ public class EventBrowser extends AppCompatActivity {
 //        });
     }
 
-    public void receiveEvents(DataSnapshot dataSnapshot) {
+    public void downloadEvents(final int behavior) {
+        DatabaseReference eventStorageReference = FirebaseDatabase.getInstance().getReference().child("events").child("storage");
+        eventStorageReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Event> events = decodeEvents(dataSnapshot);
+                switch (behavior) {
+                    case GET_EVENTS:
+                        Intent returnIntent = new Intent();
+                        returnIntent.putParcelableArrayListExtra(EVENTS_RETURNED, events);
+                        setResult(RESULT_OK, returnIntent);
+                        finish();
+                    case DISPLAY_ALL:
+                        displayEvents(events);
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                eventsNotReceived(databaseError);
+            }
+        });
+    }
+
+    public ArrayList<Event> decodeEvents(DataSnapshot dataSnapshot) {
         ArrayList<Event> events = new ArrayList<>();
         for (DataSnapshot eventSnapshot: dataSnapshot.getChildren()) {
             Event newEvent = new Event();
@@ -76,12 +98,16 @@ public class EventBrowser extends AppCompatActivity {
             newEvent.setHostID(hostID == null ? "" : hostID.toString());
             events.add(newEvent);
         }
+        return events;
+    }
+    public void displayEvents(ArrayList<Event> events) {
         EventBrowserItemAdapter adapter = new EventBrowserItemAdapter(this, events);
+        ListView eventsListView = (ListView) findViewById(R.id.eventListView);
         eventsListView.setAdapter(adapter);
     }
 
-    public void eventsNotRecieved(DatabaseError databaseError) {
-        Toast.makeText(this,"Something's wrong when downloading evnents", Toast.LENGTH_LONG).show();
+    public void eventsNotReceived(DatabaseError databaseError) {
+        Toast.makeText(this,"Something's wrong when downloading events", Toast.LENGTH_LONG).show();
     }
 
 }
