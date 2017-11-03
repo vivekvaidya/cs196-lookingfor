@@ -21,11 +21,12 @@ import java.util.Dictionary;
 
 public class EventBrowser extends AppCompatActivity {
 
-    public static final String RECEIVE_EVENT_BEHAVIOR = "receive";
+    public static final String RECEIVE_EVENT_BEHAVIOR = "behavior";
+    public static final String EVENTS_TO_DISPLAY = "events";
     public static final int DISPLAY_ALL = 0;
     public static final int GET_EVENTS = 1;
+    public static final int DISPLAY_EVENTS = 2;
     public static final String EVENTS_RETURNED = "EventsReturned";
-    private ArrayList<Event> events;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /**Initialize Activity*/
@@ -38,8 +39,9 @@ public class EventBrowser extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        int behavior = intent.getIntExtra(RECEIVE_EVENT_BEHAVIOR,GET_EVENTS);
-        downloadEvents(behavior);
+        int behavior = intent.getIntExtra(RECEIVE_EVENT_BEHAVIOR,DISPLAY_ALL);
+        ArrayList<Event> events = intent.getParcelableArrayListExtra(EVENTS_TO_DISPLAY);
+        downloadEvents(behavior,events);
 
 
 
@@ -53,7 +55,7 @@ public class EventBrowser extends AppCompatActivity {
 //        });
     }
 
-    public void downloadEvents(final int behavior) {
+    public void downloadEvents(final int behavior, final ArrayList<Event> someEvents) {
         DatabaseReference eventStorageReference = FirebaseDatabase.getInstance().getReference().child("events").child("storage");
         eventStorageReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -65,8 +67,12 @@ public class EventBrowser extends AppCompatActivity {
                         returnIntent.putParcelableArrayListExtra(EVENTS_RETURNED, events);
                         setResult(RESULT_OK, returnIntent);
                         finish();
+                        break;
                     case DISPLAY_ALL:
                         displayEvents(events);
+                        break;
+                    case DISPLAY_EVENTS:
+                        displayEvents(someEvents);
                     default:
                         break;
                 }

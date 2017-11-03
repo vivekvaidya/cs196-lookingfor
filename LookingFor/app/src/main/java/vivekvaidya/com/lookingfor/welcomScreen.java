@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,9 @@ public class welcomScreen extends AppCompatActivity{
     private FirebaseAuth myAuth;
     private Toolbar toolbar;
     private Button allEventButton;
+    private Button searchButton;
+    private EditText searchQuery;
+    public static final int QUERY_EVENT= 32;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,8 @@ public class welcomScreen extends AppCompatActivity{
         accountSettings = (Button) findViewById(R.id.accountSettingsButton);
         welcomText = (TextView) findViewById(R.id.welcomeText);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        searchButton = (Button) findViewById(R.id.SearchButton);
+        searchQuery = (EditText) findViewById(R.id.SearchQuery);
 
         /**Firebase Constant*/
         myAuth = FirebaseAuth.getInstance();
@@ -101,10 +107,19 @@ public class welcomScreen extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,EventBrowser.class);
+
                 startActivity(intent);
             }
         });
+        searchButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,EventBrowser.class);
+                intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR,EventBrowser.GET_EVENTS);
+                startActivityForResult(intent,QUERY_EVENT);
 
+            }
+        });
     }
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -120,6 +135,22 @@ public class welcomScreen extends AppCompatActivity{
 //            }
 //        }
 //    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        final Context context = this.getApplicationContext();
+        switch (requestCode) {
+            case QUERY_EVENT:
+                if (resultCode == RESULT_OK) {
+                    ArrayList<Event> events = data.getParcelableArrayListExtra(EventBrowser.EVENTS_RETURNED);
+                    Intent intent = new Intent(context,EventBrowser.class);
+                    intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR, EventBrowser.DISPLAY_EVENTS);
+                    intent.putParcelableArrayListExtra(EventBrowser.EVENTS_TO_DISPLAY,searchForEvent(events,searchQuery.getText().toString()));
+                    startActivity(intent);
+                }
+        }
+    }
+
     /**Sign Out*/
     private void signOut(){
         myAuth.signOut();
@@ -146,5 +177,24 @@ public class welcomScreen extends AppCompatActivity{
                 welcomText.setText("Hello! But something's wrong.");
             }
         });
+    }
+    public ArrayList<Event> searchForEvent(ArrayList<Event> events, String query){
+        ArrayList<Event> newList = new ArrayList<Event>();
+        int count = 0;
+        for (int i = 0; i < events.size(); i++){
+            if ((events.get(i).getDescription().equals(query))
+                    || (events.get(i).getTitle().equals(query))
+                    || (events.get(i).getLocation().equals(query))
+                    || (events.get(i).getEventType().equals(query))){
+                newList.add(events.get(i));
+                count++;
+            }
+        }
+        if (count != 0){
+            return newList;
+        } else {
+            newList.add(new Event("Sorry", "We", "Couldn't", "Find", "Any", "Matching", "Event"));
+            return newList;
+        }
     }
 }
