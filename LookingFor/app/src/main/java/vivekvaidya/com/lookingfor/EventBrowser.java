@@ -38,7 +38,6 @@ public class EventBrowser extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-
         int behavior = intent.getIntExtra(RECEIVE_EVENT_BEHAVIOR,DISPLAY_ALL);
         ArrayList<Event> events = intent.getParcelableArrayListExtra(EVENTS_TO_DISPLAY);
         downloadEvents(behavior,events);
