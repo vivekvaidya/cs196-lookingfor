@@ -145,7 +145,7 @@ public class welcomScreen extends AppCompatActivity{
                     ArrayList<Event> events = data.getParcelableArrayListExtra(EventBrowser.EVENTS_RETURNED);
                     Intent intent = new Intent(context,EventBrowser.class);
                     intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR, EventBrowser.DISPLAY_EVENTS);
-                    intent.putParcelableArrayListExtra(EventBrowser.EVENTS_TO_DISPLAY,searchForEvent(events,searchQuery.getText().toString()));
+                    intent.putParcelableArrayListExtra(EventBrowser.EVENTS_TO_DISPLAY,Event.searchForEvent(events,searchQuery.getText().toString()));
                     startActivity(intent);
                 }
         }
@@ -179,24 +179,5 @@ public class welcomScreen extends AppCompatActivity{
         });
     }
 
-    public ArrayList<Event> searchForEvent(ArrayList<Event> events, String query){
-        query = query.toLowerCase();
-        ArrayList<Event> newList = new ArrayList<Event>();
-        int count = 0;
-        for (int i = 0; i < events.size(); i++){
-            if ((events.get(i).getDescription().toLowerCase().contains(query))
-                    || (events.get(i).getTitle().toLowerCase().contains(query))
-                    || (events.get(i).getLocation().toLowerCase().contains(query))
-                    || (events.get(i).getEventType().toLowerCase().contains(query))){
-                newList.add(events.get(i));
-                count++;
-            }
-        }
-        if (count != 0){
-            return newList;
-        } else {
-            newList.add(new Event("Sorry", "We", "Couldn't", "Find", "Any", "Matching", "Event"));
-            return newList;
-        }
-    }
+
 }

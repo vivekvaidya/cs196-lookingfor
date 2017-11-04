@@ -203,4 +203,30 @@ public class Event implements Parcelable {
                 .child("storage").push();
         newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
     }
+
+    @Override
+    public String toString() {
+        return title == null ? "No title" : title;
+    }
+
+    public static ArrayList<Event> searchForEvent(ArrayList<Event> events, String query){
+        query = query.toLowerCase();
+        ArrayList<Event> newList = new ArrayList<Event>();
+        int count = 0;
+        for (int i = 0; i < events.size(); i++){
+            if ((events.get(i).getDescription().toLowerCase().contains(query))
+                    || (events.get(i).getTitle().toLowerCase().contains(query))
+                    || (events.get(i).getLocation().toLowerCase().contains(query))
+                    || (events.get(i).getEventType().toLowerCase().contains(query))){
+                newList.add(events.get(i));
+                count++;
+            }
+        }
+        if (count != 0){
+            return newList;
+        } else {
+            newList.add(new Event("Sorry", "We", "Couldn't", "Find", "Any", "Matching", "Event"));
+            return newList;
+        }
+    }
 }

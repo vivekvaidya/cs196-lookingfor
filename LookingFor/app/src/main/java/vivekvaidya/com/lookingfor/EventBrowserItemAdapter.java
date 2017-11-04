@@ -6,9 +6,11 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,16 +29,30 @@ import java.util.ArrayList;
  * Created by apple on 11/01/17.
  */
 
-public class EventBrowserItemAdapter extends BaseAdapter {
+public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter {
 
     private Context context;
     private LayoutInflater inflater;
     private ArrayList<Event> events;
+    private ArrayList<Event> fullEvents;
 
     public EventBrowserItemAdapter(Context mContext, ArrayList<Event> items) {
         context = mContext;
         events = items;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        fullEvents = items;
+    }
+
+    public void setEvents(ArrayList<Event> events) {
+        this.events = events;
+    }
+
+    public ArrayList<Event> getEvents() {
+        return events;
+    }
+
+    public ArrayList<Event> getFullEvents() {
+        return fullEvents;
     }
 
     @Override
@@ -108,5 +124,15 @@ public class EventBrowserItemAdapter extends BaseAdapter {
         });
 
         return myView;
+    }
+
+    @Override
+    public boolean areAllItemsEnabled() {
+        return super.areAllItemsEnabled();
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        return super.isEnabled(position);
     }
 }
