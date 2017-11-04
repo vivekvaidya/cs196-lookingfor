@@ -178,14 +178,15 @@ public class welcomScreen extends AppCompatActivity{
             }
         });
     }
+
     public ArrayList<Event> searchForEvent(ArrayList<Event> events, String query){
         ArrayList<Event> newList = new ArrayList<Event>();
         int count = 0;
         for (int i = 0; i < events.size(); i++){
-            if ((events.get(i).getDescription().equals(query))
-                    || (events.get(i).getTitle().equals(query))
-                    || (events.get(i).getLocation().equals(query))
-                    || (events.get(i).getEventType().equals(query))){
+            if ((events.get(i).getDescription().contains(query))
+                    || (events.get(i).getTitle().contains(query))
+                    || (events.get(i).getLocation().contains(query))
+                    || (events.get(i).getEventType().contains(query))){
                 newList.add(events.get(i));
                 count++;
             }
