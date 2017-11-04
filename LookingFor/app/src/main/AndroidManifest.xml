@@ -33,7 +33,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DisplayEvents"
-            android:label="All Events">
+            android:label="All Events"
+            android:windowSoftInputMode="adjustPan">
+
         </activity>
 
     </application>
