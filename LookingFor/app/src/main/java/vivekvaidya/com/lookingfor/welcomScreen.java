@@ -180,13 +180,14 @@ public class welcomScreen extends AppCompatActivity{
     }
 
     public ArrayList<Event> searchForEvent(ArrayList<Event> events, String query){
+        query = query.toLowerCase();
         ArrayList<Event> newList = new ArrayList<Event>();
         int count = 0;
         for (int i = 0; i < events.size(); i++){
-            if ((events.get(i).getDescription().contains(query))
-                    || (events.get(i).getTitle().contains(query))
-                    || (events.get(i).getLocation().contains(query))
-                    || (events.get(i).getEventType().contains(query))){
+            if ((events.get(i).getDescription().toLowerCase().contains(query))
+                    || (events.get(i).getTitle().toLowerCase().contains(query))
+                    || (events.get(i).getLocation().toLowerCase().contains(query))
+                    || (events.get(i).getEventType().toLowerCase().contains(query))){
                 newList.add(events.get(i));
                 count++;
             }
