@@ -15,25 +15,26 @@ import java.util.ArrayList;
  * Created by apple on 11/04/17.
  */
 
-public class EventDownloader {
+public class EventDownloader{
 
-    public static void downloadEventsTo(final int behavior, final ArrayList<Event> events, final Context context, final CallableAfterDownload call) {
+    public static void downloadEventsTo(final int behavior, final Context context, final CallableAfterDownload call) {
         DatabaseReference eventStorageReference = FirebaseDatabase.getInstance().getReference().child("events").child("storage");
         eventStorageReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Event> events = new ArrayList<>();
                 events.addAll(decodeEvents(dataSnapshot));
                 call.eventsDownloaded(behavior,events);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(context,"Something's wrong when downloading events", Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"Something's wrong when downloading events: " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
-
+    //TODO: decode properly
     public static ArrayList<Event> decodeEvents(DataSnapshot dataSnapshot) {
         ArrayList<Event> events = new ArrayList<>();
         for (DataSnapshot eventSnapshot: dataSnapshot.getChildren()) {

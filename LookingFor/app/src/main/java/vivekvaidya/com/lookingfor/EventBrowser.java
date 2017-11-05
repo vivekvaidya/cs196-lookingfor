@@ -31,7 +31,9 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
     public static final int DISPLAY_ALL = 0;
     public static final int GET_EVENTS = 1;
     public static final int DISPLAY_EVENTS = 2;
+    public static final int SEARCH_EVENTS = 3;
     public static final String EVENTS_RETURNED = "EventsReturned";
+    public static final String SEARCH_FOR = "SearchFor";
     EventBrowserItemAdapter adapter;
 
     @Override
@@ -49,21 +51,22 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
 
         Intent intent = getIntent();
         int behavior = intent.getIntExtra(RECEIVE_EVENT_BEHAVIOR,DISPLAY_ALL);
-        ArrayList<Event> events = intent.getParcelableArrayListExtra(EVENTS_TO_DISPLAY);
-        downloadEvents(behavior,events);
+        //ArrayList<Event> events = intent.getParcelableArrayListExtra(EVENTS_TO_DISPLAY);
+        downloadEvents(behavior/*,events*/);
 
 
     }
 
-    public void downloadEvents(final int behavior, final ArrayList<Event> someEvents) {
-        ArrayList<Event> events = new ArrayList<>();
+    public void downloadEvents(final int behavior/*, final ArrayList<Event> someEvents*/) {
         switch (behavior) {
+            case SEARCH_EVENTS:
             case GET_EVENTS:
             case DISPLAY_ALL:
-                EventDownloader.downloadEventsTo(behavior,events,this,this);
+                EventDownloader.downloadEventsTo(behavior,this,this);
                 break;
             case DISPLAY_EVENTS:
-                displayEvents(someEvents);
+                ArrayList<Event> events = getIntent().getParcelableArrayListExtra(EVENTS_TO_DISPLAY);
+                displayEvents(events);
             default:
                 break;
         }
@@ -78,6 +81,13 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
                 returnIntent.putParcelableArrayListExtra(EVENTS_RETURNED, events);
                 setResult(RESULT_OK, returnIntent);
                 finish();
+                break;
+            case SEARCH_EVENTS:
+                //TODO: put query into menu
+                String query = getIntent().getStringExtra(SEARCH_FOR);
+                displayEvents(events);
+                adapter.setEvents(Event.searchForEvent(events,query));
+                adapter.notifyDataSetChanged();
                 break;
             case DISPLAY_ALL:
                 displayEvents(events);

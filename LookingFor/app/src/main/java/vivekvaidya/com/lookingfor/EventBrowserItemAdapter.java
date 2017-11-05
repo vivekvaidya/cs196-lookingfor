@@ -106,7 +106,7 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
             mViewHolder = (ViewHolder) convertView.getTag();
 
         }
-
+        //TODO: set UI properly
         /**Set UI Displays*/
         Event currentEvent = events.get(i);
         mViewHolder.titleLabel.setText(currentEvent.getTitle());
@@ -139,6 +139,7 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
                 attendeeID = hostID;
             }
         }
+        //TODO: getImage
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         StorageReference hostAvatarPath = storageReference.child("userAvatar/" + hostID + ".png");
         Glide.with(this.context).using(new FirebaseImageLoader()).load(hostAvatarPath).into(mViewHolder.hostAvatar);
