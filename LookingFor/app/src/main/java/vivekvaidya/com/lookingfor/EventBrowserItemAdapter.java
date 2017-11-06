@@ -1,12 +1,9 @@
 package vivekvaidya.com.lookingfor;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,20 +13,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
-/**
- * Created by apple on 11/01/17.
- */
 
 public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter {
 
@@ -38,22 +28,18 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
     private ArrayList<Event> events;
     private ArrayList<Event> fullEvents;
 
-    public EventBrowserItemAdapter(Context mContext, ArrayList<Event> items) {
+    EventBrowserItemAdapter(Context mContext, ArrayList<Event> items) {
         context = mContext;
         events = items;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         fullEvents = items;
     }
 
-    public void setEvents(ArrayList<Event> events) {
+    void setEvents(ArrayList<Event> events) {
         this.events = events;
     }
 
-    public ArrayList<Event> getEvents() {
-        return events;
-    }
-
-    public ArrayList<Event> getFullEvents() {
+    ArrayList<Event> getFullEvents() {
         return fullEvents;
     }
 
@@ -149,9 +135,7 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
         mViewHolder.attendEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /**
-                 * TODO: Attend the event and push to database
-                 */
+                //TODO: Attend the event and push to database
             }
         });
 

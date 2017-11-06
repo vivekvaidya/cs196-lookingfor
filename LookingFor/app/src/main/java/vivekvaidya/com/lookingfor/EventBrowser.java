@@ -2,27 +2,14 @@ package vivekvaidya.com.lookingfor;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
-import java.util.Dictionary;
 
 public class EventBrowser extends AppCompatActivity implements CallableAfterDownload {
 
@@ -35,6 +22,7 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
     public static final String EVENTS_RETURNED = "EventsReturned";
     public static final String SEARCH_FOR = "SearchFor";
     EventBrowserItemAdapter adapter;
+    Menu myMenu = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,11 +71,11 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
                 finish();
                 break;
             case SEARCH_EVENTS:
-                //TODO: put query into menu
                 String query = getIntent().getStringExtra(SEARCH_FOR);
                 displayEvents(events);
-                adapter.setEvents(Event.searchForEvent(events,query));
-                adapter.notifyDataSetChanged();
+                SearchView searchView = (SearchView) myMenu.findItem(R.id.search_badge_ID).getActionView();
+                searchView.setQuery(query,true);
+                //TODO: focus on searchView
                 break;
             case DISPLAY_ALL:
                 displayEvents(events);
@@ -107,7 +95,7 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_search, menu);
-
+        myMenu = menu;
         MenuItem menuItem = menu.findItem(R.id.search_badge_ID);
 
         SearchView searchView = (SearchView) menuItem.getActionView();

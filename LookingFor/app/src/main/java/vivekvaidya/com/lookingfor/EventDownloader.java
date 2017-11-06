@@ -11,13 +11,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-/**
- * Created by apple on 11/04/17.
- */
 
-public class EventDownloader{
+class EventDownloader{
 
-    public static void downloadEventsTo(final int behavior, final Context context, final CallableAfterDownload call) {
+    static void downloadEventsTo(final int behavior, final Context context, final CallableAfterDownload call) {
         DatabaseReference eventStorageReference = FirebaseDatabase.getInstance().getReference().child("events").child("storage");
         eventStorageReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -35,7 +32,7 @@ public class EventDownloader{
     }
 
     //TODO: decode properly
-    public static ArrayList<Event> decodeEvents(DataSnapshot dataSnapshot) {
+    private static ArrayList<Event> decodeEvents(DataSnapshot dataSnapshot) {
         ArrayList<Event> events = new ArrayList<>();
         for (DataSnapshot eventSnapshot: dataSnapshot.getChildren()) {
             Event newEvent = new Event();
