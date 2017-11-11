@@ -59,8 +59,8 @@ public class welcomScreen extends AppCompatActivity{
         accountSettings = (Button) findViewById(R.id.accountSettingsButton);
         welcomText = (TextView) findViewById(R.id.welcomeText);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        searchButton = (Button) findViewById(R.id.SearchButton);
-        searchQuery = (EditText) findViewById(R.id.SearchQuery);
+//        searchButton = (Button) findViewById(R.id.SearchButton);
+//        searchQuery = (EditText) findViewById(R.id.SearchQuery);
 
         /**Firebase Constant*/
         myAuth = FirebaseAuth.getInstance();
@@ -111,32 +111,32 @@ public class welcomScreen extends AppCompatActivity{
                 startActivity(intent);
             }
         });
-        searchButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context,EventBrowser.class);
-                intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR,EventBrowser.SEARCH_EVENTS);
-                intent.putExtra(EventBrowser.SEARCH_FOR,searchQuery.getText().toString());
-                startActivityForResult(intent,QUERY_EVENT);
-
-            }
-        });
+//        searchButton.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(context,EventBrowser.class);
+//                intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR,EventBrowser.SEARCH_EVENTS);
+//                intent.putExtra(EventBrowser.SEARCH_FOR,searchQuery.getText().toString());
+//                startActivityForResult(intent,QUERY_EVENT);
+//
+//            }
+//        });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        final Context context = this.getApplicationContext();
-        switch (requestCode) {
-            case QUERY_EVENT:
-                if (resultCode == RESULT_OK) {
-                    ArrayList<Event> events = data.getParcelableArrayListExtra(EventBrowser.EVENTS_RETURNED);
-                    Intent intent = new Intent(context,EventBrowser.class);
-                    intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR, EventBrowser.DISPLAY_EVENTS);
-                    intent.putParcelableArrayListExtra(EventBrowser.EVENTS_TO_DISPLAY,Event.searchForEvent(events,searchQuery.getText().toString()));
-                    startActivity(intent);
-                }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        final Context context = this.getApplicationContext();
+//        switch (requestCode) {
+//            case QUERY_EVENT:
+//                if (resultCode == RESULT_OK) {
+//                    ArrayList<Event> events = data.getParcelableArrayListExtra(EventBrowser.EVENTS_RETURNED);
+//                    Intent intent = new Intent(context,EventBrowser.class);
+//                    intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR, EventBrowser.DISPLAY_EVENTS);
+//                    intent.putParcelableArrayListExtra(EventBrowser.EVENTS_TO_DISPLAY,Event.searchForEvent(events,searchQuery.getText().toString()));
+//                    startActivity(intent);
+//                }
+//        }
+//    }
 
     /**Sign Out*/
     private void signOut(){
