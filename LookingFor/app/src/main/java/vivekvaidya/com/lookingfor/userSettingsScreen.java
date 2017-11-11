@@ -126,9 +126,8 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
                 if (userBitmap == null) {
                     userBitmap = BitmapFactory.decodeResource(Resources.getSystem(),android.R.drawable.ic_menu_zoom);
                 }
-                User newUser = new User(uid,
-                        profileNameET.getText().toString(),
-                        userBitmap);
+                //TODO: add other profile status
+                User newUser = new User(uid, profileNameET.getText().toString(), userBitmap);
                 /**Send event*/
                 newUser.pushToFirebase(new OnCompleteListener<Void>(){
                     @Override
@@ -168,9 +167,6 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
     public void onUserPushComplete(@NonNull Task<Void> task) {
         if(task.isSuccessful()) {
             Toast.makeText(userSettingsScreen.this, "User profile registered!", Toast.LENGTH_LONG).show();
-//                Intent data = new Intent();
-//                data.putExtra(EVENT_DATA, newEvent);
-//                setResult(Activity.RESULT_OK,data);
             finish();
 
         } else {
@@ -190,7 +186,7 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
 
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                        bitmap = Bitmap.createScaledBitmap(bitmap, 30, 30, false); //resize
+                        bitmap = Bitmap.createScaledBitmap(bitmap, User.AVATAR_SIDE_LENGTH, User.AVATAR_SIDE_LENGTH, false); //resize
                         // Log.d(TAG, String.valueOf(bitmap));
                         avatarView.setImageBitmap(bitmap);
                     } catch (IOException e) {
@@ -206,7 +202,7 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
                 if (resultCode == RESULT_OK) {
                     Bundle extras = data.getExtras();
                     Bitmap bitmap = (Bitmap) extras.get("data");
-                    bitmap = Bitmap.createScaledBitmap(bitmap, 30, 30, false); //resize
+                    bitmap = Bitmap.createScaledBitmap(bitmap, User.AVATAR_SIDE_LENGTH, User.AVATAR_SIDE_LENGTH, false); //resize
                     avatarView.setImageBitmap(bitmap);
                 } else {
                     Toast.makeText(userSettingsScreen.this, "Something's wrong when taking picture", Toast.LENGTH_LONG).show();
@@ -217,8 +213,7 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
                     Uri uri = data.getData();
                     try {
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-                        bitmap = Bitmap.createScaledBitmap(bitmap, 30, 30, false); //resize
-                        // Log.d(TAG, String.valueOf(bitmap));
+                        bitmap = Bitmap.createScaledBitmap(bitmap, User.AVATAR_SIDE_LENGTH, User.AVATAR_SIDE_LENGTH, false); //resize
                         avatarView.setImageBitmap(bitmap);
                     } catch (FileNotFoundException e) {
                         Toast.makeText(userSettingsScreen.this, "Something's wrong when getting photo from Gallery", Toast.LENGTH_LONG).show();

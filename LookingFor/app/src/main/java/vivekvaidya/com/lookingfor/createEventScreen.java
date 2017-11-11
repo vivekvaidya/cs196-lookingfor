@@ -94,10 +94,13 @@ public class createEventScreen extends AppCompatActivity {
                     Toast.makeText(createEventScreen.this, "Error... UID not available", Toast.LENGTH_LONG).show();
                     return;
                 }
+                String tag = eventTypeSPN.getSelectedItem().toString();
+                ArrayList<String> tags = new ArrayList<>();
+                tags.add(tag);
                 /**Prepare the event to be sent*/
                 Event newEvent = new Event(uid,
                         titleET.getText().toString(),
-                        eventTypeSPN.getSelectedItem().toString(),
+                        tags,
                         timeDisplay.getText().toString(),
                         dateDisplay.getText().toString(),
                         description.getText().toString());

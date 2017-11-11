@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.util.Base64;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,16 +35,14 @@ public class User implements Parcelable {
 
     /**Basic Data*/
     final private String UID;
+    public static int AVATAR_SIDE_LENGTH = 50;
     private String emailAddress;
     private String phoneNumber;
     private String userName;
-    private String[] attendingEvents;
-    private String[] friends;
-    private String[] hostingEvents;
-    private String something;
-    private Bitmap avatar;
-    private boolean isLoggedIn = false;
-
+    private ArrayList<String> attendingEvents;
+    private ArrayList<String> friends;
+    private ArrayList<String> hostingEvents;
+    private String avatar;
     /**Constructors*/
 //    public User(String UID, String phoneNumber){
 //        this.UID = UID;
@@ -54,15 +53,14 @@ public class User implements Parcelable {
     public User(String UID, String emailAddress){
         this.UID = UID;
         this.emailAddress = emailAddress;
-        this.isLoggedIn = true;
-        this.avatar = BitmapFactory.decodeResource(Resources.getSystem(),android.R.drawable.ic_menu_zoom);
+        Bitmap tempAvatar = BitmapFactory.decodeResource(Resources.getSystem(),android.R.drawable.ic_menu_zoom);
+        this.avatar = bitMapToString(tempAvatar);
 
     }
     public User(String UID, String emailAddress, Bitmap avatarBitmap){
         this.UID = UID;
         this.emailAddress = emailAddress;
-        this.isLoggedIn = true;
-        this.avatar = avatarBitmap;
+        this.avatar = bitMapToString(avatarBitmap);
     }
     /**Getter and Setters*/
     public String getUID(){
@@ -72,109 +70,114 @@ public class User implements Parcelable {
         return this.phoneNumber;
     }
     public void setPhoneNumber(String phoneNumber) {
-        if (this.isLoggedIn) {
-            this.phoneNumber = phoneNumber;
-        }
+        this.phoneNumber = phoneNumber;
     }
     public String getEmailAddress(){
         return this.emailAddress;
     }
     public void setEmailAddress(String emailAddress) {
-        if (this.isLoggedIn) {
-            this.emailAddress = emailAddress;
-        }
+        this.emailAddress = emailAddress;
     }
     public String getUserName(){
         return this.userName;
     }
     public void setUserName(String userName){
-        if (this.isLoggedIn){
-            this.userName = userName;
-        }
-    }
-    public String getSomething(){
-        return this.something;
-    }
-    public void setSomething(String something){
-        if (this.isLoggedIn){
-            this.something = something;
-        }
-    }
-    public Bitmap getAvatar(){
-        return this.avatar;
-    }
-    public void setAvatar(Bitmap avatar){
-        if (this.isLoggedIn){
-            this.avatar = avatar;
-        }
-    }
-    public boolean getLoginStatus(){
-        return this.isLoggedIn;
-    }
-    public void swapLogin(){
-        this.isLoggedIn = !this.isLoggedIn;
+        this.userName = userName;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+    public Bitmap getAvatarinBitmap() {
+        return stringToBitMap(avatar);
+    }
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+    public void setAvatarWithBitmap(Bitmap avatar) {
+        this.avatar = bitMapToString(avatar);
+    }
+
+    /**Bitmap to String*/
+    public static String bitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream ByteStream= new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, ByteStream);
+        byte [] b=ByteStream.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    /**String to Bitmap*/
+    public static Bitmap stringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
     /**Push User configuration to Database*/
     public void pushToFirebase(final OnCompleteListener<Void> onCompleteListener) {
-        /**Put entries*/
-        final HashMap<String, Object> dataMap = new HashMap<>();
-        dataMap.put("email", getEmailAddress());
-        dataMap.put("phone", getPhoneNumber());
-        dataMap.put("username", getUserName());
-        String[] events = {"0","2"};
-        List attendingEvents = new ArrayList<>(Arrays.asList(events));
-        dataMap.put("attendingEvents", attendingEvents);
-        String[] friendsList = {"sojasd","dsnfa98hsndfkj"};
-        List friends = new ArrayList<>(Arrays.asList(friendsList));
-        dataMap.put("friends", friends);
-        String[] hosting = {};
-        List hostingEvents = new ArrayList<>(Arrays.asList(hosting));
-        dataMap.put("hostingEvents",hostingEvents);
 
-        /**Push avatar to storage*/
-        StorageReference avatarStorageReference = FirebaseStorage.getInstance().getReference().child("userAvatar/"+ getUID() + ".png");
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        avatar.compress(Bitmap.CompressFormat.PNG,100, outputStream);
-        avatarStorageReference.putBytes(outputStream.toByteArray()).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                dataMap.put("AvatarSet", true);
-                DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(getUID());
-                newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
+        DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
+                .child(getUID());
+        newEventReference.setValue(this).addOnCompleteListener(onCompleteListener);
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                dataMap.put("AvatarSet", false);
-                DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(getUID());
-                newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
-            }
-        });
+//
+//        /**Put entries*/
+//        final HashMap<String, Object> dataMap = new HashMap<>();
+//        dataMap.put("email", getEmailAddress());
+//        dataMap.put("phone", getPhoneNumber());
+//        dataMap.put("username", getUserName());
+//        ArrayList<String> events = new ArrayList<>();
+//        dataMap.put("attendingEvents", attendingEvents);
+//        ArrayList<String> friendsList = new ArrayList<>();
+//        dataMap.put("friends", friends);
+//        ArrayList<String> hosting = new ArrayList<>();
+//        dataMap.put("hostingEvents",hostingEvents);
+//
+//        /**Push avatar to storage*/
+//        StorageReference avatarStorageReference = FirebaseStorage.getInstance().getReference().child("userAvatar/"+ getUID() + ".png");
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//        avatar.compress(Bitmap.CompressFormat.PNG,100, outputStream);
+//        avatarStorageReference.putBytes(outputStream.toByteArray()).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+//                dataMap.put("AvatarSet", true);
+//                DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
+//                        .child(getUID());
+//                newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                dataMap.put("AvatarSet", false);
+//                DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
+//                        .child(getUID());
+//                newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
+//            }
+//        });
 
     }
+
 
     @Override
     public int describeContents() {
         return 0;
     }
 
-    /**Parcelable functions*/
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.UID);
         dest.writeString(this.emailAddress);
         dest.writeString(this.phoneNumber);
         dest.writeString(this.userName);
-        dest.writeStringArray(this.attendingEvents);
-        dest.writeStringArray(this.friends);
-        dest.writeStringArray(this.hostingEvents);
-        dest.writeString(this.something);
-        dest.writeParcelable(this.avatar, flags);
-        dest.writeByte(this.isLoggedIn ? (byte) 1 : (byte) 0);
+        dest.writeStringList(this.attendingEvents);
+        dest.writeStringList(this.friends);
+        dest.writeStringList(this.hostingEvents);
+        dest.writeString(this.avatar);
     }
 
     protected User(Parcel in) {
@@ -182,15 +185,13 @@ public class User implements Parcelable {
         this.emailAddress = in.readString();
         this.phoneNumber = in.readString();
         this.userName = in.readString();
-        this.attendingEvents = in.createStringArray();
-        this.friends = in.createStringArray();
-        this.hostingEvents = in.createStringArray();
-        this.something = in.readString();
-        this.avatar = in.readParcelable(Bitmap.class.getClassLoader());
-        this.isLoggedIn = in.readByte() != 0;
+        this.attendingEvents = in.createStringArrayList();
+        this.friends = in.createStringArrayList();
+        this.hostingEvents = in.createStringArrayList();
+        this.avatar = in.readString();
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel source) {
             return new User(source);
@@ -201,5 +202,4 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
-    /**End of Parcelable functions*/
 }
