@@ -54,6 +54,10 @@ public class EventsAdapter extends ArrayAdapter {
         return this.list.get(position);
     }
 
+
+    public void remove(int position) {list.remove(position);}
+
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -67,7 +71,7 @@ public class EventsAdapter extends ArrayAdapter {
             row = inflater.inflate(R.layout.row_layout,parent,false);
             handler = new DataHandler();
             handler.eventImaage = (ImageView) row.findViewById(R.id.eventPicture);
-            handler.eventName = (TextView) row.findViewById(R.id.eventName);
+            handler.eventName = (TextView) row.findViewById(R.id.ette);
             handler.eventDate = (TextView) row.findViewById(R.id.eventDate);
             handler.eventLocation = (TextView) row.findViewById(R.id.eventLocation);
             handler.eventTime = (TextView) row.findViewById(R.id.eventTime);

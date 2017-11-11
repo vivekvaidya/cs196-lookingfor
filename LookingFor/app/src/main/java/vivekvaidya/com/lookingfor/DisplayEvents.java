@@ -3,6 +3,7 @@ package vivekvaidya.com.lookingfor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -52,11 +53,71 @@ public class DisplayEvents extends AppCompatActivity {
 //        Date.add("Date: 10/1/2019");
 //        Time.add("Time: 10:45AM");
 //        Location.add("ISR");
+//
+//        SwipeDismissListViewTouchListener touchListener =
+//                new SwipeDismissListViewTouchListener(
+//                        listview,
+//                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+//                            @Override
+//                            public boolean canDismiss(int position) {
+//                                return true;
+//                            }
+//
+//                            @Override
+//                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+//                                for (int position : reverseSortedPositions) {
+//
+//                                    eventImageResource.remove(position);
+//                                    Name.remove(position);
+//                                    Date.remove(position);
+//                                    Time.remove(position);
+//
+//                                    Location.remove(position);
+//                                    Object toRemove = adapter.getItem(position);
+//                                    adapter.remove(toRemove);
+//                                    adapter.notifyDataSetChanged();
+//
+//                                }
+//
+//
+//                            }
+//                        });
+//        listview.setOnTouchListener(touchListener);
+        SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                        listview,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+
+                                    int i = adapter.getCount();
+
+
+                                    adapter.remove(position);
+                                    Toast.makeText(DisplayEvents.this, String.valueOf(i), Toast.LENGTH_SHORT).show();
+
+                                    adapter.notifyDataSetChanged();
+
+                                }
+
+
+                            }
+                        });
+        listview.setOnTouchListener(touchListener);
+
+
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                Toast.makeText(DisplayEvents.this, "CALED!", Toast.LENGTH_SHORT).show();
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
 
                     eventImageResource.add(R.drawable.baseball);
@@ -70,7 +131,9 @@ public class DisplayEvents extends AppCompatActivity {
                 }
                 int i = 0;
                 for(String titles: Name) {
+
                     EventData eventCard = new EventData(eventImageResource.get(i), titles, Date.get(i), Time.get(i), Location.get(i));
+                    Toast.makeText(DisplayEvents.this, String.valueOf(i), Toast.LENGTH_SHORT).show();
 //            EventData eventCard = new EventData(eventImageResource.get(i), titles, Date.get(i), Time.get(i), Location.get(i));
 //            EventData eventCard = new EventData(eventImageResource[i], titles, Date[i], Time[i], Location[i]);
                     adapter.add(eventCard);
@@ -79,33 +142,6 @@ public class DisplayEvents extends AppCompatActivity {
 
             }
 
-//            SwipeDismissListViewTouchListener touchListener =
-//                    new SwipeDismissListViewTouchListener(
-//                            listview,
-//                            new SwipeDismissListViewTouchListener.DismissCallbacks() {
-//                                @Override
-//                                public boolean canDismiss(int position) {
-//                                    return true;
-//                                }
-//
-//                                @Override
-//                                public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-//                                    for (int position : reverseSortedPositions) {
-//
-//                                        eventImageResource.remove(position);
-//                                        Name.remove(position);
-//                                        Date.remove(position);
-//                                        Time.remove(position);
-//                                        Location.remove(position);
-//
-//                                        adapter.notifyDataSetChanged();
-//
-//                                    }
-//
-//
-//                                }
-//                            });
-//            listview.setOnTouchListener(touchListener);
 
 
             @Override
@@ -113,6 +149,7 @@ public class DisplayEvents extends AppCompatActivity {
 
             }
         });
+
 
 
 

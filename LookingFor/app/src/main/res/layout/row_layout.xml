@@ -1,44 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="82dp">
+    android:layout_width="match_parent" android:layout_height="170dp">
 
     <ImageView
         android:id="@+id/eventPicture"
         android:layout_width="100dp"
+
         android:layout_height="100dp"
-        android:layout_above="@+id/eventLocation"
         android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/ette"
         android:src="@drawable/baseball" />
 
     <TextView
-        android:id="@+id/eventName"
-        android:layout_width="150dp"
-        android:layout_height="20dp"
+        android:id="@+id/ette"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="Event Name:" />
+        android:layout_alignStart="@+id/eventParticipants"
+        android:layout_marginTop="17dp"
+        android:text="EventName"
+        android:textAppearance="@style/TextAppearance.AppCompat" />
 
     <TextView
         android:id="@+id/eventParticipants"
         android:layout_width="150dp"
-        android:layout_height="20dp"
-        android:layout_alignStart="@+id/eventName"
-        android:layout_below="@+id/eventName"
+        android:layout_height="15dp"
+
+        android:layout_marginTop="98dp"
+        android:layout_centerHorizontal="true"
         android:text="Participants:" />
 
     <TextView
         android:id="@+id/eventDate"
-        android:layout_width="100dp"
+        android:layout_width="130dp"
         android:layout_height="20dp"
-        android:layout_alignStart="@+id/eventParticipants"
-        android:layout_below="@+id/eventParticipants"
+        android:layout_marginTop="3dp"
+
+        android:layout_alignStart="@+id/ette"
+        android:layout_below="@+id/ette"
         android:text="Date:" />
 
     <TextView
         android:id="@+id/eventTime"
-        android:layout_width="100dp"
+        android:layout_width="130dp"
         android:layout_height="20dp"
-        android:layout_below="@+id/eventParticipants"
+
+        android:layout_alignBaseline="@+id/eventDate"
+        android:layout_alignBottom="@+id/eventDate"
         android:layout_toEndOf="@+id/eventDate"
         android:text="Time:" />
 
@@ -46,15 +54,59 @@
         android:id="@+id/eventLocation"
         android:layout_width="100dp"
         android:layout_height="20dp"
+        android:layout_marginTop="74dp"
         android:layout_alignStart="@+id/eventDate"
-        android:layout_below="@+id/eventDate"
+
         android:text="Location:" />
     
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#000000"
-        android:layout_below="@+id/eventLocation"
-        android:id="@+id/view" />
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="2dp"-->
+        <!--android:background="#000000"-->
+        <!--android:layout_below="@+id/eventLocation"-->
+        <!--android:id="@+id/view" />-->
+
+    <Button
+        android:id="@+id/Attend"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/eventPicture"
+        android:layout_alignEnd="@+id/ette"
+        android:text="Attend" />
+
+    <TextView
+        android:id="@+id/tagDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/eventPicture"
+        android:layout_below="@+id/eventPicture"
+        android:layout_marginEnd="14dp"
+        android:layout_marginTop="16dp"
+        android:text="Tag#1" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tagDisplay"
+        android:layout_alignStart="@+id/eventParticipants"
+        android:text="Tag#2" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_marginEnd="12dp"
+        android:layout_toStartOf="@+id/eventTime"
+        android:text="Tag#3" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/Attend"
+        android:layout_alignTop="@+id/textView4"
+        android:text="Tag#4" />
 
 </RelativeLayout>
