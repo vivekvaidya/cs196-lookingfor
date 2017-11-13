@@ -29,19 +29,46 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@mipmap/ic_launcher" />
 
-            <Button
-                android:id="@+id/selectPhotoBT"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:background="#e19027"
-                android:padding="10dp"
-                android:text="Select Photo"
-                android:textColor="#fff"
-                android:textSize="15dp"
-                app:layout_constraintBottom_toTopOf="@+id/avatarPreviewIV"
-                app:layout_constraintEnd_toEndOf="parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/selectPhotoBT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="#e19027"
+                    android:padding="10dp"
+                    android:text="Select Avatar"
+                    android:textColor="#fff"
+                    android:textSize="15dp"
+                    app:layout_constraintBottom_toTopOf="@+id/avatarPreviewIV"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <Button
+                    android:id="@+id/useCamBT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="#e19027"
+                    android:padding="10dp"
+                    android:text="Capture Photo"
+                    android:textColor="#fff"
+                    android:textSize="15dp"
+                    app:layout_constraintBottom_toTopOf="@+id/avatarPreviewIV"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout

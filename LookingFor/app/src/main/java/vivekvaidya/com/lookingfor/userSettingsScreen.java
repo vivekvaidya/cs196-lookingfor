@@ -38,7 +38,6 @@ import java.net.URI;
 
 public class userSettingsScreen extends AppCompatActivity implements View.OnClickListener{
     /**Declare UI variables*/
-    public Button backButton;
     public EditText profileNameET;
     public EditText profilePhoneET;
     public EditText profileEmailET;
@@ -62,12 +61,6 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
         confirmButton = (Button) findViewById(R.id.profileConfirmBT);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        backButton = (Button) findViewById(R.id.back);
-        backButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                finish();
-            }
-        });
 
         /**Request Permission*/
         checkPermission();
@@ -76,7 +69,7 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
         confirmButton.setOnClickListener(this);
         selectPhotoBT.setOnClickListener(this);
         findViewById(R.id.useCamBT).setOnClickListener(this);
-        findViewById(R.id.picFromGalleryBT).setOnClickListener(this);
+//        findViewById(R.id.picFromGalleryBT).setOnClickListener(this);
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -152,12 +145,12 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
                 }
                 break;
 
-            case R.id.picFromGalleryBT:
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                if (galleryIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(galleryIntent, GALLERY_ACCESS_REQUEST);
-                }
-                break;
+//            case R.id.picFromGalleryBT:
+//                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                if (galleryIntent.resolveActivity(getPackageManager()) != null) {
+//                    startActivityForResult(galleryIntent, GALLERY_ACCESS_REQUEST);
+//                }
+//                break;
 
             default:
                 break;

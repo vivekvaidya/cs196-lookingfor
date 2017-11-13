@@ -49,15 +49,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText contents;
     private Button login;
     private Button register;
-    private Button signOut;
-    private Button upload;
-    private Button download;
     private Button loginPhone;
     private Button verifyCode;
     private String phoneAuthID;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
     private PhoneAuthProvider.ForceResendingToken resendToken;
-    private FirebaseDatabase mDatabase;
 
 
     @Override
@@ -71,10 +67,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         contents = (EditText) findViewById(R.id.contents);
         login = (Button) findViewById(R.id.Login);
         register = (Button) findViewById(R.id.register);
-        signOut = (Button) findViewById(R.id.signOut);
-        upload = (Button) findViewById(R.id.uploadText);
-        download = (Button) findViewById(R.id.downloadText);
-
         loginPhone = (Button) findViewById(R.id.phoneSignIn);
         verifyCode = (Button) findViewById(R.id.verifyCode);
 
@@ -102,12 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         login.setOnClickListener(this);
         register.setOnClickListener(this);
-        signOut.setOnClickListener(this);
-        upload.setOnClickListener(this);
-        download.setOnClickListener(this);
- 
         myAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance();
 
 
     }
@@ -117,39 +104,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
         // Check if user is signed in (non-null) .
         FirebaseUser currentUser = myAuth.getCurrentUser();
-        updateUI(currentUser);
         if (currentUser != null) {
             Intent intent = new Intent(this.getApplicationContext(),welcomScreen.class);
             startActivity(intent);
         }
     }
 
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            contents.setText(getString(R.string.emailFirebase,
-                    user.getEmail(), user.isEmailVerified(), user.getUid()));
-            login.setVisibility(View.GONE);
-            register.setVisibility(View.GONE);
-            signOut.setVisibility(View.VISIBLE);
-
-        } else {
-            contents.setText(R.string.signedOut);
-            login.setVisibility(View.VISIBLE);
-            register.setVisibility(View.VISIBLE);
-            signOut.setVisibility(View.GONE);
-        }
-    }
-
     private void createAccount(final String email, final String password) {
         final Context context = this.getApplicationContext();
-        Task<AuthResult> object = myAuth.createUserWithEmailAndPassword(email, password).
+        myAuth.createUserWithEmailAndPassword(email, password).
                 addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = myAuth.getCurrentUser();
-                            updateUI(user);
                             Intent intent = new Intent(context, userSettingsScreen.class);
                             intent.putExtra("nameString",myAuth.getUid());
                             startActivity(intent);
@@ -157,35 +125,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // If sign in fails, display a message to the user.
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
                     }
                 });
-    }
-
-    private void writeNewUser(String name, String email) {
-        //Dummy Code: set up names,email and password or make it something else
-        HashMap<String, String> dataMap = new HashMap<String, String>();
-        dataMap.put("Name", "hello");
-        dataMap.put("Email", "email");
-        dataMap.put("Password", "password");
-
-        DatabaseReference users = mDatabase.getReference().child("Users").child("names");
-        users.setValue(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-                if(task.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Registered Successfully!", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Error...", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-
-        //User user = new User(name, email);
-        //mDatabase.getReference().child("users").child(myAuth.getUid().toString()).setValue(contents.getText().toString());
     }
 
     private void signIn(String email, final String password) {
@@ -197,14 +139,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
                     FirebaseUser user = myAuth.getCurrentUser();
-                    updateUI(user);
                     Intent intent = new Intent(context,welcomScreen.class);
                     startActivity(intent);
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(MainActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
-                    updateUI(null);
                 }
             }
         });
@@ -212,12 +152,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    private void signOut() {
-        myAuth.signOut();
-        Toast.makeText(MainActivity.this, "signed out",Toast.LENGTH_SHORT).show();
-        updateUI(null);
-    }
-  
+
     private void phoneAuth() {
 
         final Context context = this.getApplicationContext();
@@ -290,7 +225,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     contents.setText("logged in!");
-                    FirebaseUser user = task.getResult().getUser();
                 } else {
                     if (task.getException() instanceof
                             FirebaseAuthInvalidCredentialsException) {
@@ -308,8 +242,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             createAccount(username.getText().toString(), password.getText().toString());
         } else if (i == R.id.Login) {
             signIn(username.getText().toString(), password.getText().toString());
-        } else if (i == R.id.signOut) {
-            signOut();
         }
     }
 
