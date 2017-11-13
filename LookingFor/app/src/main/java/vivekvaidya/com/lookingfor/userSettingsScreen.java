@@ -122,7 +122,7 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
                 /**Prepare the user to be sent*/
                 BitmapDrawable draw = (BitmapDrawable) avatarView.getDrawable();
                 Bitmap userBitmap = draw.getBitmap();
-                    /**Dummy image*/
+                /**Dummy image*/
                 if (userBitmap == null) {
                     userBitmap = BitmapFactory.decodeResource(Resources.getSystem(),android.R.drawable.ic_menu_zoom);
                 }
