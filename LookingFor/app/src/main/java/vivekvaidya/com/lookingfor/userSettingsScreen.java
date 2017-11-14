@@ -176,14 +176,6 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
                     startActivityForResult(camIntent, CAM_CAPTURE_REQUEST);
                 }
                 break;
-
-//            case R.id.picFromGalleryBT:
-//                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                if (galleryIntent.resolveActivity(getPackageManager()) != null) {
-//                    startActivityForResult(galleryIntent, GALLERY_ACCESS_REQUEST);
-//                }
-//                break;
-
             default:
                 break;
         }

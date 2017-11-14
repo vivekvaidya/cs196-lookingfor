@@ -170,6 +170,23 @@ public class Event implements Parcelable {
         return title == null ? "No title" : title;
     }
 
+    public static ArrayList<Event> searchForUserAttendedEvents(List<Event> events, String uid) {
+        ArrayList<Event> newList = new ArrayList<>();
+        int count = 0;
+        for (int i = 0; i < events.size(); i++){
+            if (events.get(i).getAttendeeID().contains(uid)){
+                newList.add(events.get(i));
+                count++;
+            }
+        }
+        if (count != 0){
+            return newList;
+        } else {
+            newList.add(new Event("Sorry", "Couldn't", "Find", new ArrayList<String>(), "Any", "Matching", "Event"));
+            return newList;
+        }
+    }
+
     public static ArrayList<Event> searchForEvent(ArrayList<Event> events, String query){
         query = query.toLowerCase();
         ArrayList<Event> newList = new ArrayList<>();

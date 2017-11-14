@@ -19,6 +19,7 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
     public static final int GET_EVENTS = 1;
     public static final int DISPLAY_EVENTS = 2;
     public static final int SEARCH_EVENTS = 3;
+    public static final int SEARCH_PERSON = 4;
     public static final String EVENTS_RETURNED = "EventsReturned";
     public static final String SEARCH_FOR = "SearchFor";
     EventBrowserItemAdapter adapter;
@@ -50,6 +51,7 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
             case SEARCH_EVENTS:
             case GET_EVENTS:
             case DISPLAY_ALL:
+            case SEARCH_PERSON:
                 EventDownloader.downloadEventsTo(behavior,this,this);
                 break;
             case DISPLAY_EVENTS:
@@ -64,6 +66,11 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
     @Override
     public void eventsDownloaded(int behavior, ArrayList<Event> events) {
         switch (behavior) {
+            case SEARCH_PERSON:
+                String uid = getIntent().getStringExtra(SEARCH_FOR);
+                events = Event.searchForUserAttendedEvents(events,uid);
+                displayEvents(events);
+                break;
             case GET_EVENTS:
                 Intent returnIntent = new Intent();
                 returnIntent.putParcelableArrayListExtra(EVENTS_RETURNED, events);

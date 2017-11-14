@@ -38,6 +38,7 @@ public class welcomScreen extends AppCompatActivity{
         signOut = (Button) findViewById(R.id.signOut);
         createEvent = (Button) findViewById(R.id.createEventButton);
         allEventButton = (Button) findViewById(R.id.allEventButton);
+        Button myEventButton = (Button) findViewById(R.id.myEventsButton);
         accountSettings = (Button) findViewById(R.id.accountSettingsButton);
         welcomText = (TextView) findViewById(R.id.welcomeText);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -60,6 +61,15 @@ public class welcomScreen extends AppCompatActivity{
 
         /**Go to other screens*/
         final Context context = this.getApplicationContext();
+        myEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, EventBrowser.class);
+                intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR,EventBrowser.SEARCH_PERSON);
+                intent.putExtra(EventBrowser.SEARCH_FOR,myAuth.getCurrentUser().getUid());
+                startActivity(intent);
+            }
+        });
         accountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +88,6 @@ public class welcomScreen extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, EventBrowser.class);
-
                 startActivity(intent);
             }
         });
@@ -98,8 +107,7 @@ public class welcomScreen extends AppCompatActivity{
                 String name = dataSnapshot.getValue(String.class);
                 if (name == null) {
                     welcomText.setText("Hello! But we can't find your nickname.");
-                }
-                else {
+                } else {
                     welcomText.setText("Hello," + name.toString());
                 }
             }
