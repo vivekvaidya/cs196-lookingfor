@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,7 +21,7 @@ public class welcomScreen extends AppCompatActivity{
     private Button signOut;
     private Button createEvent;
     private Button accountSettings;
-    private TextView welcomText;
+    private TextView welcomeText;
     private FirebaseAuth myAuth;
     private Toolbar toolbar;
     private Button allEventButton;
@@ -40,7 +39,7 @@ public class welcomScreen extends AppCompatActivity{
         allEventButton = (Button) findViewById(R.id.allEventButton);
         Button myEventButton = (Button) findViewById(R.id.myEventsButton);
         accountSettings = (Button) findViewById(R.id.accountSettingsButton);
-        welcomText = (TextView) findViewById(R.id.welcomeText);
+        welcomeText = (TextView) findViewById(R.id.welcomeText);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         /**Firebase Constant*/
@@ -106,15 +105,15 @@ public class welcomScreen extends AppCompatActivity{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.getValue(String.class);
                 if (name == null) {
-                    welcomText.setText("Hello! But we can't find your nickname.");
+                    welcomeText.setText("Hello! But we can't find your nickname.");
                 } else {
-                    welcomText.setText("Hello," + name.toString());
+                    welcomeText.setText("Hello," + name.toString());
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                welcomText.setText("Hello! But something's wrong.");
+                welcomeText.setText("Hello! But something's wrong.");
             }
         });
     }
