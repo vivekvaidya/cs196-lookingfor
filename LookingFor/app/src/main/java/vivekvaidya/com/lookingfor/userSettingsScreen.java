@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +31,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -46,7 +53,8 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
     public Button confirmButton;
     private static final int PICK_IMAGE_REQUEST = 33;
     private static final int CAM_CAPTURE_REQUEST = 41;
-    private static final int GALLERY_ACCESS_REQUEST = 43;
+    private static final String USER_DATA_DOWNLOADED = "userDataDownloaded";
+    private FirebaseUser curUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /**Initialize Screen*/
@@ -69,17 +77,41 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
         confirmButton.setOnClickListener(this);
         selectPhotoBT.setOnClickListener(this);
         findViewById(R.id.useCamBT).setOnClickListener(this);
-//        findViewById(R.id.picFromGalleryBT).setOnClickListener(this);
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        curUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (curUser != null) {
+            if (savedInstanceState == null || !savedInstanceState.getBoolean(USER_DATA_DOWNLOADED)) {
+                loadWrittenData(curUser.getUid());
+            }
+        }
+
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putBoolean(USER_DATA_DOWNLOADED,true);
+    }
+
+    private void loadWrittenData(final String UID) {
+        FirebaseDatabase.getInstance().getReference().child("users").child(UID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User currentUser = dataSnapshot.getValue(User.class);
+                if (currentUser != null){
+                    profileEmailET.setText(currentUser.getEmailAddress());
+                    profileNameET.setText(currentUser.getUserName());
+                    profilePhoneET.setText(currentUser.getPhoneNumber());
+                    avatarView.setImageBitmap(currentUser.getAvatarinBitmap());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("UserProfile", "Can't find user.");
+            }
+        });
+    }
     /**Check Permission for camera, and read from and write to external storage.*/
     private void checkPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -117,10 +149,10 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
                 Bitmap userBitmap = draw.getBitmap();
                 /**Dummy image*/
                 if (userBitmap == null) {
-                    userBitmap = BitmapFactory.decodeResource(Resources.getSystem(),android.R.drawable.ic_menu_zoom);
+                    userBitmap = BitmapFactory.decodeResource(Resources.getSystem(),R.mipmap.ic_launcher);
                 }
-                //TODO: add other profile status
-                User newUser = new User(uid, profileNameET.getText().toString(), userBitmap);
+
+                User newUser = new User(uid,profileNameET.getText().toString(),profileEmailET.getText().toString(),profilePhoneET.getText().toString(),userBitmap);
                 /**Send event*/
                 newUser.pushToFirebase(new OnCompleteListener<Void>(){
                     @Override
@@ -199,21 +231,6 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
                     avatarView.setImageBitmap(bitmap);
                 } else {
                     Toast.makeText(userSettingsScreen.this, "Something's wrong when taking picture", Toast.LENGTH_LONG).show();
-                }
-                break;
-            case GALLERY_ACCESS_REQUEST:
-                if (resultCode == RESULT_OK && data!= null && data.getData() != null) {
-                    Uri uri = data.getData();
-                    try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-                        bitmap = Bitmap.createScaledBitmap(bitmap, User.AVATAR_SIDE_LENGTH, User.AVATAR_SIDE_LENGTH, false); //resize
-                        avatarView.setImageBitmap(bitmap);
-                    } catch (FileNotFoundException e) {
-                        Toast.makeText(userSettingsScreen.this, "Something's wrong when getting photo from Gallery", Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    }
-                } else {
-                    Toast.makeText(userSettingsScreen.this, "Something's wrong when selecting photo from Gallery", Toast.LENGTH_LONG).show();
                 }
                 break;
             default:

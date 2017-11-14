@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -34,33 +35,39 @@ import java.util.List;
 public class User implements Parcelable {
 
     /**Basic Data*/
-    final private String UID;
-    public static int AVATAR_SIDE_LENGTH = 50;
-    private String emailAddress;
-    private String phoneNumber;
-    private String userName;
-    private ArrayList<String> attendingEvents;
-    private ArrayList<String> friends;
-    private ArrayList<String> hostingEvents;
-    private String avatar;
-    /**Constructors*/
-//    public User(String UID, String phoneNumber){
-//        this.UID = UID;
-//        this.phoneNumber = phoneNumber;
-//        this.isLoggedIn = true;
-//        this.avatar = BitmapFactory.decodeResource(Resources.getSystem(),android.R.drawable.ic_menu_zoom);
-//    }
-    public User(String UID, String emailAddress){
-        this.UID = UID;
-        this.emailAddress = emailAddress;
-        Bitmap tempAvatar = BitmapFactory.decodeResource(Resources.getSystem(),android.R.drawable.ic_menu_zoom);
-        this.avatar = bitMapToString(tempAvatar);
+    private String UID = "";
+    @Exclude
+    public final static int AVATAR_SIDE_LENGTH = 100;
+
+    private String emailAddress = "";
+    private String phoneNumber = "";
+    private String userName = "";
+    private List<String> attendingEvents = new ArrayList<>();
+    private List<String> friends = new ArrayList<>();
+    private List<String> hostingEvents = new ArrayList<>();
+    private String avatar = "";
+
+    public User() {
 
     }
-    public User(String UID, String emailAddress, Bitmap avatarBitmap){
+
+    /**Constructors*/
+    public User(String UID, String userName, String emailAddress, String phoneNumber, Bitmap avatarBitmap){
+        this.UID = UID;
+        this.emailAddress = emailAddress;
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
+        this.avatar = bitMapToString(avatarBitmap);
+    }
+    public User(String UID, String userName, String phoneNumber, String emailAddress, Bitmap avatarBitmap, List<String> friends, List<String> hostingEvents, List<String> attendingEvents) {
         this.UID = UID;
         this.emailAddress = emailAddress;
         this.avatar = bitMapToString(avatarBitmap);
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
+        this.friends = friends;
+        this.attendingEvents = attendingEvents;
+        this.hostingEvents = hostingEvents;
     }
     /**Getter and Setters*/
     public String getUID(){
@@ -88,6 +95,8 @@ public class User implements Parcelable {
     public String getAvatar() {
         return avatar;
     }
+
+    @Exclude
     public Bitmap getAvatarinBitmap() {
         return stringToBitMap(avatar);
     }
@@ -109,9 +118,8 @@ public class User implements Parcelable {
     /**String to Bitmap*/
     public static Bitmap stringToBitMap(String encodedString){
         try{
-            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
+            byte[] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         }catch(Exception e){
             e.getMessage();
             return null;
