@@ -38,7 +38,7 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_create_event_screen);
 
         /*Initialize Common UIs*/
-        titleET = (EditText) findViewById(R.id.titleET);
+        titleET =  findViewById(R.id.titleET);
         Button backButton = (Button) findViewById(R.id.backButton);
         eventTypeSPN = (Spinner) findViewById(R.id.eventSelectionSpinner);
         dateDisplay = (TextView) findViewById(R.id.dateDisplay);
