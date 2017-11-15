@@ -1,42 +1,58 @@
 package vivekvaidya.com.lookingfor;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import java.io.Serializable;
+
+import android.provider.ContactsContract;
+
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
-
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+
+import static android.R.attr.phoneNumber;
+import static vivekvaidya.com.lookingfor.R.id.fab;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth myAuth;
-    private FirebaseDatabase mDatabase;
     private EditText password;
     private EditText username;
-    private EditText contents;
     private Button login;
     private Button register;
-    private Button signOut;
-    private Button upload;
-    private Button download;
+    private Button loginPhone;
+    private Button verifyCode;
+    private String phoneAuthID;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
+    private PhoneAuthProvider.ForceResendingToken resendToken;
 
 
     @Override
@@ -47,29 +63,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         password = (EditText) findViewById(R.id.password);
         username = (EditText) findViewById(R.id.username);
-        contents = (EditText) findViewById(R.id.contents);
         login = (Button) findViewById(R.id.Login);
         register = (Button) findViewById(R.id.register);
-        signOut = (Button) findViewById(R.id.signOut);
-        upload = (Button) findViewById(R.id.uploadText);
-        download = (Button) findViewById(R.id.downloadText);
+        loginPhone = (Button) findViewById(R.id.phoneSignIn);
+        verifyCode = (Button) findViewById(R.id.verifyCode);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+
+        verifyCode.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View view){
+                String code = password.getText().toString();
+                if (phoneAuthID == null || phoneAuthID.equals("")) {
+                    Toast.makeText(MainActivity.this, "Code not sent.", Toast.LENGTH_LONG).show();
+                } else {
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(phoneAuthID, code);
+                    SignInWithPhoneAuthCredential(credential);
+                }
             }
         });
+
+        loginPhone.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                phoneAuth();
+            }
+        });
+
         login.setOnClickListener(this);
         register.setOnClickListener(this);
-        signOut.setOnClickListener(this);
-        upload.setOnClickListener(this);
-        download.setOnClickListener(this);
-
         myAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance();
 
 
     }
@@ -79,110 +102,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
         // Check if user is signed in (non-null) .
         FirebaseUser currentUser = myAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            contents.setText(getString(R.string.emailFirebase,
-                    user.getEmail(), user.isEmailVerified(), user.getUid()));
-            login.setVisibility(View.GONE);
-            register.setVisibility(View.GONE);
-            signOut.setVisibility(View.VISIBLE);
-
-        } else {
-            contents.setText(R.string.signedOut);
-            login.setVisibility(View.VISIBLE);
-            register.setVisibility(View.VISIBLE);
-            signOut.setVisibility(View.GONE);
+        if (currentUser != null) {
+            Intent intent = new Intent(this.getApplicationContext(),welcomScreen.class);
+            startActivity(intent);
         }
     }
 
-    //create a user object
-    public class User {
-
-        public String username;
-
-        public String password;
-
-        public User() {
-            // Default constructor required for calls to DataSnapshot.getValue(User.class)
-        }
-
-        public User(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
-
-    }
-
-    private void createAccount(String email, String password) {
-        myAuth.createUserWithEmailAndPassword(email,password).
+    private void createAccount(final String email, final String password) {
+        final Context context = this.getApplicationContext();
+        myAuth.createUserWithEmailAndPassword(email, password).
                 addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    FirebaseUser user = myAuth.getCurrentUser();
-                    updateUI(user);
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(MainActivity.this, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
-                    updateUI(null);
-                }
-            }
-        });
-    }
-
-    private void writeNewUser(String name, String email) {
-        //TODO: set up names,email and password or make it something else Eric is working on it now
-        HashMap<String, String> dataMap = new HashMap<String, String>();
-        dataMap.put("Name", "helo");
-        dataMap.put("Email", "email");
-        dataMap.put("Password", "password");
-
-        DatabaseReference users = mDatabase.getReference().child("Users").child("names");
-        users.setValue(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-                if(task.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Registered Successfully!", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Error...", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-
-        //User user = new User(name, email);
-        //mDatabase.getReference().child("users").child(myAuth.getUid().toString()).setValue(contents.getText().toString());
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Intent intent = new Intent(context, userSettingsScreen.class);
+                            intent.putExtra("nameString",myAuth.getUid());
+                            startActivity(intent);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private void signIn(String email, final String password) {
+        final Context context = this.getApplicationContext();
         myAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-
-
-       //             DatabaseReference mChildDatabase = mDatabase.getReference().child("users").push();
-         //           mChildDatabase.child("emailUser").setValue(username);
-           //         mChildDatabase.child("passWordUser").setValue(password);
-
-
                     // Sign in success, update UI with the signed-in user's information
-
-
                     FirebaseUser user = myAuth.getCurrentUser();
-                    updateUI(user);
+                    Intent intent = new Intent(context,welcomScreen.class);
+                    startActivity(intent);
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(MainActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
-                    updateUI(null);
                 }
             }
         });
@@ -190,10 +150,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    private void signOut() {
-        myAuth.signOut();
-        Toast.makeText(MainActivity.this, "signed out",Toast.LENGTH_SHORT).show();
-        updateUI(null);
+
+    private void phoneAuth() {
+
+        final Context context = this.getApplicationContext();
+        final String phoneNumber = username.getText().toString();
+        Toast.makeText(context, "phoneAuth() called", Toast.LENGTH_SHORT).show();
+        if (phoneNumber.equals("")) {
+            Toast.makeText(context, "phoneAuth() called with no phone number", Toast.LENGTH_SHORT).show();
+        } else {
+            verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                @Override
+                public void onVerificationCompleted(PhoneAuthCredential credential) {
+                    Toast.makeText(context, "you have signed in!", Toast.LENGTH_SHORT).show();
+                    SignInWithPhoneAuthCredential(credential);
+                    Intent intent = new Intent(context, welcomScreen.class);
+                    intent.putExtra("nameString", myAuth.getUid());
+                    startActivity(intent);
+                }
+
+
+                @Override
+                public void onVerificationFailed(FirebaseException e) {
+                    if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                        Toast.makeText(context, "invalid phone number", Toast.LENGTH_SHORT).show();
+                    } else if (e instanceof FirebaseTooManyRequestsException) {
+                        Toast.makeText(context, "aaa", Toast.LENGTH_SHORT).show();
+                    } else {
+                        e.printStackTrace();
+                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("PhoneAuth", "auth failed");
+                    }
+                }
+
+                public void onCodeSent(String verificationID, PhoneAuthProvider.ForceResendingToken token) {
+                    phoneAuthID = verificationID;
+                    resendToken = token;
+                    Toast.makeText(context, "code sent!", Toast.LENGTH_SHORT).show();
+                    Log.d("PhoneAuth", "code sent!");
+                }
+            };
+            Log.d("PhoneAuth", phoneNumber);
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNumber, 60, TimeUnit.SECONDS, this, verificationCallbacks);
+        }
     }
 
 
@@ -218,7 +217,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         return super.onOptionsItemSelected(item);
     }
-
+    private void SignInWithPhoneAuthCredential(PhoneAuthCredential credential){
+        myAuth.signInWithCredential(credential).addOnCompleteListener(this,new OnCompleteListener<AuthResult>(){
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    return;
+                } else {
+                    if (task.getException() instanceof
+                            FirebaseAuthInvalidCredentialsException) {
+                        return;
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     public void onClick(View v) {
@@ -227,14 +240,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             createAccount(username.getText().toString(), password.getText().toString());
         } else if (i == R.id.Login) {
             signIn(username.getText().toString(), password.getText().toString());
-        } else if (i == R.id.signOut) {
-            signOut();
-        } else if (i == R.id.uploadText) {
-            //TODO:          upload(contents.getText().toString());
-            writeNewUser(username.getText().toString(), password.getText().toString());
-
-        } else if (i == R.id.downloadText) {
-   //TODO:         download(username.getText().toString());
         }
     }
-};
+
+}

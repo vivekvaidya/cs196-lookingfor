@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="vivekvaidya.com.lookingfor.welcomScreen"
+    tools:layout_editor_absoluteY="81dp"
+    tools:showIn="@layout/activity_welcom_screen">
+
+    <LinearLayout
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
+        android:background="#f4a771"
+        android:gravity="center"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/welcomeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome Back!"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/icon_create"/>
+
+            <Button
+                android:id="@+id/createEventButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="Create Event"
+                android:textColor="#000"
+                app:layout_constraintBottom_toTopOf="@+id/allEventButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/icon_myevents"/>
+
+            <Button
+                android:id="@+id/myEventsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:textColor="#000"
+                android:text="My Events"
+                app:layout_constraintBottom_toTopOf="@+id/SearchQuery"
+                app:layout_constraintStart_toStartOf="@+id/SearchQuery" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="220dp"
+        android:background="#9ab2ef"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/icon_events"/>
+
+            <Button
+                android:id="@+id/allEventButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:textColor="#000"
+                android:text="View Events"
+                app:layout_constraintBottom_toTopOf="@+id/myEventsButton"
+                app:layout_constraintStart_toStartOf="@+id/createEventButton" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/icon_settings"/>
+
+            <Button
+                android:id="@+id/accountSettingsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:textColor="#000"
+                android:text="Settings"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/SearchButton" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="67dp"
+                android:layout_height="73dp"
+                android:background="@drawable/icon_signout" />
+
+            <Button
+                android:id="@+id/signOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sign out"
+                android:background="@null"
+                android:textColor="#000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/accountSettingsButton" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <!--<Button-->
+        <!--android:id="@+id/SearchButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="13dp"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:text="search"-->
+        <!--app:layout_constraintBaseline_toBaselineOf="@+id/SearchQuery"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/SearchQuery"-->
+        <!--app:layout_constraintHorizontal_chainStyle="packed"-->
+        <!--app:layout_constraintStart_toStartOf="parent" />-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/SearchQuery"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="175dp"-->
+        <!--android:ems="10"-->
+        <!--android:inputType="textPersonName"-->
+        <!--android:text="Name"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/SearchButton" />-->
+</LinearLayout>

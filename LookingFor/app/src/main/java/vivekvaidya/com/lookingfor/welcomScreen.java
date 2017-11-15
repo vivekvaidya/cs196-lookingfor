@@ -1,0 +1,122 @@
+package vivekvaidya.com.lookingfor;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+public class welcomScreen extends AppCompatActivity{
+    /**UI variables*/
+    private Button signOut;
+    private Button createEvent;
+    private Button accountSettings;
+    private TextView welcomeText;
+    private FirebaseAuth myAuth;
+    private Toolbar toolbar;
+    private Button allEventButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        /**Initialize Screen*/
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_welcom_screen);
+
+        /**Initialize UIs*/
+        signOut = (Button) findViewById(R.id.signOut);
+        createEvent = (Button) findViewById(R.id.createEventButton);
+        allEventButton = (Button) findViewById(R.id.allEventButton);
+        Button myEventButton = (Button) findViewById(R.id.myEventsButton);
+        accountSettings = (Button) findViewById(R.id.accountSettingsButton);
+        welcomeText = (TextView) findViewById(R.id.welcomeText);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        /**Firebase Constant*/
+        myAuth = FirebaseAuth.getInstance();
+
+        setSupportActionBar(toolbar);
+        /**Show Welcome Text*/
+        showWelcomeText();
+
+
+        /**Set behavior to SignOut Button.*/
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+            }
+        });
+
+        /**Go to other screens*/
+        final Context context = this.getApplicationContext();
+        myEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, EventBrowser.class);
+                intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR,EventBrowser.SEARCH_PERSON);
+                intent.putExtra(EventBrowser.SEARCH_FOR,myAuth.getCurrentUser().getUid());
+                startActivity(intent);
+            }
+        });
+        accountSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, userSettingsScreen.class);
+                startActivity(intent);
+            }
+        });
+        createEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, createEventScreen.class);
+                startActivity(intent);
+            }
+        });
+        allEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, EventBrowser.class);
+                startActivity(intent);
+            }
+        });
+    }
+    /**Sign Out*/
+    private void signOut(){
+        myAuth.signOut();
+        finish();
+    }
+    /**Show welcome text by username*/
+    public void showWelcomeText() {
+        String uid = myAuth.getUid();
+        DatabaseReference id = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("username");
+        id.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String name = dataSnapshot.getValue(String.class);
+                if (name == null) {
+                    welcomeText.setText("Hello! But we can't find your nickname.");
+                } else {
+                    welcomeText.setText("Hello," + name.toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                welcomeText.setText("Hello! But something's wrong.");
+            }
+        });
+    }
+
+
+}

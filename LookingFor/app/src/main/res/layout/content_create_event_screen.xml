@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="vivekvaidya.com.lookingfor.createEventScreen"
+    tools:showIn="@layout/activity_create_event_screen">
+
+    <Button
+        android:id="@+id/addEventBT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Add Event"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.278"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/titleET"
+        android:layout_width="306dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="Title"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createEventLabel" />
+
+    <EditText
+        android:id="@+id/descriptionET"
+        android:layout_width="325dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="21dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:hint="Add description"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/addEventBT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/eventTypeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="19dp"
+        android:text="Event Type"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleET" />
+
+    <TextView
+        android:id="@+id/timeLabel"
+        android:layout_width="79dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="56dp"
+        android:text="Time"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventTypeLabel" />
+
+    <Spinner
+        android:id="@+id/eventSelectionSpinner"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleET" />
+
+    <TextView
+        android:id="@+id/dateDisplay"
+        android:layout_width="101dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="56dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/timeDisplay"
+        app:layout_constraintTop_toBottomOf="@+id/eventTypeLabel" />
+
+    <TextView
+        android:id="@+id/timeDisplay"
+        android:layout_width="87dp"
+        android:layout_height="21dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginTop="60dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventSelectionSpinner" />
+
+    <TextView
+        android:id="@+id/createEventLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="7dp"
+        android:text="Creating Event"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="77dp"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="21dp"
+        android:text="back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/dateDisplay"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionET" />
+</android.support.constraint.ConstraintLayout>
