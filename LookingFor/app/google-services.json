@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "371329928854-0marc53206is78mdm06etgqerb9iomqm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vivekvaidya.com.lookingfor",
+            "certificate_hash": "f59842433c07a3552ff0f1bded7f0fddc5115662"
+          }
+        },
+        {
           "client_id": "371329928854-g40ujh9b31q77l4dc33m5pggb53i8jah.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

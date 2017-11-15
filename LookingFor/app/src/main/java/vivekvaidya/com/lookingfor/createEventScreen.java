@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class createEventScreen extends AppCompatActivity {
+public class createEventScreen extends AppCompatActivity implements View.OnClickListener {
     /**UI Variables*/
     private EditText titleET;
     private Spinner eventTypeSPN;
@@ -122,26 +122,9 @@ public class createEventScreen extends AppCompatActivity {
                 finish();
             }
         });
+        dateDisplay.setOnClickListener(this);
+        timeDisplay.setOnClickListener(this);
     }
-//    private void pushNewEvent(Event newEvent) {
-//        HashMap<String, Object> dataMap = new HashMap<>();
-//        dataMap.put("title", newEvent.getTitle());
-//        dataMap.put("eventType", newEvent.getEventType());
-//        dataMap.put("location", newEvent.getLocation());
-//        dataMap.put("dateTime", newEvent.getDateTime());
-//        dataMap.put("description", newEvent.getDescription());
-//        dataMap.put("hostID", newEvent.getHostID());
-//        List attendeeID = new ArrayList<>(Arrays.asList(newEvent.getAttendeeID()));
-//        dataMap.put("attendeeID", attendeeID);
-//
-//        DatabaseReference newEventReference = eventsReference.child("storage").child(String.valueOf(Event.numberOfEvents));
-//        newEventReference.setValue(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//                onEventPushComplete(task);
-//            }
-//        });
-//    }
 
     /**
      * Things to do when Event sent to Firebase.
@@ -150,15 +133,25 @@ public class createEventScreen extends AppCompatActivity {
     public void onEventPushComplete(@NonNull Task<Void> task) {
         if(task.isSuccessful()) {
             Toast.makeText(createEventScreen.this, "Event registered!", Toast.LENGTH_LONG).show();
-//                Intent data = new Intent();
-//                data.putExtra(EVENT_DATA, newEvent);
-//                setResult(Activity.RESULT_OK,data);
             finish();
-
-
         } else {
             Toast.makeText(createEventScreen.this, "Error...", Toast.LENGTH_LONG).show();
         }
     }
 
+
+
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.dateDisplay:
+
+                break;
+            case R.id.timeDisplay:
+                break;
+            default:
+                break;
+        }
+    }
 }

@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth myAuth;
     private EditText password;
     private EditText username;
-    private EditText contents;
     private Button login;
     private Button register;
     private Button loginPhone;
@@ -64,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         password = (EditText) findViewById(R.id.password);
         username = (EditText) findViewById(R.id.username);
-        contents = (EditText) findViewById(R.id.contents);
         login = (Button) findViewById(R.id.Login);
         register = (Button) findViewById(R.id.register);
         loginPhone = (Button) findViewById(R.id.phoneSignIn);
@@ -157,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         final Context context = this.getApplicationContext();
         final String phoneNumber = username.getText().toString();
-
+        Toast.makeText(context, "phoneAuth() called", Toast.LENGTH_SHORT).show();
         if (phoneNumber.equals("")) {
             Toast.makeText(context, "phoneAuth() called with no phone number", Toast.LENGTH_SHORT).show();
         } else {
@@ -224,11 +222,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    contents.setText("logged in!");
+                    return;
                 } else {
                     if (task.getException() instanceof
                             FirebaseAuthInvalidCredentialsException) {
-                        contents.setText("wrong!");
+                        return;
                     }
                 }
             }
