@@ -86,7 +86,7 @@
         android:layout_height="23dp"
         android:layout_marginEnd="15dp"
         android:layout_marginTop="56dp"
-        android:text="TextView"
+        android:hint="Pick Date"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/timeDisplay"
         app:layout_constraintTop_toBottomOf="@+id/eventTypeLabel" />
@@ -94,13 +94,12 @@
     <TextView
         android:id="@+id/timeDisplay"
         android:layout_width="87dp"
-        android:layout_height="21dp"
-        android:layout_marginEnd="39dp"
-        android:layout_marginTop="60dp"
-        android:text="TextView"
+        android:layout_height="24dp"
+        android:layout_marginEnd="36dp"
+        android:hint="Pick Time"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventSelectionSpinner" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/dateDisplay"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/createEventLabel"

@@ -17,11 +17,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import java.time.Clock;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
-public class createEventScreen extends AppCompatActivity implements View.OnClickListener {
+public class createEventScreen extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     /**UI Variables*/
 
     private EditText titleET;
@@ -108,7 +112,22 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
             Toast.makeText(createEventScreen.this, "Error...", Toast.LENGTH_LONG).show();
         }
     }
+    private void pickDate() {
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.show(getFragmentManager(),"Datepickerdialog");
+    }
 
+    private void pickTime() {
+        Calendar now = Calendar.getInstance();
+        TimePickerDialog tpd = TimePickerDialog.newInstance(this,Calendar.HOUR_OF_DAY,Calendar.MINUTE,true);
+        tpd.show(getFragmentManager(),"Timepickerdialog");
+    }
 
 
 
@@ -116,12 +135,25 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.dateDisplay:
-
+                pickDate();
                 break;
             case R.id.timeDisplay:
+                pickTime();
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        String date = dayOfMonth + "/" + (monthOfYear) + "/" + year;
+        dateDisplay.setText(date);
+    }
+
+    @Override
+    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+        String time = hourOfDay + ":" + minute;
+        timeDisplay.setText(time);
     }
 }
