@@ -153,7 +153,15 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
-        String time = hourOfDay + ":" + minute;
+        String sminute = String.valueOf(minute);
+        if (minute <= 9) {
+            sminute = "0" + sminute;
+        }
+        String shour = String.valueOf(hourOfDay);
+        if (hourOfDay <= 9) {
+            shour = "0" + shour;
+        }
+        String time = shour + ":" + sminute;
         timeDisplay.setText(time);
     }
 }

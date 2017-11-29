@@ -23,7 +23,8 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
     public static final int SEARCH_PERSON = 4;
     public static final String EVENTS_RETURNED = "EventsReturned";
     public static final String SEARCH_FOR = "SearchFor";
-    EventBrowserItemAdapter adapter;
+    EventRowLayoutAdapter adapter;
+    //EventBrowserItemAdapter adapter;
     Menu myMenu = null;
 
     @Override
@@ -94,8 +95,8 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
     }
 
     public void displayEvents(ArrayList<Event> events) {
-        adapter = new EventBrowserItemAdapter(this, R.layout.event_item_layout, events);
-
+        //adapter = new EventBrowserItemAdapter(this, R.layout.event_item_layout, events);
+        adapter = new EventRowLayoutAdapter(this,R.layout.row_layout,events);
         ListView eventsListView = findViewById(R.id.eventListView);
         eventsListView.setAdapter(adapter);
     }

@@ -31,7 +31,8 @@ public class Event implements Parcelable {
     private String title;
     private ArrayList<String> tags;
     private String location;
-    private String dateTime;
+    private String date;
+    private String time;
     private String description;
     private ArrayList<String> attendeeID;
     private boolean visible;
@@ -39,25 +40,26 @@ public class Event implements Parcelable {
 
     }
     /**Full Constructor*/
-    public Event(String hostID, String eventID, String title, ArrayList<String> tags, String location, String dateTime, String description){
+    public Event(String hostID, String eventID, String title, ArrayList<String> tags, String location, String date,String time, String description){
         this.hostID = hostID;
         this.eventID = eventID;
         this.title = title;
         this.tags = tags;
         this.location = location;
-        this.dateTime = dateTime;
+        this.date = date;
+        this.time = time;
         this.description = description;
         this.attendeeID = new ArrayList<>();
         this.attendeeID.add(hostID);
         this.visible = true;
     }
-    public Event(String hostID, String title, ArrayList<String> tags, String location, String dateTime, String description){
+    public Event(String hostID, String title, ArrayList<String> tags, String time, String date, String description){
         this.hostID = hostID;
         this.title = title;
         this.eventID = null;
         this.tags = tags;
-        this.location = location;
-        this.dateTime = dateTime;
+        this.date = date;
+        this.time = time;
         this.description = description;
         this.attendeeID = new ArrayList<>();
         this.attendeeID.add(hostID);
@@ -90,11 +92,18 @@ public class Event implements Parcelable {
         this.location = location;
     }
     public String getDateTime(){
-        return this.dateTime;
+        return this.date + this.time;
     }
-    public void setDateTime(String dateTime){
-        this.dateTime = dateTime;
+    public String getTime() {
+        return this.time;
     }
+    public String getDate() {
+        return this.date;
+    }
+    public void setDate(String date){
+        this.date = date;
+    }
+    public void setTime(String time) { this.time = time; }
     public String getDescription(){
         return this.description;
     }
@@ -182,7 +191,7 @@ public class Event implements Parcelable {
         if (count != 0){
             return newList;
         } else {
-            newList.add(new Event("Sorry", "Couldn't", "Find", new ArrayList<String>(), "Any", "Matching", "Event"));
+            newList.add(new Event("Sorry", "Could", "Not", new ArrayList<String>(), "Find", "Any", "Matching", "Event"));
             return newList;
         }
     }
@@ -203,7 +212,7 @@ public class Event implements Parcelable {
         if (count != 0){
             return newList;
         } else {
-            newList.add(new Event("Sorry", "Couldn't", "Find", new ArrayList<String>(), "Any", "Matching", "Event"));
+            newList.add(new Event("Sorry", "Could", "Not", new ArrayList<String>(),"Find", "Any", "Matching", "Event"));
             return newList;
         }
     }
@@ -221,7 +230,8 @@ public class Event implements Parcelable {
         dest.writeString(this.title);
         dest.writeStringList(this.tags);
         dest.writeString(this.location);
-        dest.writeString(this.dateTime);
+        dest.writeString(this.date);
+        dest.writeString(this.time);
         dest.writeString(this.description);
         dest.writeStringList(this.attendeeID);
     }
@@ -232,7 +242,8 @@ public class Event implements Parcelable {
         this.title = in.readString();
         this.tags = in.createStringArrayList();
         this.location = in.readString();
-        this.dateTime = in.readString();
+        this.date = in.readString();
+        this.time = in.readString();
         this.description = in.readString();
         this.attendeeID = in.createStringArrayList();
     }

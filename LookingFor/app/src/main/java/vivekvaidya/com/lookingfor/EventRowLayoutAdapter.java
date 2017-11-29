@@ -1,6 +1,7 @@
 package vivekvaidya.com.lookingfor;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,14 +30,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class EventBrowserItemAdapter extends ArrayAdapter {
+public class EventRowLayoutAdapter extends ArrayAdapter {
 
     private Context context;
     private LayoutInflater inflater;
     private List<Event> events = new ArrayList<>();
     private List<Event> fullEvents = new ArrayList<>();
 
-    EventBrowserItemAdapter(Context mContext, int resource, List<Event> items) {
+    EventRowLayoutAdapter(Context mContext, int resource, List<Event> items) {
         super(mContext,resource);
         context = mContext;
         events = items;
@@ -44,7 +46,7 @@ public class EventBrowserItemAdapter extends ArrayAdapter {
         Log.d("Event number", String.valueOf(events.size()));
     }
 
-    EventBrowserItemAdapter(Context mContext, int resource) {
+    EventRowLayoutAdapter(Context mContext, int resource) {
         super(mContext,resource);
 
     }
@@ -73,15 +75,12 @@ public class EventBrowserItemAdapter extends ArrayAdapter {
 
     static class ViewHolder {
         TextView titleLabel;
-        TextView dateTimeLabel;
-        TextView typeLabel;
+        TextView dateLabel;
+        TextView timeLabel;
         TextView locationLabel;
-        TextView descriptionLabel;
-        TextView tagLabel;
-        TextView hostUsername;
         ImageView hostAvatar;
-        ImageView attendeeAvatar;
-        Button attendEventButton;
+        LinearLayout attendeeAvatarView;
+        ImageView eventImage;
     }
 
     @Override
@@ -91,17 +90,14 @@ public class EventBrowserItemAdapter extends ArrayAdapter {
         if (convertView == null) {
             /**UI Variables*/
             mViewHolder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.event_item_layout, viewGroup, false);
-            mViewHolder.titleLabel = (TextView) convertView.findViewById(R.id.titleLabel);
-            mViewHolder.dateTimeLabel = (TextView) convertView.findViewById(R.id.dateTimeLabel);
-            mViewHolder.typeLabel = (TextView) convertView.findViewById(R.id.typeLabel);
-            mViewHolder.locationLabel = (TextView) convertView.findViewById(R.id.locationLabel);
-            mViewHolder.descriptionLabel = (TextView) convertView.findViewById(R.id.descriptionLabel);
-            mViewHolder.tagLabel = (TextView) convertView.findViewById(R.id.tagLabel);
+            convertView = inflater.inflate(R.layout.row_layout, viewGroup, false);
+            mViewHolder.titleLabel = (TextView) convertView.findViewById(R.id.eventName);
+            mViewHolder.dateLabel = (TextView) convertView.findViewById(R.id.eventDate);
+            mViewHolder.timeLabel = (TextView) convertView.findViewById(R.id.eventTime);
+            mViewHolder.locationLabel = (TextView) convertView.findViewById(R.id.eventLocation);
+            mViewHolder.eventImage = (ImageView) convertView.findViewById(R.id.eventPicture);
             mViewHolder.hostAvatar = (ImageView) convertView.findViewById(R.id.hostAvatar);
-            mViewHolder.attendeeAvatar = (ImageView) convertView.findViewById(R.id.attendeeImage);
-            mViewHolder.attendEventButton = (Button) convertView.findViewById((R.id.attendEventButton));
-            mViewHolder.hostUsername = (TextView) convertView.findViewById(R.id.hostUserNameLabel);
+            mViewHolder.attendeeAvatarView = (LinearLayout) convertView.findViewById(R.id.attendeeAvatarList);
             convertView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
@@ -111,18 +107,11 @@ public class EventBrowserItemAdapter extends ArrayAdapter {
         /**Set UI Displays*/
         final Event currentEvent = events.get(i);
         mViewHolder.titleLabel.setText(currentEvent.getTitle());
-        mViewHolder.dateTimeLabel.setText(currentEvent.getDateTime());
-        ArrayList<String> tags = currentEvent.getTags();
-        StringBuilder sb = new StringBuilder();
-        for (String tag: tags) {
-            sb.append(tag);
-            sb.append(" ");
-        }
-        mViewHolder.tagLabel.setText(sb.toString());
+        mViewHolder.dateLabel.setText(currentEvent.getDate());
+        mViewHolder.timeLabel.setText(currentEvent.getTime());
         mViewHolder.locationLabel.setText(currentEvent.getLocation());
-        mViewHolder.descriptionLabel.setText(currentEvent.getDescription());
-        /**Get Avatars*/
 
+        /**Get Avatars*/
         String hostID = currentEvent.getHostID();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (hostID == null) {
@@ -134,21 +123,22 @@ public class EventBrowserItemAdapter extends ArrayAdapter {
             }
         }
 
-       StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+//       StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 //        StorageReference usersReference = storageReference.child("users");
 //        StorageReference hostReference = usersReference.child(hostID);
 //        mViewHolder.hostUsername.setText();
 
-        String attendeeID;
+
+        List<String> attendeeID = new ArrayList<>();
         if (currentEvent.getAttendeeID() == null || currentEvent.getAttendeeID().size() == 0) {
-            attendeeID = hostID;
+            attendeeID.add(hostID);
         } else {
-            attendeeID = currentEvent.getAttendeeID().get(0);
+            attendeeID = currentEvent.getAttendeeID();
             if (attendeeID == null) {
-                attendeeID = hostID;
+                attendeeID.add(hostID);
             }
         }
-        //TODO: getImage
+
         DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference().child("users");
         usersReference.child(hostID).child("avatar").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -161,36 +151,37 @@ public class EventBrowserItemAdapter extends ArrayAdapter {
 
             }
         });
-        usersReference.child(attendeeID).child("avatar").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mViewHolder.attendeeAvatar.setImageBitmap(User.stringToBitMap(dataSnapshot.getValue(String.class)));
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        int counter = 0;
+        if (mViewHolder.attendeeAvatarView.getChildCount() > 0) {
+            mViewHolder.attendeeAvatarView.removeAllViews();
+        }
+        for(String id : attendeeID) {
+            usersReference.child(id).child("avatar").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ImageView newAvatar = new ImageView(getContext());
+                    newAvatar.setImageBitmap(User.stringToBitMap(dataSnapshot.getValue(String.class)));
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(50,50);
+                    params.setMarginEnd(5);
+                    newAvatar.setLayoutParams(params);
+                    mViewHolder.attendeeAvatarView.addView(newAvatar);
+                }
 
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            counter++;
+            if (counter >= 5){
+                break;
             }
-        });
+        }
 //        StorageReference hostAvatarPath = storageReference.child("userAvatar/" + hostID + ".png");
 //        Glide.with(this.context).using(new FirebaseImageLoader()).load(hostAvatarPath).into(mViewHolder.hostAvatar);
 //        StorageReference attendeeAvatarPath = storageReference.child("userAvatar/" + attendeeID + ".png");
 //        Glide.with(this.context).using(new FirebaseImageLoader()).load(attendeeAvatarPath).into(mViewHolder.attendeeAvatar);
-
-        mViewHolder.attendEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean flag = currentEvent.attendEvent(currentUser.getUid(), new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        Toast.makeText(context,"Event attended", Toast.LENGTH_LONG).show();
-                    }
-                });
-                if (!flag) {
-                    Toast.makeText(context,"Failed attending event", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         return convertView;
     }
