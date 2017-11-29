@@ -11,6 +11,12 @@
         <item>Lecture</item>
         <item>Sport</item>
         <item>Hangout</item>
+        <item>Hangout</item>
+        <item>Hangout</item>
+        <item>Hangout</item>
+        <item>Hangout</item>
+        <item>Hangout</item>
+        <item>Hangout</item>
     </string-array>
     <string name="title_activity_event_browser">EventBrowser</string>
 </resources>

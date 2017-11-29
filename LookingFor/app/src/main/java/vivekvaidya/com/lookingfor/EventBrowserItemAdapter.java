@@ -2,9 +2,11 @@ package vivekvaidya.com.lookingfor;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,33 +31,40 @@ import com.google.firebase.storage.StorageReference;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter {
+public class EventBrowserItemAdapter extends ArrayAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private ArrayList<Event> events;
-    private ArrayList<Event> fullEvents;
+    private List<Event> events = new ArrayList<>();
+    private List<Event> fullEvents = new ArrayList<>();
 
-    EventBrowserItemAdapter(Context mContext, ArrayList<Event> items) {
+    EventBrowserItemAdapter(Context mContext, int resource, List<Event> items) {
+        super(mContext,resource);
         context = mContext;
         events = items;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         fullEvents = items;
+        Log.d("Event number", String.valueOf(events.size()));
     }
 
-    void setEvents(ArrayList<Event> events) {
+    EventBrowserItemAdapter(Context mContext, int resource) {
+        super(mContext,resource);
+
+    }
+    void setEvents(List<Event> events) {
         this.events = events;
     }
 
-    ArrayList<Event> getFullEvents() {
+    List<Event> getFullEvents() {
         return fullEvents;
     }
 
     @Override
     public int getCount() {
-        return events.size();
+        return events == null ? 0 : events.size();
     }
 
     @Override

@@ -187,9 +187,9 @@ public class Event implements Parcelable {
         }
     }
 
-    public static ArrayList<Event> searchForEvent(ArrayList<Event> events, String query){
+    public static List<Event> searchForEvent(List<Event> events, String query){
         query = query.toLowerCase();
-        ArrayList<Event> newList = new ArrayList<>();
+        List<Event> newList = new ArrayList<>();
         int count = 0;
         for (int i = 0; i < events.size(); i++){
             if ((events.get(i).getDescription().toLowerCase().contains(query)
