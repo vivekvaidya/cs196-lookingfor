@@ -162,7 +162,7 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     ImageView newAvatar = new ImageView(getContext());
                     newAvatar.setImageBitmap(User.stringToBitMap(dataSnapshot.getValue(String.class)));
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(50,50);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(70,70);
                     params.setMarginEnd(5);
                     newAvatar.setLayoutParams(params);
                     mViewHolder.attendeeAvatarView.addView(newAvatar);

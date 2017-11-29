@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
+        android:layout_marginTop="2dp"
         android:layout_alignParentTop="true"
         android:src="@drawable/autumn" />
 
@@ -25,7 +26,8 @@
         android:id="@+id/eventParticipants"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/eventLocation"
+        android:layout_marginTop="7dp"
         android:layout_alignStart="@+id/eventLocation"
         android:text="Participants:" />
 
@@ -60,16 +62,21 @@
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/eventParticipants"
+        android:layout_height="1dp"
+        android:layout_alignBottom="@+id/eventParticipants"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         android:background="#000000" />
 
     <LinearLayout
         android:id="@+id/attendeeAvatarList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignTop="@+id/eventParticipants"
+        android:layout_below="@id/eventLocation"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="5dp"
         android:layout_toEndOf="@+id/eventParticipants"
+        android:layout_marginStart="2dp"
         android:orientation="horizontal">
 
     </LinearLayout>
