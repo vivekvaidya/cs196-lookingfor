@@ -33,6 +33,7 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
     private TextView dateDisplay;
     private TextView timeDisplay;
     private EditText description;
+    private TextView locationDisplay;
 
     /*Database Constants*/
     @Override
@@ -43,13 +44,15 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
 
         /*Initialize Common UIs*/
         titleET =  findViewById(R.id.titleET);
-        Button backButton = (Button) findViewById(R.id.backButton);
-        eventTypeSPN = (Spinner) findViewById(R.id.eventSelectionSpinner);
-        dateDisplay = (TextView) findViewById(R.id.dateDisplay);
-        timeDisplay = (TextView) findViewById(R.id.timeDisplay);
-        description = (EditText) findViewById(R.id.descriptionET);
-        Button confirmButton = (Button) findViewById(R.id.addEventBT);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Button backButton =  findViewById(R.id.backButton);
+        eventTypeSPN =  findViewById(R.id.eventSelectionSpinner);
+        dateDisplay =  findViewById(R.id.dateDisplay);
+        timeDisplay =  findViewById(R.id.timeDisplay);
+        description =  findViewById(R.id.descriptionET);
+        Button confirmButton =  findViewById(R.id.addEventBT);
+        Toolbar toolbar =  findViewById(R.id.toolbar);
+        locationDisplay = findViewById(R.id.locationDisplay);
+
         setSupportActionBar(toolbar);
 
         /*Initialize Spinner*/
@@ -98,6 +101,7 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
         });
         dateDisplay.setOnClickListener(this);
         timeDisplay.setOnClickListener(this);
+        locationDisplay.setOnClickListener(this);
     }
 
     /**
@@ -125,11 +129,13 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
 
     private void pickTime() {
         Calendar now = Calendar.getInstance();
-        TimePickerDialog tpd = TimePickerDialog.newInstance(this,Calendar.HOUR_OF_DAY,Calendar.MINUTE,true);
+        TimePickerDialog tpd = TimePickerDialog.newInstance(this,now.get(Calendar.HOUR_OF_DAY),now.get(Calendar.MINUTE),true);
         tpd.show(getFragmentManager(),"Timepickerdialog");
     }
 
+    private void pickLocation() {
 
+    }
 
     @Override
     public void onClick(View view) {
@@ -139,6 +145,9 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.timeDisplay:
                 pickTime();
+                break;
+            case R.id.locationDisplay:
+                pickLocation();
                 break;
             default:
                 break;
