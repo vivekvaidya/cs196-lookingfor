@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="180dp"
         android:layout_height="match_parent"
-        android:background="#f4a771"
+        android:background="@color/colorPrimaryDark"
         android:gravity="center"
         android:orientation="vertical">
         <LinearLayout
@@ -38,9 +38,9 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/icon_create"/>
+                android:layout_width="60dp"
+                android:layout_height="61dp"
+                android:background="@drawable/icon_create" />
 
             <Button
                 android:id="@+id/createEventButton"
@@ -61,9 +61,9 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/icon_myevents"/>
+                android:layout_width="68dp"
+                android:layout_height="67dp"
+                android:background="@drawable/icon_myevents" />
 
             <Button
                 android:id="@+id/myEventsButton"
@@ -80,7 +80,7 @@
 
     <LinearLayout
         android:layout_width="220dp"
-        android:background="#9ab2ef"
+        android:background="@color/colorPrimaryLight"
         android:gravity="center"
         android:orientation="vertical"
         android:layout_height="match_parent">
@@ -92,9 +92,9 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/icon_events"/>
+                android:layout_width="60dp"
+                android:layout_height="62dp"
+                android:background="@drawable/icon_events" />
 
             <Button
                 android:id="@+id/allEventButton"
@@ -115,9 +115,9 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/icon_settings"/>
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:background="@drawable/icon_settings" />
 
             <Button
                 android:id="@+id/accountSettingsButton"
@@ -139,8 +139,8 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="67dp"
-                android:layout_height="73dp"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
                 android:background="@drawable/icon_signout" />
 
             <Button

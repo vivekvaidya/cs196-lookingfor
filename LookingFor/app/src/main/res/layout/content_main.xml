@@ -13,7 +13,17 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/autumn" />
+        android:src="@color/colorPrimaryLight" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:fontFamily="casual"
+        android:text="Looking For"
+        android:textSize="50dp" />
 
     <LinearLayout
         android:paddingTop="100dp"
@@ -31,6 +41,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="28dp"
             android:background="@drawable/edittextstyle"
+            android:fontFamily="casual"
             android:gravity=""
             android:hint="Email"
             android:selectAllOnFocus="false"
@@ -48,28 +59,29 @@
 
 
         <EditText
-            android:textColorHint="#000"
-            android:background="@drawable/edittextstyle"
             android:id="@+id/password"
             android:layout_width="300dp"
-            android:gravity=""
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:layout_marginBottom="19dp"
             android:layout_marginTop="20dp"
+            android:background="@drawable/edittextstyle"
+            android:fontFamily="casual"
+            android:gravity=""
             android:hint="Password"
-            android:layout_gravity="center"
             android:inputType="textPassword"
             android:selectAllOnFocus="true"
+            android:textColorHint="#000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.502"
-            tools:layout_constraintTop_creator="1"
-            tools:layout_constraintRight_creator="1"
             tools:layout_constraintBottom_creator="1"
-            tools:layout_constraintLeft_creator="1" />
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintRight_creator="1"
+            tools:layout_constraintTop_creator="1" />
 
         <Button
             android:id="@+id/Login"
@@ -79,6 +91,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="50dp"
             android:background="@drawable/buttonstyleselector"
+            android:fontFamily="casual"
             android:text="Login"
             android:textColor="#000"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -99,6 +112,7 @@
             android:layout_alignTop="@+id/phoneSignIn"
             android:layout_gravity="center"
             android:background="@null"
+            android:fontFamily="casual"
             android:text="Register"
             android:textColor="#000"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -114,9 +128,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@null"
+            android:fontFamily="casual"
             android:text="Sign in with phone"
             android:textColor="#000"
-            android:background="@null"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_constraintTop_creator="1" />
@@ -126,13 +141,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Verify Code"
-            tools:layout_constraintTop_creator="1"
-            tools:layout_constraintRight_creator="1"
-            android:textColor="#000"
             android:background="@null"
+            android:fontFamily="casual"
+            android:text="Verify Code"
+            android:textColor="#000"
             app:layout_constraintRight_toRightOf="@+id/phoneSignIn"
-            app:layout_constraintTop_toBottomOf="@+id/phoneSignIn" />
+            app:layout_constraintTop_toBottomOf="@+id/phoneSignIn"
+            tools:layout_constraintRight_creator="1"
+            tools:layout_constraintTop_creator="1" />
 
 
     </LinearLayout>
