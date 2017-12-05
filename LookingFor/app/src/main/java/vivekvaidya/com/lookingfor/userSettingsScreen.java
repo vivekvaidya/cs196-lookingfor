@@ -43,7 +43,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 
-public class userSettingsScreen extends NavigationDrawer implements View.OnClickListener{
+public class userSettingsScreen extends AppCompatActivity implements View.OnClickListener{
     /**Declare UI variables*/
     public EditText profileNameET;
     public EditText profilePhoneET;

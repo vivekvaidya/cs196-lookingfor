@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 
 
-public class createEventScreen extends NavigationDrawer implements View.OnClickListener {
+public class createEventScreen extends AppCompatActivity implements View.OnClickListener {
     /**UI Variables*/
 
     private EditText titleET;

@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import java.util.ArrayList;
 
-public class EventBrowser extends NavigationDrawer implements CallableAfterDownload {
+public class EventBrowser extends AppCompatActivity implements CallableAfterDownload {
 
     public static final String RECEIVE_EVENT_BEHAVIOR = "behavior";
     public static final String EVENTS_TO_DISPLAY = "events";
