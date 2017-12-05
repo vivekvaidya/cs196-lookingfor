@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 import static android.R.attr.phoneNumber;
 import static vivekvaidya.com.lookingfor.R.id.fab;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends NavigationDrawer implements View.OnClickListener{
 
     private FirebaseAuth myAuth;
     private EditText password;

@@ -16,7 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class welcomScreen extends AppCompatActivity{
+public class welcomScreen extends NavigationDrawer{
     /**UI variables*/
     private Button signOut;
     private Button createEvent;
@@ -34,7 +34,7 @@ public class welcomScreen extends AppCompatActivity{
         setContentView(R.layout.activity_welcom_screen);
 
         /**Initialize UIs*/
-        signOut = (Button) findViewById(R.id.signOut);
+        signOut =  findViewById(R.id.signOut);
         createEvent = (Button) findViewById(R.id.createEventButton);
         allEventButton = (Button) findViewById(R.id.allEventButton);
         Button myEventButton = (Button) findViewById(R.id.myEventsButton);
