@@ -12,6 +12,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <!--<item name="homeAsUpIndicator">@drawable/ic_drawer</item>-->
+    <!--<item name="android:homeAsUpIndicator">@drawable/ic_drawer</item>-->
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

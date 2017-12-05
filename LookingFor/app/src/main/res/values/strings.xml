@@ -13,4 +13,6 @@
         <item>Hangout</item>
     </string-array>
     <string name="title_activity_event_browser">EventBrowser</string>
+    <string name="drawer_open">drawer open</string>
+    <string name="drawer_close">drawer close</string>
 </resources>

@@ -1,10 +1,13 @@
 package vivekvaidya.com.lookingfor;
 
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,7 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 
 
-public class createEventScreen extends AppCompatActivity implements View.OnClickListener {
+public class createEventScreen extends NavigationActivity implements View.OnClickListener {
     /**UI Variables*/
 
     private EditText titleET;
@@ -123,5 +126,19 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
             default:
                 break;
         }
+    }
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }

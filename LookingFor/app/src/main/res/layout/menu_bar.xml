@@ -5,17 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!-- The main content view -->
-    <include layout="@layout/content_welcom_screen" />
     <FrameLayout
     android:id="@+id/frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>
 
     <!-- The navigation drawer -->
-    <android.support.design.widget.NavigationView
-    android:id="@+id/navigation"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:layout_gravity="start"
-    app:menu="@menu/navigation_bar"/>
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@drawable/autumn">-->
+    <!--</LinearLayout>-->
+
+    <ListView android:id="@+id/nav_drawer"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#111"/>
+
 </android.support.v4.widget.DrawerLayout>
