@@ -1,7 +1,6 @@
 package vivekvaidya.com.lookingfor;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.SearchView;
@@ -12,7 +11,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import java.util.ArrayList;
 
-public class EventBrowser extends NavigationActivity implements CallableAfterDownload {
+public class EventBrowser extends AppCompatActivity implements CallableAfterDownload {
 
     public static final String RECEIVE_EVENT_BEHAVIOR = "behavior";
     public static final String EVENTS_TO_DISPLAY = "events";
@@ -125,18 +124,4 @@ public class EventBrowser extends NavigationActivity implements CallableAfterDow
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
 }

@@ -2,7 +2,6 @@ package vivekvaidya.com.lookingfor;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import java.io.Serializable;
 
@@ -42,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 import static android.R.attr.phoneNumber;
 import static vivekvaidya.com.lookingfor.R.id.fab;
 
-public class MainActivity extends NavigationActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth myAuth;
     private EditText password;
@@ -242,16 +241,6 @@ public class MainActivity extends NavigationActivity implements View.OnClickList
         } else if (i == R.id.Login) {
             signIn(username.getText().toString(), password.getText().toString());
         }
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
     }
 
 }
