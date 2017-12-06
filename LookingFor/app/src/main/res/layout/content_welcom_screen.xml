@@ -38,8 +38,8 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="61dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:background="@drawable/icon_create" />
 
             <Button
@@ -61,8 +61,8 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="68dp"
-                android:layout_height="67dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:background="@drawable/icon_myevents" />
 
             <Button
@@ -92,8 +92,8 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="62dp"
+                android:layout_width="49dp"
+                android:layout_height="48dp"
                 android:background="@drawable/icon_events" />
 
             <Button
@@ -115,8 +115,8 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="66dp"
-                android:layout_height="66dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:background="@drawable/icon_settings" />
 
             <Button
@@ -139,8 +139,8 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="66dp"
-                android:layout_height="66dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:background="@drawable/icon_signout" />
 
             <Button
