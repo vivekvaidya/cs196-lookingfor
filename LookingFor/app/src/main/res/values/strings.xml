@@ -12,8 +12,5 @@
         <item>Sport</item>
         <item>Hangout</item>
     </string-array>
-
-    <string name="open_drawer">Drawer Opened</string>
-    <string name="close_drawer">Drawer Closed</string>
     <string name="title_activity_event_browser">EventBrowser</string>
 </resources>

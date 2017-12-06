@@ -124,5 +124,4 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
         return super.onCreateOptionsMenu(menu);
     }
 
-
 }
