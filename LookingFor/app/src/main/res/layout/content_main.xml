@@ -8,12 +8,23 @@
     tools:context="vivekvaidya.com.lookingfor.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:src="@color/colorPrimaryLight" />-->
+
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@color/colorPrimaryLight" />
+        android:id="@+id/imageView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/background"
+
+        android:translationZ="0dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,6 +34,7 @@
         android:layout_marginTop="25dp"
         android:fontFamily="casual"
         android:text="Looking For"
+        android:textColor="@color/colorPrimary"
         android:textSize="50dp" />
 
     <LinearLayout

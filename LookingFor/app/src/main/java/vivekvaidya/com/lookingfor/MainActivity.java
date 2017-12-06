@@ -2,23 +2,19 @@ package vivekvaidya.com.lookingfor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
-import java.io.Serializable;
-
-import android.provider.ContactsContract;
-
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,15 +27,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
-
-import static android.R.attr.phoneNumber;
-import static vivekvaidya.com.lookingfor.R.id.fab;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -53,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String phoneAuthID;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
     private PhoneAuthProvider.ForceResendingToken resendToken;
+
+    private ImageView background;
 
 
     @Override
@@ -68,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loginPhone = (Button) findViewById(R.id.phoneSignIn);
         verifyCode = (Button) findViewById(R.id.verifyCode);
 
+        background =(ImageView) findViewById(R.id.imageView);
+        background.setColorFilter(Color.argb(50, 255, 255, 255), PorterDuff.Mode.LIGHTEN);
 
 
         verifyCode.setOnClickListener(new View.OnClickListener(){
