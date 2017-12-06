@@ -34,7 +34,7 @@ public class welcomScreen extends AppCompatActivity{
         setContentView(R.layout.activity_welcom_screen);
 
         /**Initialize UIs*/
-        signOut = (Button) findViewById(R.id.signOut);
+        signOut = (Button) findViewById(R.id.signout);
         createEvent = (Button) findViewById(R.id.createEventButton);
         allEventButton = (Button) findViewById(R.id.allEventButton);
         Button myEventButton = (Button) findViewById(R.id.myEventsButton);

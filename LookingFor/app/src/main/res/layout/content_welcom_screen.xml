@@ -144,7 +144,7 @@
                 android:background="@drawable/icon_signout" />
 
             <Button
-                android:id="@+id/signOut"
+                android:id="@+id/signout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="sign out"
