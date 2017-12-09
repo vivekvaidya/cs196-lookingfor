@@ -13,5 +13,4 @@
         <item>Hangout</item>
     </string-array>
     <string name="title_activity_event_browser">EventBrowser</string>
-    <string name="title_activity_map">Map</string>
 </resources>
