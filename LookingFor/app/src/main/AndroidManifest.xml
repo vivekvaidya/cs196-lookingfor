@@ -35,7 +35,8 @@
             android:name=".EventBrowser"
             android:label="@string/title_activity_event_browser"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FragmentActivity"></activity>
+        <activity android:name=".FragmentActivity" />
+        <activity android:name=".MapActivity"></activity>
     </application>
 
 </manifest>
