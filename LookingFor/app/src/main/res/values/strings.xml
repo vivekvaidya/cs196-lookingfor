@@ -11,15 +11,12 @@
         <item>Lecture</item>
         <item>Sport</item>
         <item>Hangout</item>
+        <item>Hangout</item>
+        <item>Hangout</item>
+        <item>Hangout</item>
+        <item>Hangout</item>
+        <item>Hangout</item>
+        <item>Hangout</item>
     </string-array>
-    <string-array name="events">
-        <item>Tennis</item>
-        <item>Wii</item>
-        <item>Basketball</item>
-        <item>Baseball</item>
-        <item>Xbox</item>
-    </string-array>
-
-
-
+    <string name="title_activity_event_browser">EventBrowser</string>
 </resources>

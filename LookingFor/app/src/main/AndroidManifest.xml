@@ -32,12 +32,9 @@
             android:label="@string/title_activity_user_settings_screen"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".DisplayEvents"
-            android:label="All Events"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
-
+            android:name=".EventBrowser"
+            android:label="@string/title_activity_event_browser"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

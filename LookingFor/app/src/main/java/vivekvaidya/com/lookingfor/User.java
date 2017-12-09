@@ -4,28 +4,72 @@ package vivekvaidya.com.lookingfor;
  * Created by Administrator on 2017/10/26.
  */
 
-import java.io.Serializable;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.util.Base64;
 
-@SuppressWarnings("serial")
-public class User implements Serializable {
-    final private String UID;
-    private String emailAddress;
-    private String phoneNumber;
-    private String passWord;
-    private String userName;
-    private String avatarLink;
-    private boolean isLoggedIn = false;
-    public User(String UID, String phoneNumber){
-        this.UID = UID;
-        this.phoneNumber = phoneNumber;
-        this.isLoggedIn = true;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+/**For Parcelable, you may want to find the Android Parcelable code generator from:
+ * Preferences -> Plugins
+ */
+public class User implements Parcelable {
+
+    /**Basic Data*/
+    private String UID = "";
+    @Exclude
+    public final static int AVATAR_SIDE_LENGTH = 100;
+
+    private String emailAddress = "";
+    private String phoneNumber = "";
+    private String userName = "";
+    private List<String> attendingEvents = new ArrayList<>();
+    private List<String> friends = new ArrayList<>();
+    private List<String> hostingEvents = new ArrayList<>();
+    private String avatar = "";
+
+    public User() {
+
     }
-    public User(String UID, String emailAddress, String passWord){
+
+    /**Constructors*/
+    public User(String UID, String userName, String emailAddress, String phoneNumber, Bitmap avatarBitmap){
         this.UID = UID;
         this.emailAddress = emailAddress;
-        this.passWord = passWord;
-        this.isLoggedIn = true;
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
+        this.avatar = bitMapToString(avatarBitmap);
     }
+    public User(String UID, String userName, String phoneNumber, String emailAddress, Bitmap avatarBitmap, List<String> friends, List<String> hostingEvents, List<String> attendingEvents) {
+        this.UID = UID;
+        this.emailAddress = emailAddress;
+        this.avatar = bitMapToString(avatarBitmap);
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
+        this.friends = friends;
+        this.attendingEvents = attendingEvents;
+        this.hostingEvents = hostingEvents;
+    }
+    /**Getter and Setters*/
     public String getUID(){
         return this.UID;
     }
@@ -33,46 +77,137 @@ public class User implements Serializable {
         return this.phoneNumber;
     }
     public void setPhoneNumber(String phoneNumber) {
-        if (this.isLoggedIn) {
-            this.phoneNumber = phoneNumber;
-        }
+        this.phoneNumber = phoneNumber;
     }
     public String getEmailAddress(){
         return this.emailAddress;
     }
     public void setEmailAddress(String emailAddress) {
-        if (this.isLoggedIn) {
-            this.emailAddress = emailAddress;
-        }
-    }
-    public String getPassWord(){
-        return this.passWord;
-    }
-    public void setPassWord(String passWord){
-        if (this.isLoggedIn){
-            this.passWord = passWord;
-        }
+        this.emailAddress = emailAddress;
     }
     public String getUserName(){
         return this.userName;
     }
     public void setUserName(String userName){
-        if (this.isLoggedIn){
-            this.userName = userName;
+        this.userName = userName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    @Exclude
+    public Bitmap getAvatarinBitmap() {
+        return stringToBitMap(avatar);
+    }
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+    public void setAvatarWithBitmap(Bitmap avatar) {
+        this.avatar = bitMapToString(avatar);
+    }
+
+    /**Bitmap to String*/
+    public static String bitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream ByteStream= new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, ByteStream);
+        byte [] b=ByteStream.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    /**String to Bitmap*/
+    public static Bitmap stringToBitMap(String encodedString){
+        try{
+            byte[] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        }catch(Exception e){
+            e.getMessage();
+            return null;
         }
     }
-    public String getAvatarLink(){
-        return this.avatarLink;
+    /**Push User configuration to Database*/
+    public void pushToFirebase(final OnCompleteListener<Void> onCompleteListener) {
+
+        DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
+                .child(getUID());
+        newEventReference.setValue(this).addOnCompleteListener(onCompleteListener);
+
+//
+//        /**Put entries*/
+//        final HashMap<String, Object> dataMap = new HashMap<>();
+//        dataMap.put("email", getEmailAddress());
+//        dataMap.put("phone", getPhoneNumber());
+//        dataMap.put("username", getUserName());
+//        ArrayList<String> events = new ArrayList<>();
+//        dataMap.put("attendingEvents", attendingEvents);
+//        ArrayList<String> friendsList = new ArrayList<>();
+//        dataMap.put("friends", friends);
+//        ArrayList<String> hosting = new ArrayList<>();
+//        dataMap.put("hostingEvents",hostingEvents);
+//
+//        /**Push avatar to storage*/
+//        StorageReference avatarStorageReference = FirebaseStorage.getInstance().getReference().child("userAvatar/"+ getUID() + ".png");
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//        avatar.compress(Bitmap.CompressFormat.PNG,100, outputStream);
+//        avatarStorageReference.putBytes(outputStream.toByteArray()).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+//                dataMap.put("AvatarSet", true);
+//                DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
+//                        .child(getUID());
+//                newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                dataMap.put("AvatarSet", false);
+//                DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
+//                        .child(getUID());
+//                newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
+//            }
+//        });
+
     }
-    public void setAvatarLink(String avatarLink){
-        if (this.isLoggedIn){
-            this.avatarLink = avatarLink;
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.UID);
+        dest.writeString(this.emailAddress);
+        dest.writeString(this.phoneNumber);
+        dest.writeString(this.userName);
+        dest.writeStringList(this.attendingEvents);
+        dest.writeStringList(this.friends);
+        dest.writeStringList(this.hostingEvents);
+        dest.writeString(this.avatar);
+    }
+
+    protected User(Parcel in) {
+        this.UID = in.readString();
+        this.emailAddress = in.readString();
+        this.phoneNumber = in.readString();
+        this.userName = in.readString();
+        this.attendingEvents = in.createStringArrayList();
+        this.friends = in.createStringArrayList();
+        this.hostingEvents = in.createStringArrayList();
+        this.avatar = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
         }
-    }
-    public boolean getLoginStatus(){
-        return this.isLoggedIn;
-    }
-    public void swapLogin(){
-        this.isLoggedIn = !this.isLoggedIn;
-    }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

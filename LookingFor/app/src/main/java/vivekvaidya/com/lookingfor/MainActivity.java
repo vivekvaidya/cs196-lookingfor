@@ -46,18 +46,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth myAuth;
     private EditText password;
     private EditText username;
-    private EditText contents;
     private Button login;
     private Button register;
-    private Button signOut;
-    private Button upload;
-    private Button download;
     private Button loginPhone;
     private Button verifyCode;
     private String phoneAuthID;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
     private PhoneAuthProvider.ForceResendingToken resendToken;
-    private FirebaseDatabase mDatabase;
 
 
     @Override
@@ -68,31 +63,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         password = (EditText) findViewById(R.id.password);
         username = (EditText) findViewById(R.id.username);
-        contents = (EditText) findViewById(R.id.contents);
         login = (Button) findViewById(R.id.Login);
         register = (Button) findViewById(R.id.register);
-        signOut = (Button) findViewById(R.id.signOut);
-        upload = (Button) findViewById(R.id.uploadText);
-        download = (Button) findViewById(R.id.downloadText);
-
         loginPhone = (Button) findViewById(R.id.phoneSignIn);
         verifyCode = (Button) findViewById(R.id.verifyCode);
 
 
-        /**FloatingActionButton fab = (FloatingActionButton) findViewById(fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });**/
+
         verifyCode.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 String code = password.getText().toString();
-                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(phoneAuthID, code);
-                SignInWithPhoneAuthCredential(credential);
+                if (phoneAuthID == null || phoneAuthID.equals("")) {
+                    Toast.makeText(MainActivity.this, "Code not sent.", Toast.LENGTH_LONG).show();
+                } else {
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(phoneAuthID, code);
+                    SignInWithPhoneAuthCredential(credential);
+                }
             }
         });
 
@@ -105,12 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         login.setOnClickListener(this);
         register.setOnClickListener(this);
-        signOut.setOnClickListener(this);
-        upload.setOnClickListener(this);
-        download.setOnClickListener(this);
- 
         myAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance();
 
 
     }
@@ -120,40 +102,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
         // Check if user is signed in (non-null) .
         FirebaseUser currentUser = myAuth.getCurrentUser();
-        updateUI(currentUser);
         if (currentUser != null) {
             Intent intent = new Intent(this.getApplicationContext(),welcomScreen.class);
             startActivity(intent);
         }
     }
 
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            contents.setText(getString(R.string.emailFirebase,
-                    user.getEmail(), user.isEmailVerified(), user.getUid()));
-            login.setVisibility(View.GONE);
-            register.setVisibility(View.GONE);
-            signOut.setVisibility(View.VISIBLE);
-
-        } else {
-            contents.setText(R.string.signedOut);
-            login.setVisibility(View.VISIBLE);
-            register.setVisibility(View.VISIBLE);
-            signOut.setVisibility(View.GONE);
-        }
-    }
-
     private void createAccount(final String email, final String password) {
         final Context context = this.getApplicationContext();
-        Task<AuthResult> object = myAuth.createUserWithEmailAndPassword(email, password).
+        myAuth.createUserWithEmailAndPassword(email, password).
                 addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = myAuth.getCurrentUser();
-                            updateUI(user);
-                            User newUser = new User(user.getUid(), email, password);
                             Intent intent = new Intent(context, userSettingsScreen.class);
                             intent.putExtra("nameString",myAuth.getUid());
                             startActivity(intent);
@@ -161,35 +123,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // If sign in fails, display a message to the user.
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
                     }
                 });
-    }
-
-    private void writeNewUser(String name, String email) {
-        //Dummy Code: set up names,email and password or make it something else
-        HashMap<String, String> dataMap = new HashMap<String, String>();
-        dataMap.put("Name", "hello");
-        dataMap.put("Email", "email");
-        dataMap.put("Password", "password");
-
-        DatabaseReference users = mDatabase.getReference().child("Users").child("names");
-        users.setValue(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-                if(task.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Registered Successfully!", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Error...", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-
-        //User user = new User(name, email);
-        //mDatabase.getReference().child("users").child(myAuth.getUid().toString()).setValue(contents.getText().toString());
     }
 
     private void signIn(String email, final String password) {
@@ -199,25 +135,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-
-
-       //             DatabaseReference mChildDatabase = mDatabase.getReference().child("users").push();
-         //           mChildDatabase.child("emailUser").setValue(username);
-           //         mChildDatabase.child("passWordUser").setValue(password);
-
-
                     // Sign in success, update UI with the signed-in user's information
-
-
                     FirebaseUser user = myAuth.getCurrentUser();
-                    updateUI(user);
                     Intent intent = new Intent(context,welcomScreen.class);
                     startActivity(intent);
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(MainActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
-                    updateUI(null);
                 }
             }
         });
@@ -225,49 +150,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    private void signOut() {
-        myAuth.signOut();
-        Toast.makeText(MainActivity.this, "signed out",Toast.LENGTH_SHORT).show();
-        updateUI(null);
-    }
-  
+
     private void phoneAuth() {
+
         final Context context = this.getApplicationContext();
         final String phoneNumber = username.getText().toString();
-        verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            @Override
-            public void onVerificationCompleted(PhoneAuthCredential credential) {
-                contents.setText("you have signed in!");
-                SignInWithPhoneAuthCredential(credential);
-                User newUser = new User(myAuth.getUid(),phoneNumber);
-                Intent intent = new Intent(context,welcomScreen.class);
-                intent.putExtra("nameString",myAuth.getUid());
-                startActivity(intent);
-            }
-
-
-            @Override
-            public void onVerificationFailed(FirebaseException e) {
-                if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                    contents.setText("invalid phone number");
-                } else if (e instanceof FirebaseTooManyRequestsException) {
-                    contents.setText("aaa");
+        Toast.makeText(context, "phoneAuth() called", Toast.LENGTH_SHORT).show();
+        if (phoneNumber.equals("")) {
+            Toast.makeText(context, "phoneAuth() called with no phone number", Toast.LENGTH_SHORT).show();
+        } else {
+            verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                @Override
+                public void onVerificationCompleted(PhoneAuthCredential credential) {
+                    Toast.makeText(context, "you have signed in!", Toast.LENGTH_SHORT).show();
+                    SignInWithPhoneAuthCredential(credential);
+                    Intent intent = new Intent(context, welcomScreen.class);
+                    intent.putExtra("nameString", myAuth.getUid());
+                    startActivity(intent);
                 }
-            }
 
-            public void onCodeSent(String verificationID, PhoneAuthProvider.ForceResendingToken token) {
-                phoneAuthID = verificationID;
-                resendToken = token;
-                contents.setText("code sent!");
-            }
-        };
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber,
-                60,
-                TimeUnit.SECONDS,
-                this,
-                verificationCallbacks
-        );
+
+                @Override
+                public void onVerificationFailed(FirebaseException e) {
+                    if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                        Toast.makeText(context, "invalid phone number", Toast.LENGTH_SHORT).show();
+                    } else if (e instanceof FirebaseTooManyRequestsException) {
+                        Toast.makeText(context, "aaa", Toast.LENGTH_SHORT).show();
+                    } else {
+                        e.printStackTrace();
+                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("PhoneAuth", "auth failed");
+                    }
+                }
+
+                public void onCodeSent(String verificationID, PhoneAuthProvider.ForceResendingToken token) {
+                    phoneAuthID = verificationID;
+                    resendToken = token;
+                    Toast.makeText(context, "code sent!", Toast.LENGTH_SHORT).show();
+                    Log.d("PhoneAuth", "code sent!");
+                }
+            };
+            Log.d("PhoneAuth", phoneNumber);
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNumber, 60, TimeUnit.SECONDS, this, verificationCallbacks);
+        }
     }
 
 
@@ -297,12 +222,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    contents.setText("logged in!");
-                    FirebaseUser user = task.getResult().getUser();
+                    return;
                 } else {
                     if (task.getException() instanceof
                             FirebaseAuthInvalidCredentialsException) {
-                        contents.setText("wrong!");
+                        return;
                     }
                 }
             }
@@ -316,13 +240,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             createAccount(username.getText().toString(), password.getText().toString());
         } else if (i == R.id.Login) {
             signIn(username.getText().toString(), password.getText().toString());
-        } else if (i == R.id.signOut) {
-            signOut();
-        } else if (i == R.id.uploadText) {
-            //TODO:          upload(contents.getText().toString());
-            writeNewUser(username.getText().toString(), password.getText().toString());
-        } else if (i == R.id.downloadText) {
-            //TODO:         download(username.getText().toString());
         }
     }
 

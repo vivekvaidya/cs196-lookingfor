@@ -1,5 +1,4 @@
 package vivekvaidya.com.lookingfor;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,121 +16,108 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class welcomScreen extends AppCompatActivity{
+    /**UI variables*/
     private Button signOut;
     private Button createEvent;
     private Button accountSettings;
     private TextView welcomText;
-
-    //Added event page
-    public Button allEvents;
-
-
     private FirebaseAuth myAuth;
-    private final int USER_SETTINGS_RESULT = 23;
-    private final int EVENT_CREATE_RESULT = 7;
     private Toolbar toolbar;
-
+    private Button allEventButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        /**Initialize Screen*/
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcom_screen);
 
-        connectToDisplayEventPage();
 
+        connectToDisplayEventPage();
+        /**Initialize UIs*/
         signOut = (Button) findViewById(R.id.signOut);
         createEvent = (Button) findViewById(R.id.createEventButton);
+        allEventButton = (Button) findViewById(R.id.allEventButton);
+        Button myEventButton = (Button) findViewById(R.id.myEventsButton);
         accountSettings = (Button) findViewById(R.id.accountSettingsButton);
-        welcomText = (TextView) findViewById(R.id.welcomeText);
+        welcomeText = (TextView) findViewById(R.id.welcomeText);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
 
         final Context context = this.getApplicationContext();
         myAuth = FirebaseAuth.getInstance();
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
+        /**Show Welcome Text*/
         showWelcomeText();
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
+        /**Set behavior to SignOut Button.*/
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signOut();
             }
         });
+
+        /**Go to other screens*/
+        final Context context = this.getApplicationContext();
+        myEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, EventBrowser.class);
+                intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR,EventBrowser.SEARCH_PERSON);
+                intent.putExtra(EventBrowser.SEARCH_FOR,myAuth.getCurrentUser().getUid());
+                startActivity(intent);
+            }
+        });
         accountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,userSettingsScreen.class);
+                Intent intent = new Intent(context, userSettingsScreen.class);
                 startActivity(intent);
             }
         });
         createEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,createEventScreen.class);
+                Intent intent = new Intent(context, createEventScreen.class);
                 startActivity(intent);
             }
         });
-
+        allEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, EventBrowser.class);
+                startActivity(intent);
+            }
+        });
     }
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        // Check which request we're responding to
-//        if (requestCode == USER_SETTINGS_RESULT) {
-//            // Make sure the request was successful
-//            if (resultCode == RESULT_OK) {
-//                // The user picked a contact.
-//                // The Intent's data Uri identifies which contact was selected.
-//
-//                // Do something with the contact here (bigger example below)
-//
-//            }
-//        }
-//    }
+    /**Sign Out*/
     private void signOut(){
         myAuth.signOut();
         finish();
     }
-
+    /**Show welcome text by username*/
     public void showWelcomeText() {
         String uid = myAuth.getUid();
-        DatabaseReference id = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("nickname");
+        DatabaseReference id = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("username");
         id.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.getValue(String.class);
                 if (name == null) {
-                    welcomText.setText("Hello! But we can't find your nickname.");
-                }
-                else {
-                    welcomText.setText("Hello," + name.toString());
+                    welcomeText.setText("Hello! But we can't find your nickname.");
+                } else {
+                    welcomeText.setText("Hello," + name.toString());
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                welcomText.setText("Hello! But something's wrong.");
+                welcomeText.setText("Hello! But something's wrong.");
             }
         });
     }
 
-//    Added method to all events button in order to connect to displayEvents page
-    public void connectToDisplayEventPage() {
-        allEvents = (Button) findViewById(R.id.allEventButton);
-        allEvents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent connect = new Intent(welcomScreen.this, DisplayEvents.class);
-                startActivity(connect);
-            }
-        });
-    }
 }
