@@ -1,5 +1,4 @@
 package vivekvaidya.com.lookingfor;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +20,7 @@ public class welcomScreen extends AppCompatActivity{
     private Button signOut;
     private Button createEvent;
     private Button accountSettings;
-    private TextView welcomeText;
+    private TextView welcomText;
     private FirebaseAuth myAuth;
     private Toolbar toolbar;
     private Button allEventButton;
@@ -33,6 +32,8 @@ public class welcomScreen extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcom_screen);
 
+
+        connectToDisplayEventPage();
         /**Initialize UIs*/
         signOut = (Button) findViewById(R.id.signOut);
         createEvent = (Button) findViewById(R.id.createEventButton);
@@ -42,7 +43,8 @@ public class welcomScreen extends AppCompatActivity{
         welcomeText = (TextView) findViewById(R.id.welcomeText);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        /**Firebase Constant*/
+
+        final Context context = this.getApplicationContext();
         myAuth = FirebaseAuth.getInstance();
 
         setSupportActionBar(toolbar);
@@ -117,6 +119,5 @@ public class welcomScreen extends AppCompatActivity{
             }
         });
     }
-
 
 }

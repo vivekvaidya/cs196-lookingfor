@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="185dp">
 
@@ -42,16 +43,19 @@
 
     <TextView
         android:id="@+id/eventTime"
+
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_alignBaseline="@+id/eventDate"
         android:layout_alignBottom="@+id/eventDate"
         android:layout_marginStart="20dp"
+
         android:layout_toEndOf="@+id/eventDate"
         android:text="Time:" />
 
     <TextView
         android:id="@+id/eventLocation"
+
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_alignStart="@+id/eventDate"
