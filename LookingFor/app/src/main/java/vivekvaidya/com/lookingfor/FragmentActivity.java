@@ -1,5 +1,7 @@
         package vivekvaidya.com.lookingfor;
 
+        import android.content.Context;
+        import android.content.Intent;
         import android.os.Bundle;
         import android.support.design.widget.NavigationView;
         import android.support.v4.app.Fragment;
@@ -24,6 +26,9 @@ public class FragmentActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_welcom_screen);
+        final Context context = this.getApplicationContext();
+
 
         // Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -49,16 +54,14 @@ public class FragmentActivity extends AppCompatActivity{
                     //Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.zero:
                         Toast.makeText(getApplicationContext(),"Inbox Selected",Toast.LENGTH_SHORT).show();
-                        Fragment fragment = new Fragment();
-                        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.frame,fragment);
-                        fragmentTransaction.commit();
+                        Intent intent = new Intent(context, createEventScreen.class);
+                        startActivity(intent);
                         return true;
                     // For rest of the options we just show a toast on click
 
                     case R.id.one:
-                        Toast.makeText(getApplicationContext(),"Stared Selected",Toast.LENGTH_SHORT).show();
-                        return true;
+                        Intent intent2 = new Intent(context, userSettingsScreen.class);
+                        startActivity(intent2);                        return true;
                     case R.id.two:
                         Toast.makeText(getApplicationContext(),"Send Selected",Toast.LENGTH_SHORT).show();
                         return true;
