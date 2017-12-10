@@ -14,7 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+//import android.widget.ImageButton;
+//import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,7 +44,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
     private PhoneAuthProvider.ForceResendingToken resendToken;
 
-    private ImageView background;
+//    private ImageView background;
+
 
 
     @Override
@@ -59,8 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loginPhone = (Button) findViewById(R.id.phoneSignIn);
         verifyCode = (Button) findViewById(R.id.verifyCode);
 
-        background =(ImageView) findViewById(R.id.imageView);
-        background.setColorFilter(Color.argb(50, 255, 255, 255), PorterDuff.Mode.LIGHTEN);
+
+//        background =(ImageView) findViewById(R.id.imageView);
+//        background.setColorFilter(Color.argb(50, 255, 255, 255), PorterDuff.Mode.LIGHTEN);
 
 
         verifyCode.setOnClickListener(new View.OnClickListener(){

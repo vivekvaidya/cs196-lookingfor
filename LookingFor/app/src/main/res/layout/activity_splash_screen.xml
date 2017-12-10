@@ -11,21 +11,22 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/nature"
+        android:background="#fff"
         android:translationZ="3dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
+
     <ImageView
         android:id="@+id/uiuc"
-        android:layout_width="87dp"
-        android:layout_height="99dp"
+        android:layout_width="160dp"
+        android:layout_height="189dp"
         android:layout_marginBottom="64dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:scaleType="fitXY"
-        android:src="@drawable/uiuc"
+        android:src="@drawable/logo"
         android:translationZ="4dp"
         app:layout_constraintBottom_toTopOf="@+id/progressBar2"
         app:layout_constraintEnd_toEndOf="parent"

@@ -37,7 +37,7 @@ public class SplashScreen extends Activity {
 
                 }
 
-                android.os.SystemClock.sleep(1000);
+
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
                 finish();
