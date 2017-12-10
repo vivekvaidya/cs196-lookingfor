@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="0"
+        android:id="@+id/zero"/>
+    <item android:title="1"
+        android:id="@+id/one"/>
+
+    <item android:title="2"
+        android:id="@+id/two"/>
+    <item android:title="3"
+        android:id="@+id/three"/>
+
+</menu>
