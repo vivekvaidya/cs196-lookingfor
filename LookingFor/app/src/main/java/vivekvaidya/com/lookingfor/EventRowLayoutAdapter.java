@@ -3,6 +3,7 @@ package vivekvaidya.com.lookingfor;
 import android.content.Context;
 import android.media.Image;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,6 +72,30 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
     @Override
     public long getItemId(int i) {
         return i;
+    }
+
+    public void attend(int position) {
+        final String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ArrayList<String> attendees = events.get(position).getAttendeeID();
+        if (attendees == null || !attendees.contains(currentUser)) {
+            events.get(position).attendEvent(currentUser, new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    Toast.makeText(context,"You attended this Event", Toast.LENGTH_SHORT).show();
+
+                    notifyDataSetChanged();
+                }
+            });
+        } else {
+            events.get(position).leaveEvent(currentUser, new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    Toast.makeText(context,"You left this Event", Toast.LENGTH_SHORT).show();
+
+                    notifyDataSetChanged();
+                }
+            });
+        }
     }
 
     static class ViewHolder {

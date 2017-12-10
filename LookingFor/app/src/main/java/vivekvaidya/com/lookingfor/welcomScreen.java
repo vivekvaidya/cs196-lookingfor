@@ -20,7 +20,7 @@ public class welcomScreen extends AppCompatActivity{
     private Button signOut;
     private Button createEvent;
     private Button accountSettings;
-    private TextView welcomText;
+    private TextView welcomeText;
     private FirebaseAuth myAuth;
     private Toolbar toolbar;
     private Button allEventButton;
@@ -33,7 +33,6 @@ public class welcomScreen extends AppCompatActivity{
         setContentView(R.layout.activity_welcom_screen);
 
 
-        connectToDisplayEventPage();
         /**Initialize UIs*/
         signOut = (Button) findViewById(R.id.signOut);
         createEvent = (Button) findViewById(R.id.createEventButton);
@@ -61,7 +60,6 @@ public class welcomScreen extends AppCompatActivity{
         });
 
         /**Go to other screens*/
-        final Context context = this.getApplicationContext();
         myEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

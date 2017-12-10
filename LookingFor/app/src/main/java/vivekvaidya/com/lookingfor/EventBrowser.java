@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class EventBrowser extends AppCompatActivity implements CallableAfterDownload {
@@ -42,6 +44,7 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
 
         Intent intent = getIntent();
         int behavior = intent.getIntExtra(RECEIVE_EVENT_BEHAVIOR,DISPLAY_ALL);
+
         //ArrayList<Event> events = intent.getParcelableArrayListExtra(EVENTS_TO_DISPLAY);
         downloadEvents(behavior/*,events*/);
 
@@ -99,6 +102,38 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
         adapter = new EventRowLayoutAdapter(this,R.layout.row_layout,events);
         ListView eventsListView = findViewById(R.id.eventListView);
         eventsListView.setAdapter(adapter);
+        SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                        eventsListView,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+
+                                    int i = adapter.getCount();
+
+
+                                    adapter.attend(position);
+
+                                    //Toast.makeText(EventBrowser.this, String.valueOf(i), Toast.LENGTH_SHORT).show();
+
+
+                                }
+
+
+                            }
+                        });
+        eventsListView.setOnTouchListener(touchListener);
+
+
+
+
+
     }
 
 
