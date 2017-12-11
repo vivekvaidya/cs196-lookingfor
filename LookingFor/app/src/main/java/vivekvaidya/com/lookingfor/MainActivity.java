@@ -27,9 +27,6 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
-//import android.widget.ImageButton;
-//import android.widget.ImageView;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth myAuth;
@@ -42,8 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String phoneAuthID;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationCallbacks;
     private PhoneAuthProvider.ForceResendingToken resendToken;
-
-//    private ImageView background;
 
 
 
@@ -59,10 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         register = (Button) findViewById(R.id.register);
         loginPhone = (Button) findViewById(R.id.phoneSignIn);
         verifyCode = (Button) findViewById(R.id.verifyCode);
-
-
-//        background =(ImageView) findViewById(R.id.imageView);
-//        background.setColorFilter(Color.argb(50, 255, 255, 255), PorterDuff.Mode.LIGHTEN);
 
 
         verifyCode.setOnClickListener(new View.OnClickListener(){
