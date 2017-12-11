@@ -3,10 +3,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +36,10 @@ public class welcomScreen extends AppCompatActivity {
     private ImageButton allEventButton1;
     private ImageButton accountSettings1;
     private ImageButton signout1;
+    private EditText searchQuery;
+    private Button quickSearch;
+    private Button clearHistory;
+    private NavigationView navView;
     boolean doubleBackToExitPressedOnce = false;
 
     @Override
@@ -63,6 +69,10 @@ public class welcomScreen extends AppCompatActivity {
 
 
         /**Initialize UIs*/
+        navView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navView.getHeaderView(0);
+        searchQuery = (EditText) headerView.findViewById(R.id.searchBox) ;
+        quickSearch = (Button) headerView.findViewById(R.id.searchButton);
         signOut = findViewById(R.id.signOut);
         createEvent = findViewById(R.id.createEventButton);
         allEventButton = findViewById(R.id.allEventButton);
@@ -157,6 +167,15 @@ public class welcomScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, EventBrowser.class);
+                startActivity(intent);
+            }
+        });
+        quickSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, EventBrowser.class);
+                intent.putExtra(EventBrowser.SEARCH_FOR,searchQuery.getText().toString());
+                intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR,EventBrowser.SEARCH_EVENTS);
                 startActivity(intent);
             }
         });
