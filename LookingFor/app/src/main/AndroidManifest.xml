@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="vivekvaidya.com.lookingfor">
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -49,7 +51,12 @@
             android:label="My Events"
             android:theme="@style/AppTheme.NoActionBar" />
 
-
+        <activity android:name=".FragmentActivity" />
+        <activity android:name=".MapActivity" />
+        <activity android:name=".DetailScreen"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBHyMzcnSa7ibNp3P8vPH3TLZ-tgRZktgo" />
     </application>
 
 </manifest>

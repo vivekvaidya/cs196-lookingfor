@@ -134,16 +134,15 @@
         android:layout_marginTop="28dp"
         android:fontFamily="serif"
         android:gravity="left|center_vertical"
-        android:hint="Date"
         android:textColor="@android:color/black"
         android:textColorHint="@android:color/black"
         android:textSize="20sp"
+        android:hint="Pick Date"
         app:layout_constraintEnd_toStartOf="@+id/timeDisplay"
         app:layout_constraintTop_toBottomOf="@+id/createEventLabel" />
 
     <TextView
         android:id="@+id/timeDisplay"
-
         android:layout_width="99dp"
         android:layout_height="34dp"
         android:layout_marginEnd="36dp"
@@ -170,7 +169,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </android.support.constraint.ConstraintLayout>
 <!--<Button-->

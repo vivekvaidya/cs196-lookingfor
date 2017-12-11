@@ -1,5 +1,4 @@
 package vivekvaidya.com.lookingfor;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,8 +16,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class welcomScreen extends AppCompatActivity{
-    /**UI variables*/
+public class welcomScreen extends AppCompatActivity {
+    /**
+     * UI variables
+     */
     private Button signOut;
     private Button createEvent;
     private Button accountSettings;
@@ -39,6 +40,7 @@ public class welcomScreen extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcom_screen);
 
+
         /**Initialize UIs*/
         signOut = (Button) findViewById(R.id.signOut);
         createEvent = (Button) findViewById(R.id.createEventButton);
@@ -53,7 +55,8 @@ public class welcomScreen extends AppCompatActivity{
         accountSettings1 = (ImageButton) findViewById(R.id.accountSettingsButton1);
         signout1 = (ImageButton) findViewById(R.id.signOut1);
 
-        /**Firebase Constant*/
+
+        final Context context = this.getApplicationContext();
         myAuth = FirebaseAuth.getInstance();
 
         setSupportActionBar(toolbar);
@@ -76,13 +79,12 @@ public class welcomScreen extends AppCompatActivity{
         });
 
         /**Go to other screens*/
-        final Context context = this.getApplicationContext();
         myEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, EventBrowser.class);
-                intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR,EventBrowser.SEARCH_PERSON);
-                intent.putExtra(EventBrowser.SEARCH_FOR,myAuth.getCurrentUser().getUid());
+                intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR, EventBrowser.SEARCH_PERSON);
+                intent.putExtra(EventBrowser.SEARCH_FOR, myAuth.getCurrentUser().getUid());
                 startActivity(intent);
             }
         });
@@ -90,8 +92,8 @@ public class welcomScreen extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, EventBrowser.class);
-                intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR,EventBrowser.SEARCH_PERSON);
-                intent.putExtra(EventBrowser.SEARCH_FOR,myAuth.getCurrentUser().getUid());
+                intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR, EventBrowser.SEARCH_PERSON);
+                intent.putExtra(EventBrowser.SEARCH_FOR, myAuth.getCurrentUser().getUid());
                 startActivity(intent);
             }
         });
@@ -138,12 +140,18 @@ public class welcomScreen extends AppCompatActivity{
             }
         });
     }
-    /**Sign Out*/
-    private void signOut(){
+
+    /**
+     * Sign Out
+     */
+    private void signOut() {
         myAuth.signOut();
         finish();
     }
-    /**Show welcome text by username*/
+
+    /**
+     * Show welcome text by username
+     */
     public void showWelcomeText() {
         String uid = myAuth.getUid();
         DatabaseReference id = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("username");
@@ -164,6 +172,5 @@ public class welcomScreen extends AppCompatActivity{
             }
         });
     }
-
 
 }

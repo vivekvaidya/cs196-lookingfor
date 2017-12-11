@@ -1,19 +1,21 @@
 package vivekvaidya.com.lookingfor;
 
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,36 +28,37 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter {
+public class EventRowLayoutAdapter extends ArrayAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private ArrayList<Event> events;
-    private ArrayList<Event> fullEvents;
+    private List<Event> events = new ArrayList<>();
+    private List<Event> fullEvents = new ArrayList<>();
 
-    EventBrowserItemAdapter(Context mContext, ArrayList<Event> items) {
+    EventRowLayoutAdapter(Context mContext, int resource, List<Event> items) {
+        super(mContext,resource);
         context = mContext;
         events = items;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         fullEvents = items;
+        Log.d("Event number", String.valueOf(events.size()));
     }
 
-    void setEvents(ArrayList<Event> events) {
+    void setEvents(List<Event> events) {
         this.events = events;
     }
 
-    ArrayList<Event> getFullEvents() {
+    List<Event> getFullEvents() {
         return fullEvents;
     }
 
     @Override
     public int getCount() {
-        return events.size();
+        return events == null ? 0 : events.size();
     }
 
     @Override
@@ -68,6 +71,30 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
         return i;
     }
 
+    public void attend(int position) {
+        final String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ArrayList<String> attendees = events.get(position).getAttendeeID();
+        if (attendees == null || !attendees.contains(currentUser)) {
+            events.get(position).attendEvent(currentUser, new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    Toast.makeText(context,"You attended this Event", Toast.LENGTH_SHORT).show();
+
+                    notifyDataSetChanged();
+                }
+            });
+        } else {
+            events.get(position).leaveEvent(currentUser, new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    Toast.makeText(context,"You left this Event", Toast.LENGTH_SHORT).show();
+
+                    notifyDataSetChanged();
+                }
+            });
+        }
+    }
+
     static class ViewHolder {
         TextView titleLabel;
         TextView dateTimeLabel;
@@ -76,11 +103,11 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
         TextView tagLabel;
         TextView hostUsername;
         ImageView hostAvatar;
-        ImageView attendeeAvatar;
+        LinearLayout attendeeAvatarView;
     }
 
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
+    public View getView(final int i, View convertView, ViewGroup viewGroup) {
 
         final ViewHolder mViewHolder;
         if (convertView == null) {
@@ -93,8 +120,8 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
             mViewHolder.descriptionLabel = convertView.findViewById(R.id.descriptionLabel);
             mViewHolder.tagLabel = convertView.findViewById(R.id.tagLabel);
             mViewHolder.hostAvatar = convertView.findViewById(R.id.hostAvatar);
-            mViewHolder.attendeeAvatar = convertView.findViewById(R.id.attendeeImage);
             mViewHolder.hostUsername = convertView.findViewById(R.id.hostUserNameLabel);
+            mViewHolder.attendeeAvatarView = (LinearLayout) convertView.findViewById(R.id.attendeeAvatarList);
             convertView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
@@ -105,17 +132,8 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
         final Event currentEvent = events.get(i);
         mViewHolder.titleLabel.setText(currentEvent.getTitle());
         mViewHolder.dateTimeLabel.setText(currentEvent.getDateTime());
-        ArrayList<String> tags = currentEvent.getTags();
-        StringBuilder sb = new StringBuilder();
-        for (String tag: tags) {
-            sb.append(tag);
-            sb.append(" ");
-        }
-        mViewHolder.tagLabel.setText(sb.toString());
-        mViewHolder.locationLabel.setText(currentEvent.getLocation());
-        mViewHolder.descriptionLabel.setText(currentEvent.getDescription());
-        /**Get Avatars*/
 
+        /**Get Avatars*/
         String hostID = currentEvent.getHostID();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (hostID == null) {
@@ -127,21 +145,22 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
             }
         }
 
-       StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+//       StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 //        StorageReference usersReference = storageReference.child("users");
 //        StorageReference hostReference = usersReference.child(hostID);
 //        mViewHolder.hostUsername.setText();
 
-        String attendeeID;
+
+        List<String> attendeeID = new ArrayList<>();
         if (currentEvent.getAttendeeID() == null || currentEvent.getAttendeeID().size() == 0) {
-            attendeeID = hostID;
+            attendeeID.add(hostID);
         } else {
-            attendeeID = currentEvent.getAttendeeID().get(0);
+            attendeeID = currentEvent.getAttendeeID();
             if (attendeeID == null) {
-                attendeeID = hostID;
+                attendeeID.add(hostID);
             }
         }
-        //TODO: getImage
+
         DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference().child("users");
         usersReference.child(hostID).child("avatar").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -154,23 +173,33 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
 
             }
         });
-        usersReference.child(attendeeID).child("avatar").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mViewHolder.attendeeAvatar.setImageBitmap(User.stringToBitMap(dataSnapshot.getValue(String.class)));
+
+        int counter = 0;
+        if (mViewHolder.attendeeAvatarView.getChildCount() > 0) {
+            mViewHolder.attendeeAvatarView.removeAllViews();
+        }
+        for(String id : attendeeID) {
+            usersReference.child(id).child("avatar").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ImageView newAvatar = new ImageView(getContext());
+                    newAvatar.setImageBitmap(User.stringToBitMap(dataSnapshot.getValue(String.class)));
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(70,70);
+                    params.setMarginEnd(5);
+                    newAvatar.setLayoutParams(params);
+                    mViewHolder.attendeeAvatarView.addView(newAvatar);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            counter++;
+            if (counter >= 5){
+                break;
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-//        StorageReference hostAvatarPath = storageReference.child("userAvatar/" + hostID + ".png");
-//        Glide.with(this.context).using(new FirebaseImageLoader()).load(hostAvatarPath).into(mViewHolder.hostAvatar);
-//        StorageReference attendeeAvatarPath = storageReference.child("userAvatar/" + attendeeID + ".png");
-//        Glide.with(this.context).using(new FirebaseImageLoader()).load(attendeeAvatarPath).into(mViewHolder.attendeeAvatar);
-
-
+        }
         return convertView;
     }
 
@@ -183,4 +212,6 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
     public boolean isEnabled(int position) {
         return super.isEnabled(position);
     }
+
+
 }
