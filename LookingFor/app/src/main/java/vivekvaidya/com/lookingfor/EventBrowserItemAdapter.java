@@ -71,14 +71,12 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
     static class ViewHolder {
         TextView titleLabel;
         TextView dateTimeLabel;
-        TextView typeLabel;
         TextView locationLabel;
         TextView descriptionLabel;
         TextView tagLabel;
         TextView hostUsername;
         ImageView hostAvatar;
         ImageView attendeeAvatar;
-        Button attendEventButton;
     }
 
     @Override
@@ -89,16 +87,14 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
             /**UI Variables*/
             mViewHolder = new ViewHolder();
             convertView = inflater.inflate(R.layout.event_item_layout, viewGroup, false);
-            mViewHolder.titleLabel = (TextView) convertView.findViewById(R.id.titleLabel);
-            mViewHolder.dateTimeLabel = (TextView) convertView.findViewById(R.id.dateTimeLabel);
-            mViewHolder.typeLabel = (TextView) convertView.findViewById(R.id.typeLabel);
-            mViewHolder.locationLabel = (TextView) convertView.findViewById(R.id.locationLabel);
-            mViewHolder.descriptionLabel = (TextView) convertView.findViewById(R.id.descriptionLabel);
-            mViewHolder.tagLabel = (TextView) convertView.findViewById(R.id.tagLabel);
-            mViewHolder.hostAvatar = (ImageView) convertView.findViewById(R.id.hostAvatar);
-            mViewHolder.attendeeAvatar = (ImageView) convertView.findViewById(R.id.attendeeImage);
-            mViewHolder.attendEventButton = (Button) convertView.findViewById((R.id.attendEventButton));
-            mViewHolder.hostUsername = (TextView) convertView.findViewById(R.id.hostUserNameLabel);
+            mViewHolder.titleLabel = convertView.findViewById(R.id.titleLabel);
+            mViewHolder.dateTimeLabel = convertView.findViewById(R.id.dateTimeLabel);
+            mViewHolder.locationLabel = convertView.findViewById(R.id.locationLabel);
+            mViewHolder.descriptionLabel = convertView.findViewById(R.id.descriptionLabel);
+            mViewHolder.tagLabel = convertView.findViewById(R.id.tagLabel);
+            mViewHolder.hostAvatar = convertView.findViewById(R.id.hostAvatar);
+            mViewHolder.attendeeAvatar = convertView.findViewById(R.id.attendeeImage);
+            mViewHolder.hostUsername = convertView.findViewById(R.id.hostUserNameLabel);
             convertView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
@@ -174,20 +170,6 @@ public class EventBrowserItemAdapter extends BaseAdapter implements ListAdapter 
 //        StorageReference attendeeAvatarPath = storageReference.child("userAvatar/" + attendeeID + ".png");
 //        Glide.with(this.context).using(new FirebaseImageLoader()).load(attendeeAvatarPath).into(mViewHolder.attendeeAvatar);
 
-        mViewHolder.attendEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean flag = currentEvent.attendEvent(currentUser.getUid(), new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        Toast.makeText(context,"Event attended", Toast.LENGTH_LONG).show();
-                    }
-                });
-                if (!flag) {
-                    Toast.makeText(context,"Failed attending event", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         return convertView;
     }
