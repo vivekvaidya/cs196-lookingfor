@@ -2,6 +2,7 @@ package vivekvaidya.com.lookingfor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,8 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -46,14 +49,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        password = (EditText) findViewById(R.id.password);
-        username = (EditText) findViewById(R.id.username);
-        login = (Button) findViewById(R.id.Login);
-        register = (Button) findViewById(R.id.register);
-        loginPhone = (Button) findViewById(R.id.phoneSignIn);
-        verifyCode = (Button) findViewById(R.id.verifyCode);
+        password =  findViewById(R.id.password);
+        username =  findViewById(R.id.username);
+        login =  findViewById(R.id.Login);
+        register =  findViewById(R.id.register);
+        loginPhone =  findViewById(R.id.phoneSignIn);
+        verifyCode =  findViewById(R.id.verifyCode);
 
 
         verifyCode.setOnClickListener(new View.OnClickListener(){
@@ -96,6 +99,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void createAccount(final String email, final String password) {
         final Context context = this.getApplicationContext();
+        Pattern emailPattern = Pattern.compile("^.+@.+\\..+$");
+        Pattern phonePattern = Pattern.compile("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}");
+        if (email == null || email.equals("")) {
+            Toast.makeText(MainActivity.this, "Please enter email",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (phonePattern.matcher(email).matches()) {
+            Toast.makeText(MainActivity.this, "Please use \"Sign in with phone\" button",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!emailPattern.matcher(email).matches()) {
+            Toast.makeText(MainActivity.this, "Please enter valid email",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (password == null || password.equals("")) {
+            Toast.makeText(MainActivity.this, "Please enter password",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         myAuth.createUserWithEmailAndPassword(email, password).
                 addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -116,6 +142,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void signIn(String email, final String password) {
         final Context context = this.getApplicationContext();
+        Pattern emailPattern = Pattern.compile("^.+@.+\\..+$");
+        Pattern phonePattern = Pattern.compile("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}");
+        if (email == null || email.equals("")) {
+            Toast.makeText(MainActivity.this, "Please enter email",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (phonePattern.matcher(email).matches()) {
+            Toast.makeText(MainActivity.this, "Please use \"Sign in with phone\" button",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!emailPattern.matcher(email).matches()) {
+            Toast.makeText(MainActivity.this, "Please enter valid email",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (password == null || password.equals("")) {
+            Toast.makeText(MainActivity.this, "Please enter password",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         myAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -141,31 +190,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         final Context context = this.getApplicationContext();
         final String phoneNumber = username.getText().toString();
-        Toast.makeText(context, "phoneAuth() called", Toast.LENGTH_SHORT).show();
         if (phoneNumber.equals("")) {
-            Toast.makeText(context, "phoneAuth() called with no phone number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please enter your phone number", Toast.LENGTH_SHORT).show();
         } else {
             verificationCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                 @Override
                 public void onVerificationCompleted(PhoneAuthCredential credential) {
-                    Toast.makeText(context, "you have signed in!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "You have signed in!", Toast.LENGTH_SHORT).show();
                     SignInWithPhoneAuthCredential(credential);
                     Intent intent = new Intent(context, welcomScreen.class);
                     intent.putExtra("nameString", myAuth.getUid());
                     startActivity(intent);
                 }
-
-
                 @Override
                 public void onVerificationFailed(FirebaseException e) {
                     if (e instanceof FirebaseAuthInvalidCredentialsException) {
                         Toast.makeText(context, "invalid phone number", Toast.LENGTH_SHORT).show();
                     } else if (e instanceof FirebaseTooManyRequestsException) {
-                        Toast.makeText(context, "aaa", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Something is wrong with the database", Toast.LENGTH_SHORT).show();
                     } else {
                         e.printStackTrace();
                         Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("PhoneAuth", "auth failed");
                     }
                 }
 
@@ -176,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d("PhoneAuth", "code sent!");
                 }
             };
-            Log.d("PhoneAuth", phoneNumber);
             PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNumber, 60, TimeUnit.SECONDS, this, verificationCallbacks);
         }
     }
