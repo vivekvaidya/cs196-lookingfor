@@ -21,6 +21,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -221,8 +222,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void locateEvents() {
         if (events != null) {
             for(Event event: events) {
-                Location location = event.getLocation();
+                EventLocation location = event.getLocation();
                 if (location != null) {
+                    if (location.getId() != null) {
+                        GeoDataClient.getPlaceByID(location.getId());
+                        map.addMarker((new MarkerOptions()))
+                    }
                     double a = location.getLatitude();
                     double b = location.getLongitude();
                     String title = event.getTitle();

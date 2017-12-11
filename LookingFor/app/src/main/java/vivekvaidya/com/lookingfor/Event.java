@@ -33,7 +33,7 @@ public class Event implements Parcelable {
     private String eventID;
     private String title;
     private ArrayList<String> tags;
-    private Location location;
+    private EventLocation location;
     private String date;
     private String time;
     private String description;
@@ -43,9 +43,9 @@ public class Event implements Parcelable {
 
     }
     /**Full Constructor*/
-    public Event(String hostID, String eventID, String title, ArrayList<String> tags, Location location, String date,String time, String description){
+    public Event(String hostID,  String title, ArrayList<String> tags, EventLocation location, String date,String time, String description){
         this.hostID = hostID;
-        this.eventID = eventID;
+        this.eventID = null;
         this.title = title;
         this.tags = tags;
         this.location = location;
@@ -88,10 +88,10 @@ public class Event implements Parcelable {
     public void setTags(ArrayList<String> tags){
         this.tags = tags;
     }
-    public Location getLocation(){
+    public EventLocation getLocation(){
         return this.location;
     }
-    public void setLocation(Location location){
+    public void setLocation(EventLocation location){
         this.location = location;
     }
     public String getDateTime(){
@@ -250,7 +250,7 @@ public class Event implements Parcelable {
         this.eventID = in.readString();
         this.title = in.readString();
         this.tags = in.createStringArrayList();
-        this.location = in.readParcelable(Location.class.getClassLoader());
+        this.location = in.readParcelable(EventLocation.class.getClassLoader());
         this.date = in.readString();
         this.time = in.readString();
         this.description = in.readString();
