@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="310dp">
+    android:layout_height="320dp"
+    android:background="#d1e0e0">
 
     <TextView
         android:id="@+id/textView3"
@@ -15,21 +16,21 @@
         android:layout_marginTop="8dp"
         android:gravity="left|center_vertical"
         android:text="Going:"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/attendeeImage"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView16"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/locationLabel"
-        android:layout_width="178dp"
-        android:layout_height="37dp"
+        android:layout_width="168dp"
+        android:layout_height="23dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/round"
         android:gravity="center"
         android:text="Location"
@@ -46,18 +47,18 @@
 
         android:gravity="left|center_vertical"
         android:text="Location:"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@android:color/black"
         app:layout_constraintBaseline_toBaselineOf="@+id/locationLabel"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
-        android:layout_height="29dp"
-        android:layout_marginStart="24dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
         android:gravity="center"
         android:text="Type:"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@android:color/black"
         app:layout_constraintBaseline_toBaselineOf="@+id/typeLabel"
         app:layout_constraintStart_toEndOf="@+id/hostAvatar" />
 
@@ -65,8 +66,8 @@
         android:id="@+id/hostAvatar"
         android:layout_width="80dp"
         android:layout_height="76dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
         android:contentDescription="ownerAvatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -85,9 +86,9 @@
 
     <TextView
         android:id="@+id/dateTimeLabel"
-        android:layout_width="178dp"
-        android:layout_height="37dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="168dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="36dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/round"
         android:gravity="center"
@@ -101,7 +102,7 @@
         android:layout_height="36dp"
         android:layout_alignStart="@+id/textView5"
         android:layout_centerVertical="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="HostName"
         app:layout_constraintStart_toStartOf="parent"
@@ -112,10 +113,10 @@
         android:layout_width="178dp"
         android:layout_height="23dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/round"
         android:gravity="center"
         android:text="Title"
-        android:background="@drawable/round"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -123,41 +124,38 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="29dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="Tags:"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@android:color/black"
         app:layout_constraintStart_toEndOf="@+id/typeLabel"
         app:layout_constraintTop_toBottomOf="@+id/titleLabel" />
 
     <TextView
         android:id="@+id/tagLabel"
         android:layout_width="64dp"
-        android:layout_height="28dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="29dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
+        android:background="@drawable/round"
         android:gravity="center"
         android:text="Tag1"
-        android:background="@drawable/round"
         app:layout_constraintBottom_toTopOf="@+id/dateTimeLabel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.225"
-        app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/titleLabel"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintHorizontal_bias="0.115"
+        app:layout_constraintStart_toEndOf="@+id/textView13" />
 
     <TextView
         android:id="@+id/typeLabel"
         android:layout_width="70dp"
         android:layout_height="29dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/round"
         android:gravity="center"
         android:text="Type"
-        android:background="@drawable/round"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/titleLabel" />
 
@@ -167,12 +165,12 @@
         android:layout_height="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="Description:"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toStartOf="@+id/descriptionLabel"
-        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintHorizontal_bias="0.357"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hostUserNameLabel" />
 
@@ -189,7 +187,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/locationLabel"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.038" />
 
     <Button
         android:id="@+id/attendEventButton"
@@ -208,15 +206,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Event Name:"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintEnd_toStartOf="@+id/titleLabel"
-        app:layout_constraintHorizontal_bias="0.913"
+        app:layout_constraintHorizontal_bias="0.565"
         app:layout_constraintStart_toEndOf="@+id/hostAvatar"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.625" />
 
     <TextView
         android:id="@+id/textView4"
@@ -224,15 +222,14 @@
         android:layout_height="37dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:gravity="left|center_vertical"
         android:text="Time:"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toStartOf="@+id/dateTimeLabel"
-        app:layout_constraintHorizontal_bias="0.113"
+        app:layout_constraintHorizontal_bias="0.236"
         app:layout_constraintStart_toEndOf="@+id/hostUserNameLabel"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.071" />
 </android.support.constraint.ConstraintLayout>

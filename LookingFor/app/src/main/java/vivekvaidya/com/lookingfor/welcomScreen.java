@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +26,11 @@ public class welcomScreen extends AppCompatActivity{
     private FirebaseAuth myAuth;
     private Toolbar toolbar;
     private Button allEventButton;
+    private ImageButton createEvent1;
+    private ImageButton myEventButton1;
+    private ImageButton allEventButton1;
+    private ImageButton accountSettings1;
+    private ImageButton signout1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,11 @@ public class welcomScreen extends AppCompatActivity{
         accountSettings = (Button) findViewById(R.id.accountSettingsButton);
         welcomeText = (TextView) findViewById(R.id.welcomeText);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        createEvent1 = (ImageButton) findViewById(R.id.createEvent1);
+        myEventButton1 = (ImageButton) findViewById(R.id.myEventsButton1);
+        allEventButton1 = (ImageButton) findViewById(R.id.allEventButton1);
+        accountSettings1 = (ImageButton) findViewById(R.id.accountSettingsButton1);
+        signout1 = (ImageButton) findViewById(R.id.signOut1);
 
         /**Firebase Constant*/
         myAuth = FirebaseAuth.getInstance();
@@ -52,6 +63,12 @@ public class welcomScreen extends AppCompatActivity{
 
         /**Set behavior to SignOut Button.*/
         signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+            }
+        });
+        signout1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signOut();
@@ -69,6 +86,22 @@ public class welcomScreen extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+        myEventButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, EventBrowser.class);
+                intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR,EventBrowser.SEARCH_PERSON);
+                intent.putExtra(EventBrowser.SEARCH_FOR,myAuth.getCurrentUser().getUid());
+                startActivity(intent);
+            }
+        });
+        accountSettings1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, userSettingsScreen.class);
+                startActivity(intent);
+            }
+        });
         accountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +116,21 @@ public class welcomScreen extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+        createEvent1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, createEventScreen.class);
+                startActivity(intent);
+            }
+        });
         allEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, EventBrowser.class);
+                startActivity(intent);
+            }
+        });
+        allEventButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, EventBrowser.class);
