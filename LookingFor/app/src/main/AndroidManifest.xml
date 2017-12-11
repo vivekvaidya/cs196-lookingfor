@@ -52,7 +52,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".FragmentActivity" />
         <activity android:name=".MapActivity" />
-        <activity android:name=".DetailScreen"></activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBHyMzcnSa7ibNp3P8vPH3TLZ-tgRZktgo" />
