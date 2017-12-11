@@ -28,6 +28,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -37,11 +40,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     //location service related
     private GoogleApiClient mGoogleApiClient;
     // retrieved in location service, used in google map
-    private Location mCurrentLocation = newLocationProvider();
+    private Location mCurrentLocation ;
     private Location mLocation;
     private String eventTitle = "";
+    private List<Event> events;
     public static final String EVENT_LOCATION = "event location";
     public static final String EVENT_TITLE = "event title";
+    public static final String EVENT_ALL = "all events";
     //for snackbar in requesting permissions
     private View rootLayout;
     private static final String TAG = "Main Activity";
@@ -55,6 +60,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         rootLayout = (View) findViewById(R.id.root_layout);
         mLocation = getIntent().getParcelableExtra(EVENT_LOCATION);
         eventTitle = getIntent().getStringExtra(EVENT_TITLE);
+        events = getIntent().getParcelableArrayListExtra(EVENT_ALL);
+        mCurrentLocation = newLocationProvider();
         //google map starter
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -72,7 +79,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void setUpGoogleMap() {
         LatLng curLocation = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
         map.addMarker(new MarkerOptions().position(curLocation)
-                .title("You are here"));
+                .title(eventTitle));
 //        This one moves the camera to the specific location
         map.moveCamera(CameraUpdateFactory.newLatLng(curLocation));
 //        This one moves the camera to the specific location and sets the zoom
@@ -212,18 +219,31 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
     public void locateEvents() {
-        double a = mLocation.getLatitude();
-        double b = mLocation.getLongitude();
-        LatLng input = new LatLng(a, b);
-        map.addMarker((new MarkerOptions().position(input).title(eventTitle == null ? "" : eventTitle)));
+        if (events != null) {
+            for(Event event: events) {
+                Location location = event.getLocation();
+                if (location != null) {
+                    double a = location.getLatitude();
+                    double b = location.getLongitude();
+                    String title = event.getTitle();
+                    LatLng input = new LatLng(a, b);
+                    map.addMarker((new MarkerOptions().position(input).title(title)));
+                }
+            }
+        }
     }
 
 
 
     private Location newLocationProvider() {
         Location loc = new Location("dummy");
-        loc.setLatitude(40.103093);
-        loc.setLongitude(-88.227244);
+        if (mLocation != null) {
+            loc.setLongitude(mLocation.getLongitude());
+            loc.setLatitude(mLocation.getLatitude());
+        } else {
+            loc.setLatitude(40.103093);
+            loc.setLongitude(-88.227244);
+        }
         return loc;
     }
 }

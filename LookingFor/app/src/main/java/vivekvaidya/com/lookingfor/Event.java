@@ -77,7 +77,7 @@ public class Event implements Parcelable {
         return this.eventID;
     }
     public String getTitle(){
-        return this.title;
+        return this.title == null? "" : title;
     }
     public void setTitle(String title){
         this.title = title;
