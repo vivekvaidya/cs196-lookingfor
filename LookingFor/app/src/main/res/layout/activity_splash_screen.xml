@@ -12,6 +12,8 @@
         android:layout_height="fill_parent"
         android:background="#fff"
         android:scaleType="fitXY"
+        android:background="#fff"
+
         android:translationZ="3dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />

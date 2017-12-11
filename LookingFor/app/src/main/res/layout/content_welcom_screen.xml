@@ -10,276 +10,251 @@
     tools:context="vivekvaidya.com.lookingfor.welcomScreen"
     tools:layout_editor_absoluteY="81dp"
     tools:showIn="@layout/activity_welcom_screen">
-
-    <RelativeLayout
-        android:layout_weight="2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/colorPrimaryDark"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/welcomeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="casual"
-            android:text="Welcome Back!"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </RelativeLayout>
-    <GridLayout
-        android:layout_width="match_parent"
-        android:columnOrderPreserved="false"
-        android:alignmentMode="alignMargins"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:columnCount="2"
-        android:rowCount="3"
-        android:padding="14dp">
-        <!-- ROW 1 -->
-        <!-- COLUMN 1 -->
-
-        <android.support.v7.widget.CardView
-            android:layout_width="0dp"
+        <RelativeLayout
+            android:layout_weight="2"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:cardElevation="8dp"
-            app:cardCornerRadius="8dp">
-            <LinearLayout
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/welcomeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:id="@+id/createEvent1"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/icon_create" />
-
-                <Button
-                    android:id="@+id/createEventButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:fontFamily="casual"
-                    android:text="Create Event"
-                    android:textAlignment="center"
-                    android:textColor="#000"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/allEventButton"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <!-- COLUMN 2 -->
-
-        <android.support.v7.widget.CardView
-            android:layout_width="0dp"
+                android:fontFamily="casual"
+                android:text="Welcome Back!"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </RelativeLayout>
+        <GridLayout
+            android:layout_width="match_parent"
+            android:columnOrderPreserved="false"
+            android:alignmentMode="alignMargins"
             android:layout_height="0dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:cardElevation="8dp"
-            app:cardCornerRadius="8dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
+            android:layout_weight="8"
+            android:columnCount="2"
+            android:rowCount="3"
+            android:padding="14dp">
+            <!-- ROW 1 -->
+            <!-- COLUMN 1 -->
 
-                <ImageButton
-                    android:layout_width="42dp"
-                    android:layout_height="37dp"
-                    android:id="@+id/myEventsButton1"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/icon_myevents" />
-
-                <Button
-                    android:id="@+id/myEventsButton"
+            <android.support.v7.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="8dp">
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:fontFamily="casual"
-                    android:text="My Events"
-                    android:textAlignment="center"
-                    android:textColor="#000"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/SearchQuery"
-                    app:layout_constraintStart_toStartOf="@+id/SearchQuery" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
 
+                    <ImageButton
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:id="@+id/createEvent1"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/icon_create" />
 
-        <!-- ROW 2 -->
-        <!-- COLUMN 1 -->
+                    <Button
+                        android:id="@+id/createEventButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:fontFamily="casual"
+                        android:text="Create Event"
+                        android:textAlignment="center"
+                        android:textColor="#000"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/allEventButton"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:cardElevation="8dp"
-            app:cardCornerRadius="8dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
+            <!-- COLUMN 2 -->
 
-                <ImageButton
-                    android:layout_width="37dp"
-                    android:layout_height="37dp"
-                    android:id="@+id/allEventButton1"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/icon_events" />
-
-                <Button
-                    android:id="@+id/allEventButton"
+            <android.support.v7.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="8dp">
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:fontFamily="casual"
-                    android:text="View Events"
-                    android:textAlignment="center"
-                    android:textColor="#000"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/myEventsButton"
-                    app:layout_constraintStart_toStartOf="@+id/createEventButton" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
 
-        <!-- COLUMN 2 -->
+                    <ImageButton
+                        android:layout_width="42dp"
+                        android:layout_height="37dp"
+                        android:id="@+id/myEventsButton1"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/icon_myevents" />
 
-        <android.support.v7.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:cardElevation="8dp"
-            app:cardCornerRadius="8dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
+                    <Button
+                        android:id="@+id/myEventsButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:fontFamily="casual"
+                        android:text="My Events"
+                        android:textAlignment="center"
+                        android:textColor="#000"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/SearchQuery"
+                        app:layout_constraintStart_toStartOf="@+id/SearchQuery" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-                <ImageButton
-                    android:layout_width="38dp"
-                    android:layout_height="36dp"
-                    android:id="@+id/accountSettingsButton1"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/icon_settings" />
 
-                <Button
-                    android:id="@+id/accountSettingsButton"
+            <!-- ROW 2 -->
+            <!-- COLUMN 1 -->
+
+            <android.support.v7.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="8dp">
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:fontFamily="casual"
-                    android:text="Settings"
-                    android:textAlignment="center"
-                    android:textColor="#000"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/SearchButton" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
 
+                    <ImageButton
+                        android:layout_width="37dp"
+                        android:layout_height="37dp"
+                        android:id="@+id/allEventButton1"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/icon_events" />
 
-        <!-- ROW 3 -->
-        <!-- COLUMN 1 -->
+                    <Button
+                        android:id="@+id/allEventButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:fontFamily="casual"
+                        android:text="View Events"
+                        android:textAlignment="center"
+                        android:textColor="#000"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/myEventsButton"
+                        app:layout_constraintStart_toStartOf="@+id/createEventButton" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:cardElevation="8dp"
-            app:cardCornerRadius="8dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
+            <!-- COLUMN 2 -->
 
-                <ImageButton
-                    android:layout_width="33dp"
-                    android:layout_height="34dp"
-                    android:id="@+id/signOut1"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/icon_signout" />
-
-                <Button
-                    android:id="@+id/signOut"
+            <android.support.v7.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="8dp">
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:fontFamily="casual"
-                    android:text="sign out"
-                    android:textAlignment="center"
-                    android:textColor="#000"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/accountSettingsButton" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
 
-    </GridLayout>
+                    <ImageButton
+                        android:layout_width="38dp"
+                        android:layout_height="36dp"
+                        android:id="@+id/accountSettingsButton1"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/icon_settings" />
 
-</LinearLayout>
+                    <Button
+                        android:id="@+id/accountSettingsButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:fontFamily="casual"
+                        android:text="Settings"
+                        android:textAlignment="center"
+                        android:textColor="#000"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/SearchButton" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
 
-    <!--<Button-->
-    <!--android:id="@+id/SearchButton"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginEnd="13dp"-->
-    <!--android:layout_marginStart="10dp"-->
-    <!--android:text="search"-->
-    <!--app:layout_constraintBaseline_toBaselineOf="@+id/SearchQuery"-->
-    <!--app:layout_constraintEnd_toStartOf="@+id/SearchQuery"-->
-    <!--app:layout_constraintHorizontal_chainStyle="packed"-->
-    <!--app:layout_constraintStart_toStartOf="parent" />-->
+            <!-- ROW 3 -->
+            <!-- COLUMN 1 -->
 
-    <!--<EditText-->
-    <!--android:id="@+id/SearchQuery"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginBottom="175dp"-->
-    <!--android:ems="10"-->
-    <!--android:inputType="textPersonName"-->
-    <!--android:text="Name"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintStart_toEndOf="@+id/SearchButton" />-->
+            <android.support.v7.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="8dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="33dp"
+                        android:layout_height="34dp"
+                        android:id="@+id/signOut1"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/icon_signout" />
+
+                    <Button
+                        android:id="@+id/signOut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:fontFamily="casual"
+                        android:text="sign out"
+                        android:textAlignment="center"
+                        android:textColor="#000"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/accountSettingsButton" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+        </GridLayout>
+
+        </LinearLayout>
+
