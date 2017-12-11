@@ -5,101 +5,156 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    app:backgroundTint="@color/colorPrimary"
     tools:context="vivekvaidya.com.lookingfor.createEventScreen"
-    tools:showIn="@layout/activity_create_event_screen">
+    tools:showIn="@layout/activity_create_event_screen"
+    android:background="@color/mdtp_white">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/pastel"
+        android:translationZ="0dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <Button
         android:id="@+id/addEventBT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
+        android:layout_width="212dp"
+        android:layout_height="58dp"
+        android:layout_marginBottom="28dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:background="@drawable/button_selector"
+        android:fontFamily="serif"
         android:text="Add Event"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.278"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/titleET"
-        android:layout_width="306dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="39dp"
-        android:layout_marginStart="39dp"
-        android:layout_marginTop="14dp"
+        android:layout_width="321dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
-        android:hint="Title"
+        android:fontFamily="serif"
+        android:hint="What is the name of your event?"
         android:inputType="textPersonName"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/black"
+        android:textColorLink="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createEventLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/eventSelectionSpinner" />
 
     <EditText
         android:id="@+id/descriptionET"
-        android:layout_width="325dp"
-        android:layout_height="150dp"
+        android:layout_width="321dp"
+        android:layout_height="140dp"
         android:layout_marginBottom="21dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="@color/common_google_signin_btn_text_dark_default"
         android:ems="10"
-        android:hint="Add description"
-        android:inputType="textPersonName"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:hint="Add a description!"
+        android:inputType="text"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/black"
+        android:textColorLink="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/addEventBT"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleET"
+        app:layout_constraintVertical_bias="0.698" />
 
     <TextView
+
         android:id="@+id/eventTypeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="19dp"
-        android:text="Event Type"
+
+        android:layout_width="127dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="Event Type: "
+        android:textColor="@android:color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleET" />
+        app:layout_constraintTop_toBottomOf="@+id/timeLabel" />
 
     <TextView
         android:id="@+id/timeLabel"
-        android:layout_width="79dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="39dp"
-        android:layout_marginTop="56dp"
-        android:text="Time"
-        android:textSize="18sp"
+        android:layout_width="95dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="28dp"
+        android:fontFamily="serif"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="6dp"
+        android:text="Time:"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/dateDisplay"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventTypeLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/createEventLabel" />
 
     <Spinner
         android:id="@+id/eventSelectionSpinner"
         android:layout_width="180dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="47dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/border"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleET" />
+        app:layout_constraintHorizontal_bias="0.384"
+        app:layout_constraintStart_toEndOf="@+id/eventTypeLabel"
+        app:layout_constraintTop_toBottomOf="@+id/dateDisplay" />
 
     <TextView
         android:id="@+id/dateDisplay"
-        android:layout_width="101dp"
-        android:layout_height="23dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="56dp"
-        android:hint="Pick Date"
-        android:textSize="18sp"
+
+        android:layout_width="104dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="28dp"
+        android:fontFamily="serif"
+        android:gravity="left|center_vertical"
+        android:hint="Date"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/black"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/timeDisplay"
-        app:layout_constraintTop_toBottomOf="@+id/eventTypeLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/createEventLabel" />
 
     <TextView
         android:id="@+id/timeDisplay"
-        android:layout_width="87dp"
-        android:layout_height="24dp"
+
+        android:layout_width="99dp"
+        android:layout_height="34dp"
         android:layout_marginEnd="36dp"
-        android:hint="Pick Time"
-        android:textSize="18sp"
+        android:fontFamily="serif"
+        android:gravity="left|center_vertical"
+        android:hint="Time"
+        android:textColorHint="@android:color/black"
+        android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/dateDisplay"
         app:layout_constraintEnd_toEndOf="parent" />
+
 
     <TextView
         android:id="@+id/createEventLabel"
@@ -107,23 +162,26 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="7dp"
-        android:text="Creating Event"
+        android:layout_marginTop="16dp"
+        android:fontFamily="serif"
+        android:text="Create Your Event"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="77dp"
-        android:layout_marginStart="77dp"
-        android:layout_marginTop="21dp"
-        android:text="back"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/dateDisplay"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionET" />
+
 </android.support.constraint.ConstraintLayout>
+<!--<Button-->
+<!--android:id="@+id/backButton"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_marginEnd="236dp"-->
+<!--android:layout_marginTop="44dp"-->
+<!--android:text="back"-->
+<!--app:layout_constraintEnd_toEndOf="parent"-->
+<!--app:layout_constraintTop_toBottomOf="@+id/descriptionET" />-->
+
+
+

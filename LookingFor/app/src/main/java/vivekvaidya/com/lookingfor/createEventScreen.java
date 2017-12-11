@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -43,7 +42,7 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
 
         /*Initialize Common UIs*/
         titleET =  findViewById(R.id.titleET);
-        Button backButton = (Button) findViewById(R.id.backButton);
+//        Button backButton = (Button) findViewById(R.id.backButton);
         eventTypeSPN = (Spinner) findViewById(R.id.eventSelectionSpinner);
         dateDisplay = (TextView) findViewById(R.id.dateDisplay);
         timeDisplay = (TextView) findViewById(R.id.timeDisplay);
@@ -90,12 +89,12 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
                 });
             }
         });
-        backButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                Toast.makeText(createEventScreen.this, "Create event canceled.", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        });
+//        backButton.setOnClickListener(new View.OnClickListener(){
+//            public void onClick(View view){
+//                Toast.makeText(createEventScreen.this, "Create event canceled.", Toast.LENGTH_LONG).show();
+//                finish();
+//            }
+//        });
         dateDisplay.setOnClickListener(this);
         timeDisplay.setOnClickListener(this);
     }
