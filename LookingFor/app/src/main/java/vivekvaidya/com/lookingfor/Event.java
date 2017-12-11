@@ -1,5 +1,7 @@
 package vivekvaidya.com.lookingfor;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -259,4 +261,9 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+    public void showDetailScreen(Context context) {
+        Intent intent = new Intent(context, DetailScreen.class);
+        intent.putExtra(DetailScreen.DISPLAY_EVENT,this);
+
+    }
 }

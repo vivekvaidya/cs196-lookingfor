@@ -1,6 +1,7 @@
 package vivekvaidya.com.lookingfor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,10 +48,6 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
         Log.d("Event number", String.valueOf(events.size()));
     }
 
-    EventRowLayoutAdapter(Context mContext, int resource) {
-        super(mContext,resource);
-
-    }
     void setEvents(List<Event> events) {
         this.events = events;
     }
@@ -102,14 +99,14 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
         TextView titleLabel;
         TextView dateLabel;
         TextView timeLabel;
-        TextView locationLabel;
         ImageView hostAvatar;
         LinearLayout attendeeAvatarView;
         ImageView eventImage;
+        TextView detailLabel;
     }
 
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
+    public View getView(final int i, View convertView, ViewGroup viewGroup) {
 
         final ViewHolder mViewHolder;
         if (convertView == null) {
@@ -119,10 +116,10 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
             mViewHolder.titleLabel = (TextView) convertView.findViewById(R.id.eventName);
             mViewHolder.dateLabel = (TextView) convertView.findViewById(R.id.eventDate);
             mViewHolder.timeLabel = (TextView) convertView.findViewById(R.id.eventTime);
-            mViewHolder.locationLabel = (TextView) convertView.findViewById(R.id.eventLocation);
             mViewHolder.eventImage = (ImageView) convertView.findViewById(R.id.eventPicture);
             mViewHolder.hostAvatar = (ImageView) convertView.findViewById(R.id.hostAvatar);
             mViewHolder.attendeeAvatarView = (LinearLayout) convertView.findViewById(R.id.attendeeAvatarList);
+            mViewHolder.detailLabel = convertView.findViewById(R.id.detailLabel);
             convertView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
@@ -134,8 +131,14 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
         mViewHolder.titleLabel.setText(currentEvent.getTitle());
         mViewHolder.dateLabel.setText(currentEvent.getDate());
         mViewHolder.timeLabel.setText(currentEvent.getTime());
-        mViewHolder.locationLabel.setText(currentEvent.getLocation());
-
+        mViewHolder.detailLabel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DetailScreen.class);
+                intent.putExtra(DetailScreen.DISPLAY_EVENT,events.get(i));
+                context.startActivity(intent);
+            }
+        });
         /**Get Avatars*/
         String hostID = currentEvent.getHostID();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -220,4 +223,6 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
     public boolean isEnabled(int position) {
         return super.isEnabled(position);
     }
+
+
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -67,7 +68,9 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
         }
 
     }
-
+    public void showDetailScreen(Intent intent){
+        startActivity(intent);
+    }
     @Override
     public void eventsDownloaded(int behavior, ArrayList<Event> events) {
         switch (behavior) {
@@ -126,8 +129,10 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
                                 }
 
 
+
                             }
                         });
+
         eventsListView.setOnTouchListener(touchListener);
 
 
