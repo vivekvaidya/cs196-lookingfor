@@ -2,6 +2,7 @@ package vivekvaidya.com.lookingfor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -32,7 +33,7 @@ public class Event implements Parcelable {
     private String eventID;
     private String title;
     private ArrayList<String> tags;
-    private String location;
+    private Location location;
     private String date;
     private String time;
     private String description;
@@ -42,7 +43,7 @@ public class Event implements Parcelable {
 
     }
     /**Full Constructor*/
-    public Event(String hostID, String eventID, String title, ArrayList<String> tags, String location, String date,String time, String description){
+    public Event(String hostID, String eventID, String title, ArrayList<String> tags, Location location, String date,String time, String description){
         this.hostID = hostID;
         this.eventID = eventID;
         this.title = title;
@@ -87,10 +88,10 @@ public class Event implements Parcelable {
     public void setTags(ArrayList<String> tags){
         this.tags = tags;
     }
-    public String getLocation(){
+    public Location getLocation(){
         return this.location;
     }
-    public void setLocation(String location){
+    public void setLocation(Location location){
         this.location = location;
     }
     public String getDateTime(){
@@ -193,7 +194,7 @@ public class Event implements Parcelable {
         if (count != 0){
             return newList;
         } else {
-            newList.add(new Event("Sorry", "Could", "Not", new ArrayList<String>(), "Find", "Any", "Matching", "Event"));
+            newList.add(new Event("Sorry", "No", new ArrayList<String>(),  "", "Matching", "Events"));
             return newList;
         }
     }
@@ -205,7 +206,6 @@ public class Event implements Parcelable {
         for (int i = 0; i < events.size(); i++){
             if ((events.get(i).getDescription().toLowerCase().contains(query)
                     || events.get(i).getTitle().toLowerCase().contains(query)
-                    || events.get(i).getLocation().toLowerCase().contains(query)
                     || events.get(i).getTags().contains(query)) ){
                 newList.add(events.get(i));
                 count++;
@@ -214,12 +214,18 @@ public class Event implements Parcelable {
         if (count != 0){
             return newList;
         } else {
-            newList.add(new Event("Sorry", "Could", "Not", new ArrayList<String>(),"Find", "Any", "Matching", "Event"));
+            newList.add(new Event("Sorry", "No", new ArrayList<String>(),  "", "Matching", "Events"));
             return newList;
         }
     }
 
-    /**Parcelable required methods*/
+
+    public void showDetailScreen(Context context) {
+        Intent intent = new Intent(context, DetailScreen.class);
+        intent.putExtra(DetailScreen.DISPLAY_EVENT,this);
+
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -231,11 +237,12 @@ public class Event implements Parcelable {
         dest.writeString(this.eventID);
         dest.writeString(this.title);
         dest.writeStringList(this.tags);
-        dest.writeString(this.location);
+        dest.writeParcelable(this.location, flags);
         dest.writeString(this.date);
         dest.writeString(this.time);
         dest.writeString(this.description);
         dest.writeStringList(this.attendeeID);
+        dest.writeByte(this.visible ? (byte) 1 : (byte) 0);
     }
 
     protected Event(Parcel in) {
@@ -243,11 +250,12 @@ public class Event implements Parcelable {
         this.eventID = in.readString();
         this.title = in.readString();
         this.tags = in.createStringArrayList();
-        this.location = in.readString();
+        this.location = in.readParcelable(Location.class.getClassLoader());
         this.date = in.readString();
         this.time = in.readString();
         this.description = in.readString();
         this.attendeeID = in.createStringArrayList();
+        this.visible = in.readByte() != 0;
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -261,9 +269,4 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
-    public void showDetailScreen(Context context) {
-        Intent intent = new Intent(context, DetailScreen.class);
-        intent.putExtra(DetailScreen.DISPLAY_EVENT,this);
-
-    }
 }

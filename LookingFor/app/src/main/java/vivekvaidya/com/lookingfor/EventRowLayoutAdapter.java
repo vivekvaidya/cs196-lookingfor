@@ -139,6 +139,9 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,MapActivity.class);
+                intent.putExtra(MapActivity.EVENT_TITLE,currentEvent.getTitle());
+                intent.putExtra(MapActivity.EVENT_LOCATION,currentEvent.getLocation());
+
                 context.startActivity(intent);
             }
         });
