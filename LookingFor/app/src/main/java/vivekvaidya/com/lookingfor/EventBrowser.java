@@ -38,7 +38,7 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
 
 
         /**Initialize Basic UIs*/
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 //        listView = (ListView) findViewById(R.id.eventListView);
 //        contactAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contactArray);

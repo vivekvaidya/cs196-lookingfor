@@ -26,11 +26,11 @@ public class FragmentActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         // Initializing Toolbar and setting it as the actionbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //Initializing NavigationView
-        navigationView = (NavigationView) findViewById(R.id.navigation);
+        navigationView = findViewById(R.id.navigation);
 
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

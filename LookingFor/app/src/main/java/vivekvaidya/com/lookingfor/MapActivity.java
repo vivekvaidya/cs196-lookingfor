@@ -49,7 +49,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        rootLayout = (View) findViewById(R.id.root_layout);
+        rootLayout = findViewById(R.id.root_layout);
 
         //google map starter
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

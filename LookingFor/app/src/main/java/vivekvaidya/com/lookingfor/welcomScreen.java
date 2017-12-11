@@ -63,18 +63,18 @@ public class welcomScreen extends AppCompatActivity {
 
 
         /**Initialize UIs*/
-        signOut = (Button) findViewById(R.id.signOut);
-        createEvent = (Button) findViewById(R.id.createEventButton);
-        allEventButton = (Button) findViewById(R.id.allEventButton);
-        Button myEventButton = (Button) findViewById(R.id.myEventsButton);
-        accountSettings = (Button) findViewById(R.id.accountSettingsButton);
-        welcomeText = (TextView) findViewById(R.id.welcomeText);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        createEvent1 = (ImageButton) findViewById(R.id.createEvent1);
-        myEventButton1 = (ImageButton) findViewById(R.id.myEventsButton1);
-        allEventButton1 = (ImageButton) findViewById(R.id.allEventButton1);
-        accountSettings1 = (ImageButton) findViewById(R.id.accountSettingsButton1);
-        signout1 = (ImageButton) findViewById(R.id.signOut1);
+        signOut = findViewById(R.id.signOut);
+        createEvent = findViewById(R.id.createEventButton);
+        allEventButton = findViewById(R.id.allEventButton);
+        Button myEventButton = findViewById(R.id.myEventsButton);
+        accountSettings = findViewById(R.id.accountSettingsButton);
+        welcomeText = findViewById(R.id.welcomeText);
+        toolbar = findViewById(R.id.toolbar);
+        createEvent1 = findViewById(R.id.createEvent1);
+        myEventButton1 = findViewById(R.id.myEventsButton1);
+        allEventButton1 = findViewById(R.id.allEventButton1);
+        accountSettings1 = findViewById(R.id.accountSettingsButton1);
+        signout1 = findViewById(R.id.signOut1);
 
 
         final Context context = this.getApplicationContext();

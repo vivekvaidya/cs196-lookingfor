@@ -61,13 +61,13 @@ public class userSettingsScreen extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_settings_screen);
         /**Initialize Common UI*/
-        profileNameET = (EditText) findViewById(R.id.profileNameET);
-        profilePhoneET = (EditText) findViewById(R.id.profilePhoneET);
-        profileEmailET = (EditText) findViewById(R.id.profileEmailET);
-        selectPhotoBT = (Button) findViewById(R.id.selectPhotoBT);
-        avatarView = (ImageView) findViewById(R.id.avatarPreviewIV);
-        confirmButton = (Button) findViewById(R.id.profileConfirmBT);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        profileNameET = findViewById(R.id.profileNameET);
+        profilePhoneET = findViewById(R.id.profilePhoneET);
+        profileEmailET = findViewById(R.id.profileEmailET);
+        selectPhotoBT = findViewById(R.id.selectPhotoBT);
+        avatarView = findViewById(R.id.avatarPreviewIV);
+        confirmButton = findViewById(R.id.profileConfirmBT);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         /**Request Permission*/

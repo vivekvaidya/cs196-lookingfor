@@ -261,9 +261,4 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
-    public void showDetailScreen(Context context) {
-        Intent intent = new Intent(context, DetailScreen.class);
-        intent.putExtra(DetailScreen.DISPLAY_EVENT,this);
-
-    }
 }

@@ -23,8 +23,8 @@ public class SplashScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar2);
-        background =(ImageView) findViewById(R.id.imageView);
+        mProgressBar = findViewById(R.id.progressBar2);
+        background = findViewById(R.id.imageView);
         background.setColorFilter(Color.argb(100, 255, 255, 255), PorterDuff.Mode.LIGHTEN);
 
         new Thread(new Runnable() {
