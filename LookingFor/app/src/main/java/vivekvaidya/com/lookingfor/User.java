@@ -132,41 +132,6 @@ public class User implements Parcelable {
                 .child(getUID());
         newEventReference.setValue(this).addOnCompleteListener(onCompleteListener);
 
-//
-//        /**Put entries*/
-//        final HashMap<String, Object> dataMap = new HashMap<>();
-//        dataMap.put("email", getEmailAddress());
-//        dataMap.put("phone", getPhoneNumber());
-//        dataMap.put("username", getUserName());
-//        ArrayList<String> events = new ArrayList<>();
-//        dataMap.put("attendingEvents", attendingEvents);
-//        ArrayList<String> friendsList = new ArrayList<>();
-//        dataMap.put("friends", friends);
-//        ArrayList<String> hosting = new ArrayList<>();
-//        dataMap.put("hostingEvents",hostingEvents);
-//
-//        /**Push avatar to storage*/
-//        StorageReference avatarStorageReference = FirebaseStorage.getInstance().getReference().child("userAvatar/"+ getUID() + ".png");
-//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//        avatar.compress(Bitmap.CompressFormat.PNG,100, outputStream);
-//        avatarStorageReference.putBytes(outputStream.toByteArray()).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-//                dataMap.put("AvatarSet", true);
-//                DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
-//                        .child(getUID());
-//                newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
-//
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                dataMap.put("AvatarSet", false);
-//                DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
-//                        .child(getUID());
-//                newEventReference.setValue(dataMap).addOnCompleteListener(onCompleteListener);
-//            }
-//        });
 
     }
 

@@ -154,12 +154,6 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
             }
         }
 
-//       StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-//        StorageReference usersReference = storageReference.child("users");
-//        StorageReference hostReference = usersReference.child(hostID);
-//        mViewHolder.hostUsername.setText();
-
-
         List<String> attendeeID = new ArrayList<>();
         if (currentEvent.getAttendeeID() == null || currentEvent.getAttendeeID().size() == 0) {
             attendeeID.add(hostID);
@@ -209,10 +203,6 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
                 break;
             }
         }
-//        StorageReference hostAvatarPath = storageReference.child("userAvatar/" + hostID + ".png");
-//        Glide.with(this.context).using(new FirebaseImageLoader()).load(hostAvatarPath).into(mViewHolder.hostAvatar);
-//        StorageReference attendeeAvatarPath = storageReference.child("userAvatar/" + attendeeID + ".png");
-//        Glide.with(this.context).using(new FirebaseImageLoader()).load(attendeeAvatarPath).into(mViewHolder.attendeeAvatar);
         return convertView;
     }
 
