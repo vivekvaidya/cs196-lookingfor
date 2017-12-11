@@ -97,12 +97,13 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
 
     static class ViewHolder {
         TextView titleLabel;
-        TextView dateLabel;
-        TextView timeLabel;
-        ImageView hostAvatar;
         LinearLayout attendeeAvatarView;
-        ImageView eventImage;
-        TextView detailLabel;
+        TextView dateTimeLabel;
+        TextView locationLabel;
+        TextView descriptionLabel;
+        TextView tagLabel;
+        TextView hostUsername;
+        ImageView hostAvatar;
     }
 
     @Override
@@ -112,14 +113,15 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
         if (convertView == null) {
             /**UI Variables*/
             mViewHolder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.row_layout, viewGroup, false);
-            mViewHolder.titleLabel = (TextView) convertView.findViewById(R.id.eventName);
-            mViewHolder.dateLabel = (TextView) convertView.findViewById(R.id.eventDate);
-            mViewHolder.timeLabel = (TextView) convertView.findViewById(R.id.eventTime);
-            mViewHolder.eventImage = (ImageView) convertView.findViewById(R.id.eventPicture);
-            mViewHolder.hostAvatar = (ImageView) convertView.findViewById(R.id.hostAvatar);
             mViewHolder.attendeeAvatarView = (LinearLayout) convertView.findViewById(R.id.attendeeAvatarList);
-            mViewHolder.detailLabel = convertView.findViewById(R.id.detailLabel);
+            convertView = inflater.inflate(R.layout.event_item_layout, viewGroup, false);
+            mViewHolder.titleLabel = convertView.findViewById(R.id.titleLabel);
+            mViewHolder.dateTimeLabel = convertView.findViewById(R.id.dateTimeLabel);
+            mViewHolder.locationLabel = convertView.findViewById(R.id.locationLabel);
+            mViewHolder.descriptionLabel = convertView.findViewById(R.id.descriptionLabel);
+            mViewHolder.tagLabel = convertView.findViewById(R.id.tagLabel);
+            mViewHolder.hostAvatar = convertView.findViewById(R.id.hostAvatar);
+            mViewHolder.hostUsername = convertView.findViewById(R.id.hostUserNameLabel);
             convertView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
@@ -129,16 +131,8 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
         /**Set UI Displays*/
         final Event currentEvent = events.get(i);
         mViewHolder.titleLabel.setText(currentEvent.getTitle());
-        mViewHolder.dateLabel.setText(currentEvent.getDate());
-        mViewHolder.timeLabel.setText(currentEvent.getTime());
-        mViewHolder.detailLabel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, DetailScreen.class);
-                intent.putExtra(DetailScreen.DISPLAY_EVENT,events.get(i));
-                context.startActivity(intent);
-            }
-        });
+        mViewHolder.dateTimeLabel.setText(currentEvent.getDateTime());
+
         /**Get Avatars*/
         String hostID = currentEvent.getHostID();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -210,7 +204,6 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
 //        Glide.with(this.context).using(new FirebaseImageLoader()).load(hostAvatarPath).into(mViewHolder.hostAvatar);
 //        StorageReference attendeeAvatarPath = storageReference.child("userAvatar/" + attendeeID + ".png");
 //        Glide.with(this.context).using(new FirebaseImageLoader()).load(attendeeAvatarPath).into(mViewHolder.attendeeAvatar);
-
         return convertView;
     }
 

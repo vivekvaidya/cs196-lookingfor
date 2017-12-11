@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -44,15 +43,13 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
 
         /*Initialize Common UIs*/
         titleET =  findViewById(R.id.titleET);
-        Button backButton =  findViewById(R.id.backButton);
-        eventTypeSPN =  findViewById(R.id.eventSelectionSpinner);
         dateDisplay =  findViewById(R.id.dateDisplay);
         timeDisplay =  findViewById(R.id.timeDisplay);
         description =  findViewById(R.id.descriptionET);
         Button confirmButton =  findViewById(R.id.addEventBT);
         Toolbar toolbar =  findViewById(R.id.toolbar);
         locationDisplay = findViewById(R.id.locationDisplay);
-
+        eventTypeSPN =  findViewById(R.id.eventSelectionSpinner);
         setSupportActionBar(toolbar);
 
         /*Initialize Spinner*/
@@ -93,12 +90,12 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
                 });
             }
         });
-        backButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                Toast.makeText(createEventScreen.this, "Create event canceled.", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        });
+//        backButton.setOnClickListener(new View.OnClickListener(){
+//            public void onClick(View view){
+//                Toast.makeText(createEventScreen.this, "Create event canceled.", Toast.LENGTH_LONG).show();
+//                finish();
+//            }
+//        });
         dateDisplay.setOnClickListener(this);
         timeDisplay.setOnClickListener(this);
         locationDisplay.setOnClickListener(this);
