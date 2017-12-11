@@ -90,12 +90,6 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
                 });
             }
         });
-//        backButton.setOnClickListener(new View.OnClickListener(){
-//            public void onClick(View view){
-//                Toast.makeText(createEventScreen.this, "Create event canceled.", Toast.LENGTH_LONG).show();
-//                finish();
-//            }
-//        });
         dateDisplay.setOnClickListener(this);
         timeDisplay.setOnClickListener(this);
         locationDisplay.setOnClickListener(this);
@@ -103,7 +97,7 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
 
     /**
      * Things to do when Event sent to Firebase.
-     * @param task some task (Well, I don't know what this is.)
+     * @param task some task
      */
     public void onEventPushComplete(@NonNull Task<Void> task) {
         if(task.isSuccessful()) {
