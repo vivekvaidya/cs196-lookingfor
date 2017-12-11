@@ -94,7 +94,7 @@ public class Event implements Parcelable {
         this.location = location;
     }
     public String getDateTime(){
-        return this.date + this.time;
+        return this.date + " " + this.time;
     }
     public String getTime() {
         return this.time;
@@ -113,7 +113,7 @@ public class Event implements Parcelable {
         this.description = description;
     }
     public ArrayList<String> getAttendeeID(){
-        return this.attendeeID;
+        return this.attendeeID == null ? new ArrayList<String>(): this.attendeeID;
     }
     public boolean isVisible() {
         return visible;

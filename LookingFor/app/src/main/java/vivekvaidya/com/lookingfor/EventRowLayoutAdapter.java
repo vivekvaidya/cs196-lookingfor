@@ -113,8 +113,9 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
         if (convertView == null) {
             /**UI Variables*/
             mViewHolder = new ViewHolder();
-            mViewHolder.attendeeAvatarView = (LinearLayout) convertView.findViewById(R.id.attendeeAvatarList);
             convertView = inflater.inflate(R.layout.event_item_layout, viewGroup, false);
+            mViewHolder.attendeeAvatarView = convertView.findViewById(R.id.attendeeAvatarList);
+
             mViewHolder.titleLabel = convertView.findViewById(R.id.titleLabel);
             mViewHolder.dateTimeLabel = convertView.findViewById(R.id.dateTimeLabel);
             mViewHolder.locationLabel = convertView.findViewById(R.id.locationLabel);
@@ -132,7 +133,15 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
         final Event currentEvent = events.get(i);
         mViewHolder.titleLabel.setText(currentEvent.getTitle());
         mViewHolder.dateTimeLabel.setText(currentEvent.getDateTime());
-
+        mViewHolder.descriptionLabel.setText(currentEvent.getDescription());
+        mViewHolder.tagLabel.setText(currentEvent.getTags().toString());
+        mViewHolder.locationLabel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,MapActivity.class);
+                context.startActivity(intent);
+            }
+        });
         /**Get Avatars*/
         String hostID = currentEvent.getHostID();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -184,7 +193,7 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     ImageView newAvatar = new ImageView(getContext());
                     newAvatar.setImageBitmap(User.stringToBitMap(dataSnapshot.getValue(String.class)));
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(70,70);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(100,100);
                     params.setMarginEnd(5);
                     newAvatar.setLayoutParams(params);
                     mViewHolder.attendeeAvatarView.addView(newAvatar);

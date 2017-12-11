@@ -154,7 +154,7 @@ public class welcomScreen extends AppCompatActivity {
      */
     public void showWelcomeText() {
         String uid = myAuth.getUid();
-        DatabaseReference id = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("username");
+        DatabaseReference id = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("userName");
         id.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -162,7 +162,7 @@ public class welcomScreen extends AppCompatActivity {
                 if (name == null) {
                     welcomeText.setText("Hello! But we can't find your nickname.");
                 } else {
-                    welcomeText.setText("Hello," + name.toString());
+                    welcomeText.setText("Hello, " + name.toString());
                 }
             }
 
