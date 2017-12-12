@@ -1,6 +1,8 @@
 package vivekvaidya.com.lookingfor;
 
 
+import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 
+
 public class createEventScreen extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     /**UI Variables*/
 
@@ -33,6 +40,7 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
     private TextView timeDisplay;
     private EditText description;
     private TextView locationDisplay;
+    private EventLocation location;
 
     /*Database Constants*/
     @Override
@@ -78,6 +86,7 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
                 Event newEvent = new Event(uid,
                         titleET.getText().toString(),
                         tags,
+                        location,
                         timeDisplay.getText().toString(),
                         dateDisplay.getText().toString(),
                         description.getText().toString());
@@ -124,8 +133,14 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
         tpd.show(getFragmentManager(),"Timepickerdialog");
     }
 
+    private static final int PLACE_PICKER_REQUEST = 827;
     private void pickLocation() {
-
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException|GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -145,6 +160,18 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
         }
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(this,data);
+                location = new EventLocation();
+                location.setLatitude(place.getLatLng().latitude);
+                location.setLongitude(place.getLatLng().longitude);
+                location.setId(place.getId());
+                locationDisplay.setText(place.getName());
+            }
+        }
+    }
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         String date = dayOfMonth + "/" + (monthOfYear) + "/" + year;

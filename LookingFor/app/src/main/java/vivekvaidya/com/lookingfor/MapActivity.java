@@ -15,13 +15,19 @@ import android.view.View;
 //google map apis
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import java.util.List;
 
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -32,8 +38,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     //location service related
     private GoogleApiClient mGoogleApiClient;
     // retrieved in location service, used in google map
-    private Location mCurrentLocation = newLocationProvider();
-
+    private Location mCurrentLocation ;
+    private EventLocation mLocation;
+    private String eventTitle = "";
+    private List<Event> events;
+    public static final String EVENT_LOCATION = "event location";
+    public static final String EVENT_TITLE = "event title";
+    public static final String EVENT_ALL = "all events";
     //for snackbar in requesting permissions
     private View rootLayout;
     private static final String TAG = "Main Activity";
@@ -45,7 +56,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         rootLayout = findViewById(R.id.root_layout);
-
+        mLocation = getIntent().getParcelableExtra(EVENT_LOCATION);
+        eventTitle = getIntent().getStringExtra(EVENT_TITLE);
+        events = getIntent().getParcelableArrayListExtra(EVENT_ALL);
+        mCurrentLocation = newLocationProvider(mLocation);
         //google map starter
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -55,15 +69,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
+                    .enableAutoManage( this, 0, this )
+                    .addApi( Places.GEO_DATA_API )
+                    .addApi( Places.PLACE_DETECTION_API )
                     .build();
         }
-        mGoogleApiClient.connect();
+
     }
     //Google map
     public void setUpGoogleMap() {
         LatLng curLocation = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
         map.addMarker(new MarkerOptions().position(curLocation)
-                .title("You are here"));
+                .title(eventTitle));
 //        This one moves the camera to the specific location
         map.moveCamera(CameraUpdateFactory.newLatLng(curLocation));
 //        This one moves the camera to the specific location and sets the zoom
@@ -163,7 +180,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         if (map!=null){
             setUpGoogleMap();
- //           locateEvents();
+            locateEvents();
         }
 
 
@@ -202,22 +219,48 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
-//    public void locateEvents() {
-//        for(/*each event that user is attending*/ : Event event){
-//            a = event.getLatitude(); // implement this
-//            b = event.getLongitude(); // implement this
-//            //
-//            LatLng input = new LatLng(a, b) // get Latitude from events being attended and put it into a
-//                                            // get Longitude from events and put in into b
-//            map.addMarker((new MarkerOptions().position(input).title(event.getTitle())));
-//        }
-//    }
+    public void locateEvents() {
+        if (events != null) {
+            for(final Event event: events) {
+                EventLocation location = event.getEventLocation();
+                if (location != null) {
+                    if (location.getId() != null) {
+                        Places.GeoDataApi.getPlaceById( mGoogleApiClient, location.getId() ) .setResultCallback( new ResultCallback<PlaceBuffer>() {
+                            @Override
+                            public void onResult(PlaceBuffer places) {
+                                if( places.getStatus().isSuccess() ) {
+                                    for(Place place:places) {
+                                        map.addMarker(new MarkerOptions().position(place.getLatLng()).title(event.getTitle()));
+                                    }
+                                }
+                                //Release the PlaceBuffer to prevent a memory leak
+                                places.release();
+                            }
+                        } );
+                    }
+                    double a = location.getLatitude();
+                    double b = location.getLongitude();
+                    String title = event.getTitle();
+                    LatLng input = new LatLng(a, b);
+                    map.addMarker((new MarkerOptions().position(input).title(title)));
+                }
+            }
+        }
+    }
 
 
-    private Location newLocationProvider() {
+
+    private Location newLocationProvider(EventLocation mLocation) {
         Location loc = new Location("dummy");
-        loc.setLatitude(40.103093);
-        loc.setLongitude(-88.227244);
+        if (mLocation != null) {
+            loc.setLongitude(mLocation.getLongitude());
+            loc.setLatitude(mLocation.getLatitude());
+            Log.e("longitude", String.valueOf(loc.getLongitude()));
+            Log.e("latitude", String.valueOf(loc.getLatitude()));
+        } else {
+            loc.setLatitude(40.103093);
+            loc.setLongitude(-88.227244);
+        }
         return loc;
     }
 }

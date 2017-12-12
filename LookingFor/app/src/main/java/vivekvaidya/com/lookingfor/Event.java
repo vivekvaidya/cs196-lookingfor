@@ -1,5 +1,9 @@
 package vivekvaidya.com.lookingfor;
 
+
+import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -20,6 +24,8 @@ public class Event implements Parcelable {
     private String eventID;
     private String title;
     private ArrayList<String> tags;
+    private EventLocation eventLocation;
+    @Deprecated
     private String location;
     private String date;
     private String time;
@@ -30,12 +36,12 @@ public class Event implements Parcelable {
 
     }
     /**Full Constructor*/
-    public Event(String hostID, String eventID, String title, ArrayList<String> tags, String location, String date,String time, String description){
+    public Event(String hostID,  String title, ArrayList<String> tags, EventLocation eventLocation, String date,String time, String description){
         this.hostID = hostID;
-        this.eventID = eventID;
+        this.eventID = null;
         this.title = title;
         this.tags = tags;
-        this.location = location;
+        this.eventLocation = eventLocation;
         this.date = date;
         this.time = time;
         this.description = description;
@@ -64,7 +70,7 @@ public class Event implements Parcelable {
         return this.eventID;
     }
     public String getTitle(){
-        return this.title;
+        return this.title == null? "" : title;
     }
     public void setTitle(String title){
         this.title = title;
@@ -75,12 +81,23 @@ public class Event implements Parcelable {
     public void setTags(ArrayList<String> tags){
         this.tags = tags;
     }
+    @Deprecated
     public String getLocation(){
         return this.location;
     }
+    @Deprecated
     public void setLocation(String location){
         this.location = location;
     }
+
+    public EventLocation getEventLocation() {
+        return eventLocation;
+    }
+
+    public void setEventLocation(EventLocation eventLocation) {
+        this.eventLocation = eventLocation;
+    }
+
     public String getDateTime(){
         return this.date + " " + this.time;
     }
@@ -181,7 +198,7 @@ public class Event implements Parcelable {
         if (count != 0){
             return newList;
         } else {
-            newList.add(new Event("Sorry", "Could", "Not", new ArrayList<String>(), "Find", "Any", "Matching", "Event"));
+            newList.add(new Event("Sorry", "No", new ArrayList<String>(),  "", "Matching", "Events"));
             return newList;
         }
     }
@@ -193,7 +210,6 @@ public class Event implements Parcelable {
         for (int i = 0; i < events.size(); i++){
             if ((events.get(i).getDescription().toLowerCase().contains(query)
                     || events.get(i).getTitle().toLowerCase().contains(query)
-                   /** || events.get(i).getLocation().toLowerCase().contains(query)*/
                     || events.get(i).getTags().contains(query)) ){
                 newList.add(events.get(i));
                 count++;
@@ -202,12 +218,11 @@ public class Event implements Parcelable {
         if (count != 0){
             return newList;
         } else {
-            newList.add(new Event("Sorry", "Could", "Not", new ArrayList<String>(),"Find", "Any", "Matching", "Event"));
+            newList.add(new Event("Sorry", "No", new ArrayList<String>(),  "", "Matching", "Events"));
             return newList;
         }
     }
 
-    /**Parcelable required methods*/
     @Override
     public int describeContents() {
         return 0;
@@ -219,11 +234,13 @@ public class Event implements Parcelable {
         dest.writeString(this.eventID);
         dest.writeString(this.title);
         dest.writeStringList(this.tags);
+        dest.writeParcelable(this.eventLocation, flags);
         dest.writeString(this.location);
         dest.writeString(this.date);
         dest.writeString(this.time);
         dest.writeString(this.description);
         dest.writeStringList(this.attendeeID);
+        dest.writeByte(this.visible ? (byte) 1 : (byte) 0);
     }
 
     protected Event(Parcel in) {
@@ -231,11 +248,13 @@ public class Event implements Parcelable {
         this.eventID = in.readString();
         this.title = in.readString();
         this.tags = in.createStringArrayList();
+        this.eventLocation = in.readParcelable(EventLocation.class.getClassLoader());
         this.location = in.readString();
         this.date = in.readString();
         this.time = in.readString();
         this.description = in.readString();
         this.attendeeID = in.createStringArrayList();
+        this.visible = in.readByte() != 0;
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {

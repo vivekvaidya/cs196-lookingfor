@@ -3,6 +3,7 @@ package vivekvaidya.com.lookingfor;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -115,7 +116,6 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
             mViewHolder = new ViewHolder();
             convertView = inflater.inflate(R.layout.event_item_layout, viewGroup, false);
             mViewHolder.attendeeAvatarView = convertView.findViewById(R.id.attendeeAvatarList);
-
             mViewHolder.titleLabel = convertView.findViewById(R.id.titleLabel);
             mViewHolder.dateTimeLabel = convertView.findViewById(R.id.dateTimeLabel);
             mViewHolder.locationLabel = convertView.findViewById(R.id.locationLabel);
@@ -139,6 +139,9 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,MapActivity.class);
+                intent.putExtra(MapActivity.EVENT_TITLE,currentEvent.getTitle());
+                intent.putExtra(MapActivity.EVENT_LOCATION,currentEvent.getEventLocation());
+                intent.putParcelableArrayListExtra(MapActivity.EVENT_ALL,(ArrayList<Event>) events);
                 context.startActivity(intent);
             }
         });

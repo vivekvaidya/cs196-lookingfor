@@ -117,28 +117,11 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
                             @Override
                             public void onDismiss(ListView listView, int[] reverseSortedPositions) {
                                 for (int position : reverseSortedPositions) {
-
-                                    int i = adapter.getCount();
-
-
                                     adapter.attend(position);
-
-                                    //Toast.makeText(EventBrowser.this, String.valueOf(i), Toast.LENGTH_SHORT).show();
-
-
                                 }
-
-
-
                             }
                         });
-
         eventsListView.setOnTouchListener(touchListener);
-
-
-
-
-
     }
 
 
