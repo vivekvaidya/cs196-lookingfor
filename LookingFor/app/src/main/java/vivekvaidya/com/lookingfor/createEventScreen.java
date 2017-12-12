@@ -40,7 +40,7 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
     private TextView timeDisplay;
     private EditText description;
     private TextView locationDisplay;
-    private Location location;
+    private EventLocation location;
 
     /*Database Constants*/
     @Override
@@ -170,9 +170,11 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(this,data);
-                location = new Location("dummy");
+                location = new EventLocation();
                 location.setLatitude(place.getLatLng().latitude);
                 location.setLongitude(place.getLatLng().longitude);
+                location.setId(place.getId());
+                locationDisplay.setText(place.getName());
             }
         }
     }

@@ -8,19 +8,19 @@ import android.os.Parcelable;
  */
 
 public class EventLocation implements Parcelable{
-    private double longtitude;
+    private double longitude;
     private double latitude;
     private String id;
 
     public EventLocation() {
     }
 
-    public double getLongtitude() {
-        return longtitude;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
+    public void setLongitude(double longtitude) {
+        this.longitude = longtitude;
     }
 
     public double getLatitude() {
@@ -40,7 +40,7 @@ public class EventLocation implements Parcelable{
     }
 
     public EventLocation(double longtitude, double latitude, String id) {
-        this.longtitude = longtitude;
+        this.longitude = longtitude;
         this.latitude = latitude;
         this.id = id;
 
@@ -53,13 +53,13 @@ public class EventLocation implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeDouble(this.longtitude);
+        dest.writeDouble(this.longitude);
         dest.writeDouble(this.latitude);
         dest.writeString(this.id);
     }
 
     protected EventLocation(Parcel in) {
-        this.longtitude = in.readDouble();
+        this.longitude = in.readDouble();
         this.latitude = in.readDouble();
         this.id = in.readString();
     }

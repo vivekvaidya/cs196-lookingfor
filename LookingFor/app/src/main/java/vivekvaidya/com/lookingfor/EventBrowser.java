@@ -101,7 +101,6 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
     }
 
     public void displayEvents(ArrayList<Event> events) {
-        //adapter = new EventBrowserItemAdapter(this, R.layout.event_item_layout, events);
         adapter = new EventRowLayoutAdapter(this,R.layout.event_item_layout,events);
         ListView eventsListView = findViewById(R.id.eventListView);
         eventsListView.setAdapter(adapter);
@@ -117,28 +116,11 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
                             @Override
                             public void onDismiss(ListView listView, int[] reverseSortedPositions) {
                                 for (int position : reverseSortedPositions) {
-
-                                    int i = adapter.getCount();
-
-
                                     adapter.attend(position);
-
-                                    //Toast.makeText(EventBrowser.this, String.valueOf(i), Toast.LENGTH_SHORT).show();
-
-
                                 }
-
-
-
                             }
                         });
-
         eventsListView.setOnTouchListener(touchListener);
-
-
-
-
-
     }
 
 

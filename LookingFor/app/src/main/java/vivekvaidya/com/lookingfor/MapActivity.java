@@ -1,8 +1,5 @@
 package vivekvaidya.com.lookingfor;
 
-import android.content.Context;
-import android.location.Criteria;
-import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.Manifest;
@@ -18,18 +15,17 @@ import android.view.View;
 //google map apis
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -42,7 +38,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private GoogleApiClient mGoogleApiClient;
     // retrieved in location service, used in google map
     private Location mCurrentLocation ;
-    private Location mLocation;
+    private EventLocation mLocation;
     private String eventTitle = "";
     private List<Event> events;
     public static final String EVENT_LOCATION = "event location";
@@ -58,11 +54,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        rootLayout = (View) findViewById(R.id.root_layout);
+        rootLayout = findViewById(R.id.root_layout);
         mLocation = getIntent().getParcelableExtra(EVENT_LOCATION);
         eventTitle = getIntent().getStringExtra(EVENT_TITLE);
         events = getIntent().getParcelableArrayListExtra(EVENT_ALL);
-        mCurrentLocation = newLocationProvider();
+        mCurrentLocation = newLocationProvider(mLocation);
         //google map starter
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -72,9 +68,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
+                    .enableAutoManage( this, 0, this )
+                    .addApi( Places.GEO_DATA_API )
+                    .addApi( Places.PLACE_DETECTION_API )
                     .build();
         }
-        mGoogleApiClient.connect();
+
     }
     //Google map
     public void setUpGoogleMap() {
@@ -221,12 +220,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     public void locateEvents() {
         if (events != null) {
-            for(Event event: events) {
-                EventLocation location = event.getLocation();
+            for(final Event event: events) {
+                EventLocation location = event.getEventLocation();
                 if (location != null) {
                     if (location.getId() != null) {
-                        GeoDataClient.getPlaceByID(location.getId());
-                        map.addMarker((new MarkerOptions()))
+                        Places.GeoDataApi.getPlaceById( mGoogleApiClient, location.getId() ) .setResultCallback( new ResultCallback<PlaceBuffer>() {
+                            @Override
+                            public void onResult(PlaceBuffer places) {
+                                if( places.getStatus().isSuccess() ) {
+                                    for(Place place:places) {
+                                        map.addMarker(new MarkerOptions().position(place.getLatLng()).title(event.getTitle()));
+                                    }
+                                }
+                                //Release the PlaceBuffer to prevent a memory leak
+                                places.release();
+                            }
+                        } );
                     }
                     double a = location.getLatitude();
                     double b = location.getLongitude();
@@ -240,11 +249,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-    private Location newLocationProvider() {
+    private Location newLocationProvider(EventLocation mLocation) {
         Location loc = new Location("dummy");
         if (mLocation != null) {
             loc.setLongitude(mLocation.getLongitude());
             loc.setLatitude(mLocation.getLatitude());
+            Log.e("longitude", String.valueOf(loc.getLongitude()));
+            Log.e("latitude", String.valueOf(loc.getLatitude()));
         } else {
             loc.setLatitude(40.103093);
             loc.setLongitude(-88.227244);
