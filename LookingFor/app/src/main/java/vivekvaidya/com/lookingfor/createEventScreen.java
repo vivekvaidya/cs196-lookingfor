@@ -174,7 +174,7 @@ public class createEventScreen extends AppCompatActivity implements View.OnClick
     }
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String date = dayOfMonth + "/" + (monthOfYear) + "/" + year;
+        String date = monthOfYear + 1 + "/" + dayOfMonth + "/" + year;
         dateDisplay.setText(date);
     }
 
