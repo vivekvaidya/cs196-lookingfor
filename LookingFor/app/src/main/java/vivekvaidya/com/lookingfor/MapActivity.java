@@ -214,7 +214,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 //    }
 
 
-    private Location newLocationProvider() {
+    public static Location newLocationProvider() {
         Location loc = new Location("dummy");
         loc.setLatitude(40.103093);
         loc.setLongitude(-88.227244);

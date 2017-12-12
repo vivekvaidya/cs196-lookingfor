@@ -1,5 +1,6 @@
 package vivekvaidya.com.lookingfor;
 
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,6 +10,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static vivekvaidya.com.lookingfor.MapActivity.newLocationProvider;
 
 /**
  * Created by Administrator on 2017/10/26.
@@ -20,7 +23,7 @@ public class Event implements Parcelable {
     private String eventID;
     private String title;
     private ArrayList<String> tags;
-    private String location;
+    private ArrayList<String> location;
     private String date;
     private String time;
     private String description;
@@ -30,7 +33,7 @@ public class Event implements Parcelable {
 
     }
     /**Full Constructor*/
-    public Event(String hostID, String eventID, String title, ArrayList<String> tags, String location, String date,String time, String description){
+    public Event(String hostID, String eventID, String title, ArrayList<String> tags, ArrayList<String> location, String date,String time, String description){
         this.hostID = hostID;
         this.eventID = eventID;
         this.title = title;
@@ -75,10 +78,10 @@ public class Event implements Parcelable {
     public void setTags(ArrayList<String> tags){
         this.tags = tags;
     }
-    public String getLocation(){
+    public ArrayList<String> getLocation(){
         return this.location;
     }
-    public void setLocation(String location){
+    public void setLocation(ArrayList<String> location){
         this.location = location;
     }
     public String getDateTime(){
@@ -181,7 +184,7 @@ public class Event implements Parcelable {
         if (count != 0){
             return newList;
         } else {
-            newList.add(new Event("Sorry", "Could", "Not", new ArrayList<String>(), "Find", "Any", "Matching", "Event"));
+            newList.add(new Event("Sorry", "Could", "Not", new ArrayList<String>(), new ArrayList<String>(), "Any", "Matching", "Event"));
             return newList;
         }
     }
@@ -193,7 +196,6 @@ public class Event implements Parcelable {
         for (int i = 0; i < events.size(); i++){
             if ((events.get(i).getDescription().toLowerCase().contains(query)
                     || events.get(i).getTitle().toLowerCase().contains(query)
-                    || events.get(i).getLocation().toLowerCase().contains(query)
                     || events.get(i).getTags().contains(query)) ){
                 newList.add(events.get(i));
                 count++;
@@ -202,7 +204,7 @@ public class Event implements Parcelable {
         if (count != 0){
             return newList;
         } else {
-            newList.add(new Event("Sorry", "Could", "Not", new ArrayList<String>(),"Find", "Any", "Matching", "Event"));
+            newList.add(new Event("Sorry", "Could", "Not", new ArrayList<String>(),new ArrayList<String>(), "Any", "Matching", "Event"));
             return newList;
         }
     }
@@ -219,7 +221,7 @@ public class Event implements Parcelable {
         dest.writeString(this.eventID);
         dest.writeString(this.title);
         dest.writeStringList(this.tags);
-        dest.writeString(this.location);
+        dest.writeStringList(this.location);
         dest.writeString(this.date);
         dest.writeString(this.time);
         dest.writeString(this.description);
@@ -231,7 +233,7 @@ public class Event implements Parcelable {
         this.eventID = in.readString();
         this.title = in.readString();
         this.tags = in.createStringArrayList();
-        this.location = in.readString();
+        this.location = in.createStringArrayList();
         this.date = in.readString();
         this.time = in.readString();
         this.description = in.readString();
@@ -249,4 +251,6 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+
 }

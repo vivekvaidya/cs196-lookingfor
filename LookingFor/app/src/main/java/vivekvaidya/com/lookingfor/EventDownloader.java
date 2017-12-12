@@ -1,6 +1,7 @@
 package vivekvaidya.com.lookingfor;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,7 @@ class EventDownloader{
                 ArrayList<Event> events = new ArrayList<>();
                 for (DataSnapshot eventSnapshot: dataSnapshot.getChildren()) {
                     events.add(eventSnapshot.getValue(Event.class));
+                    Log.d("Working?", eventSnapshot.getValue(Event.class).getEventID());
                 }
                 call.eventsDownloaded(behavior,events);
             }
