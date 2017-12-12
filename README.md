@@ -20,6 +20,9 @@ Using the App
   
 Technical Documentation:
 
+Latest Release can be found here:
+https://github.com/vivekvaidya/cs196-lookingfor/releases
+
 Libraries used:
 
 -Firebase
