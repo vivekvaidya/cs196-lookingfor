@@ -11,12 +11,9 @@
         <item>Lecture</item>
         <item>Sport</item>
         <item>Hangout</item>
+        <item>Study</item>
         <item>Hangout</item>
-        <item>Hangout</item>
-        <item>Hangout</item>
-        <item>Hangout</item>
-        <item>Hangout</item>
-        <item>Hangout</item>
+        <item>Vivek</item>
     </string-array>
     <string name="title_activity_event_browser">EventBrowser</string>
 </resources>
