@@ -18,7 +18,9 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="casual"
         android:text="Quick search"
+        android:textColor="@color/cardview_light_background"
         android:textSize="24sp" />
 
     <EditText
@@ -26,20 +28,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:fontFamily="casual"
         android:hint="Enter search query"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
     <Button
         android:id="@+id/searchButton"
+        style="@android:style/Widget.Holo.Light.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search" />
+        android:bottomLeftRadius="20dp"
+        android:bottomRightRadius="20dp"
+        android:fontFamily="casual"
+        android:text="Search"
+        android:textColor="@color/cardview_light_background"
+        android:topLeftRadius="20dp"
+        android:topRightRadius="20dp" />
 
     <TextView
         android:id="@+id/history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="casual"
         android:text="Search history"
+        android:textColor="@color/cardview_light_background"
         android:textSize="24sp"
         tools:paddingTop="16dp" />
 
@@ -49,8 +62,15 @@
 
     <Button
         android:id="@+id/clearHistory"
+        style="@android:style/Widget.Holo.Light.Button"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Clear all" />
+        android:bottomLeftRadius="20dp"
+        android:bottomRightRadius="20dp"
+        android:fontFamily="casual"
+        android:text="Clear all"
+        android:textColor="@color/cardview_light_background"
+        android:topLeftRadius="20dp"
+        android:topRightRadius="20dp" />
 
 </LinearLayout>
