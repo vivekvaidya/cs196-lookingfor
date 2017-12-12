@@ -3,24 +3,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class welcomScreen extends AppCompatActivity {
     /**
@@ -42,6 +53,7 @@ public class welcomScreen extends AppCompatActivity {
     private Button quickSearch;
     private Button clearHistory;
     private NavigationView navView;
+    private ListView historyList;
     boolean doubleBackToExitPressedOnce = false;
 
     @Override
@@ -76,6 +88,8 @@ public class welcomScreen extends AppCompatActivity {
         View headerView = navView.getHeaderView(0);
         searchQuery = (EditText) headerView.findViewById(R.id.searchBox) ;
         quickSearch = (Button) headerView.findViewById(R.id.searchButton);
+        clearHistory = (Button) headerView.findViewById(R.id.clearHistory);
+        historyList = headerView.findViewById(R.id.searchHistoryList);
         signOut = findViewById(R.id.signOut);
         createEvent = findViewById(R.id.createEventButton);
         allEventButton = findViewById(R.id.allEventButton);
@@ -92,6 +106,25 @@ public class welcomScreen extends AppCompatActivity {
 
         final Context context = this.getApplicationContext();
         myAuth = FirebaseAuth.getInstance();
+        /**set up search history*/
+        if (myAuth == null) {
+            Toast.makeText(welcomScreen.this, "Error... UID not available", Toast.LENGTH_LONG).show();
+            return;
+        }
+        FirebaseDatabase.getInstance().getReference().child("users").child(myAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User currentUser = dataSnapshot.getValue(User.class);
+                if (currentUser != null) {
+                    List<String> searchHistoryArray = currentUser.getHistory();
+                    ListAdapter historyAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,searchHistoryArray);
+                    historyList.setAdapter(historyAdapter);
+                }
+            }
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("UserProfile", "Can't find user.");
+            }
+        });
 
         setSupportActionBar(toolbar);
         /**Show Welcome Text*/
@@ -176,10 +209,75 @@ public class welcomScreen extends AppCompatActivity {
         quickSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, EventBrowser.class);
-                intent.putExtra(EventBrowser.SEARCH_FOR,searchQuery.getText().toString());
-                intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR,EventBrowser.SEARCH_EVENTS);
-                startActivity(intent);
+
+                if (myAuth == null) {
+                    Toast.makeText(welcomScreen.this, "Error... UID not available", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                FirebaseDatabase.getInstance().getReference().child("users").child(myAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User currentUser = dataSnapshot.getValue(User.class);
+                        if (currentUser != null){
+                            if (!searchQuery.getText().toString().equals("")) {
+                                currentUser.removeHistory(searchQuery.getText().toString());
+                                currentUser.addHistory(searchQuery.getText().toString());
+                            }
+                            currentUser.pushToFirebase(new OnCompleteListener<Void>(){
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                }
+                            });
+                            List<String> searchHistoryArray = currentUser.getHistory();
+                            ListAdapter historyAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,searchHistoryArray);
+                            historyList.setAdapter(historyAdapter);
+                            Intent intent = new Intent(context, EventBrowser.class);
+                            intent.putExtra(EventBrowser.SEARCH_FOR,searchQuery.getText().toString());
+                            intent.putExtra(EventBrowser.RECEIVE_EVENT_BEHAVIOR,EventBrowser.SEARCH_EVENTS);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(welcomScreen.this, "Error...", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d("UserProfile", "Can't find user.");
+                    }
+                });
+
+            }
+        });
+        clearHistory.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                if (myAuth == null) {
+                    Toast.makeText(welcomScreen.this, "Error... UID not available", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                FirebaseDatabase.getInstance().getReference().child("users").child(myAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User currentUser = dataSnapshot.getValue(User.class);
+                        if (currentUser != null){
+                            currentUser.clearHistory();
+                            List<String> searchHistoryArray = currentUser.getHistory();
+                            ListAdapter historyAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,searchHistoryArray);
+                            historyList.setAdapter(historyAdapter);
+                            currentUser.pushToFirebase(new OnCompleteListener<Void>(){
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                }
+                            });
+                        } else {
+                            Toast.makeText(welcomScreen.this, "Error...", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d("UserProfile", "Can't find user.");
+                    }
+                });
             }
         });
     }
@@ -196,7 +294,7 @@ public class welcomScreen extends AppCompatActivity {
      * Show welcome text by username
      */
     public void showWelcomeText() {
-        String uid = myAuth.getUid();
+        String uid = myAuth.getCurrentUser().getUid();
         DatabaseReference id = FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("userName");
         id.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

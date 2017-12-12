@@ -11,6 +11,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,7 +36,7 @@ import java.util.List;
 public class User implements Parcelable {
 
     /**Basic Data*/
-    private String UID = "";
+    private String uid = "";
     @Exclude
     public final static int AVATAR_SIDE_LENGTH = 100;
 
@@ -45,6 +46,7 @@ public class User implements Parcelable {
     private List<String> attendingEvents = new ArrayList<>();
     private List<String> friends = new ArrayList<>();
     private List<String> hostingEvents = new ArrayList<>();
+    private List<String> searchHistory = new ArrayList<>();
     private String avatar = "";
 
     public User() {
@@ -53,14 +55,14 @@ public class User implements Parcelable {
 
     /**Constructors*/
     public User(String UID, String userName, String emailAddress, String phoneNumber, Bitmap avatarBitmap){
-        this.UID = UID;
+        this.uid = UID;
         this.emailAddress = emailAddress;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.avatar = bitMapToString(avatarBitmap);
     }
     public User(String UID, String userName, String phoneNumber, String emailAddress, Bitmap avatarBitmap, List<String> friends, List<String> hostingEvents, List<String> attendingEvents) {
-        this.UID = UID;
+        this.uid = UID;
         this.emailAddress = emailAddress;
         this.avatar = bitMapToString(avatarBitmap);
         this.userName = userName;
@@ -71,7 +73,7 @@ public class User implements Parcelable {
     }
     /**Getter and Setters*/
     public String getUID(){
-        return this.UID;
+        return this.uid;
     }
     public String getPhoneNumber(){
         return this.phoneNumber;
@@ -95,7 +97,27 @@ public class User implements Parcelable {
     public String getAvatar() {
         return avatar;
     }
+    public void addHistory(String query){
+        this.searchHistory.add(0,query);
+    }
+    public void removeHistory(String query){
+        this.searchHistory.remove(query);
+    }
+    public List<String> getHistory(){
+        return this.searchHistory;
+    }
 
+    public List<String> getSearchHistory() {
+        return searchHistory;
+    }
+
+    public void setSearchHistory(List<String> searchHistory) {
+        this.searchHistory = searchHistory;
+    }
+
+    public void clearHistory(){
+        this.searchHistory = new ArrayList<>();
+    }
     @Exclude
     public Bitmap getAvatarinBitmap() {
         return stringToBitMap(avatar);
@@ -127,11 +149,13 @@ public class User implements Parcelable {
     }
     /**Push User configuration to Database*/
     public void pushToFirebase(final OnCompleteListener<Void> onCompleteListener) {
-
-        DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
-                .child(getUID());
-        newEventReference.setValue(this).addOnCompleteListener(onCompleteListener);
-
+        if (getUID() == null || getUID().trim().equals("")) {
+            Log.e("UID","null");
+        } else {
+            DatabaseReference newEventReference = FirebaseDatabase.getInstance().getReference().child("users")
+                    .child(getUID());
+            newEventReference.setValue(this).addOnCompleteListener(onCompleteListener);
+        }
 
     }
 
@@ -143,7 +167,7 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.UID);
+        dest.writeString(this.uid);
         dest.writeString(this.emailAddress);
         dest.writeString(this.phoneNumber);
         dest.writeString(this.userName);
@@ -154,7 +178,7 @@ public class User implements Parcelable {
     }
 
     protected User(Parcel in) {
-        this.UID = in.readString();
+        this.uid = in.readString();
         this.emailAddress = in.readString();
         this.phoneNumber = in.readString();
         this.userName = in.readString();

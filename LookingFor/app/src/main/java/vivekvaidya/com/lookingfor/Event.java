@@ -205,7 +205,7 @@ public class Event implements Parcelable {
         for (int i = 0; i < events.size(); i++){
             if ((events.get(i).getDescription().toLowerCase().contains(query)
                     || events.get(i).getTitle().toLowerCase().contains(query)
-                    || events.get(i).getLocation().toLowerCase().contains(query)
+                   /** || events.get(i).getLocation().toLowerCase().contains(query)*/
                     || events.get(i).getTags().contains(query)) ){
                 newList.add(events.get(i));
                 count++;

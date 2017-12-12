@@ -83,10 +83,14 @@ public class EventBrowser extends AppCompatActivity implements CallableAfterDown
                 finish();
                 break;
             case SEARCH_EVENTS:
-                String query = getIntent().getStringExtra(SEARCH_FOR);
                 displayEvents(events);
-                SearchView searchView = (SearchView) myMenu.findItem(R.id.search_badge_ID).getActionView();
-                searchView.setQuery(query,true);
+                if (myMenu != null) {
+                    String query = getIntent().getStringExtra(SEARCH_FOR);
+                    SearchView searchView = (SearchView) myMenu.findItem(R.id.search_badge_ID).getActionView();
+                    searchView.setQuery(query,true);
+                } else {
+                    Log.d("a","aaaaaaaaaaaaaaaaaaaaa");
+                }
                 //TODO: focus on searchView
                 break;
             case DISPLAY_ALL:
