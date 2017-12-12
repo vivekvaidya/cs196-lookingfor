@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_header_height"
+    android:layout_height="wrap_content"
     android:background="@drawable/side_nav_bar"
     android:windowSoftInputMode="adjustNothing"
     android:gravity="bottom"
@@ -57,8 +57,13 @@
         tools:paddingTop="16dp" />
 
     <ListView
+        android:id="@+id/searchHistoryList"
         android:layout_width="match_parent"
-        android:layout_height="115dp" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_height="fill_parent" />
 
     <Button
         android:id="@+id/clearHistory"
