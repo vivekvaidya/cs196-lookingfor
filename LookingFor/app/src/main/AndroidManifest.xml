@@ -36,15 +36,15 @@
 
         <activity
             android:name=".welcomScreen"
-            android:label="@string/title_activity_welcom_screen"
+            android:label="Welcome to Looking For!"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".createEventScreen"
-            android:label="@string/title_activity_create_event_screen"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="Create an Event"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".userSettingsScreen"
-            android:label="@string/title_activity_user_settings_screen"
+            android:label="User Profile Settings"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".EventBrowser"
