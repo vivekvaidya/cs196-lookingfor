@@ -135,6 +135,7 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
         mViewHolder.dateTimeLabel.setText(currentEvent.getDateTime());
         mViewHolder.descriptionLabel.setText(currentEvent.getDescription());
         mViewHolder.tagLabel.setText(currentEvent.getTags().toString());
+
         mViewHolder.locationLabel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,8 +180,20 @@ public class EventRowLayoutAdapter extends ArrayAdapter {
 
             }
         });
+        usersReference.child(hostID).child("userName").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mViewHolder.hostUsername.setText(dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         int counter = 0;
+        mViewHolder.attendeeAvatarView.removeAllViews();
         if (mViewHolder.attendeeAvatarView.getChildCount() > 0) {
             mViewHolder.attendeeAvatarView.removeAllViews();
         }
