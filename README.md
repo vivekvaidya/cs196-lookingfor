@@ -21,7 +21,8 @@ Using the App
 Technical Documentation:
 
 Latest Release can be found here:
-https://github.com/vivekvaidya/cs196-lookingfor/releases
+~~https://github.com/vivekvaidya/cs196-lookingfor/releases~~
+This is not working since we haven't signed it!
 
 Libraries used:
 
