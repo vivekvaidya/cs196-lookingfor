@@ -1,14 +1,12 @@
-# cs196fa17
-
-Looking For - Android app built for CS196 Fall 17. 
+# Looking For - Android app built for CS196 Fall 17. 
 
   Looking For is an app designed for finding people to attend user-created events.
   
-User support
+## User support
 
   Both email and phone login are supported.
   
-Using the App
+## Using the App
 
   Once you register an account, proceed to the "settings" page to customize your profile so others can recognize who you are!
   
@@ -18,13 +16,17 @@ Using the App
   
   Have fun with finding people attending your events and finding interesting events for you to attend!
   
-Technical Documentation:
+## Technical Documentation:
 
 Latest Release can be found here:
 ~~https://github.com/vivekvaidya/cs196-lookingfor/releases~~
 This is not working since we haven't signed it!
 
-Libraries used:
+Instead, developer mode app is available: 
+Install android studio, import this project, connect to your phone and build this project. 
+Make sure that your phone is in developer mode. 
+
+## Libraries used:
 
 -Firebase
 
@@ -40,7 +42,7 @@ Libraries used:
 
 -cardview
 
-App created by:
+## App created by:
 
 -Billy Li, Eric Ma, Susie Liu, Allen Chen, Navam Awasthi
 
